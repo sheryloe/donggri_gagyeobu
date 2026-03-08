@@ -227,3 +227,85 @@
 
 ### Remaining Issues
 - 카드 결제일은 현재 거래별 수동 입력 방식(카드별 고정 청구일 자동화는 미구현)
+
+## 2026-03-08 16:40 (Asia/Seoul)
+
+### User Requests
+- 현재 서버 중지 후 재빌드
+- EXE를 다시 실행해서 최신 변경 반영 상태로 재시작
+
+### Changes Applied
+- 실행 상태 점검
+  - `8000` 포트 리스너/관련 프로세스 확인 (시작 전 리스너 없음)
+- 빌드 수행
+  - `py -m PyInstaller -y donggri-ledger.spec`
+  - 산출물 갱신: `dist\donggri-ledger\donggri-ledger.exe`
+- EXE 재시작
+  - 실행 파일: `dist\donggri-ledger\donggri-ledger.exe`
+- 상태 확인
+  - `http://127.0.0.1:8000/health` 정상 응답
+  - 응답 `db_path`: `C:\Users\wlflq\AppData\Local\donggri-ledger\data\ledger.db`
+
+### Results
+- 최신 코드 기준 EXE 재빌드 및 재실행 완료
+- 현재 `donggri-ledger.exe` 프로세스가 `0.0.0.0:8000` 리스닝 중
+
+### Git
+- 작업 기준 커밋(코드 변경 없음):
+  - `e389db937d0b707b62006e034d834ce59124e1a6`
+  - `docs: log deferred credit-card settlement implementation`
+- 관련 경로:
+  - `donggri-ledger.spec`
+  - `dist\donggri-ledger\donggri-ledger.exe`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- 없음
+
+## 2026-03-08 16:50 (Asia/Seoul)
+
+### User Requests
+- 카드 결제일을 거래마다 입력하지 않고, 카드 설정에서 한 번만 입력
+- 거래 입력은 기존 가계부처럼 자산 선택 중심으로 유지
+
+### Changes Applied
+- 카드 설정을 자산 레벨로 이동
+  - 카드 자산 필드 추가: `card_settlement_day`, `card_settlement_asset_id`
+  - 파일: `app/models.py`, `app/schemas.py`, `app/database.py`
+- 거래 로직 자동화
+  - 거래에서 카드 자산 선택 시 자동으로 카드결제 모드 적용
+  - 결제일은 카드 설정(매월 결제일) 기준으로 자동 계산
+  - 결제 통장은 카드 설정값을 사용
+  - 거래별 결제일 직접 입력 UI 제거
+  - 파일: `app/crud.py`, `web/index.html`
+- 자산 등록 UI 개선
+  - 자산 유형이 카드일 때만 `카드 결제일`, `결제 통장` 입력 노출
+  - 자산 목록에 카드 설정 표시(매월 결제일/결제통장)
+  - 파일: `web/index.html`
+- API 에러 처리 개선
+  - 자산 생성/수정 시 카드 설정 검증 오류를 400으로 반환
+  - 파일: `app/routers/assets.py`
+
+### Verification
+- `py -m compileall app` 통과
+- 임시 DB 시나리오 검증 통과
+  - 카드 자산 선택 거래를 `payment_method=asset`로 보내도 자동 카드 처리
+  - 결제일 자동 산출(`YYYY-MM` 다음달 + 카드 결제일)
+  - 결제통장 자동 연결 확인
+
+### Git
+- 작업 시작 기준 커밋:
+  - `e389db937d0b707b62006e034d834ce59124e1a6`
+  - `docs: log deferred credit-card settlement implementation`
+- 변경 파일 경로:
+  - `app/models.py`
+  - `app/schemas.py`
+  - `app/database.py`
+  - `app/crud.py`
+  - `app/routers/assets.py`
+  - `web/index.html`
+  - `docs/SESSION_LOG.md`
+- 새 커밋: 진행 예정
+
+### Remaining Issues
+- 기존 데이터의 카드 자산에는 결제일/결제통장이 비어 있을 수 있어, 해당 카드로 첫 거래 전 카드 설정 보완 필요
