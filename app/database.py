@@ -106,6 +106,18 @@ def _set_sqlite_pragma(dbapi_connection, connection_record):
 def run_lightweight_migrations() -> None:
     """Apply minimal additive schema updates for existing SQLite files."""
     with engine.begin() as conn:
+        asset_rows = conn.exec_driver_sql("PRAGMA table_info(assets)").fetchall()
+        asset_cols = {row[1] for row in asset_rows}
+
+        if "card_settlement_day" not in asset_cols:
+            conn.exec_driver_sql(
+                "ALTER TABLE assets ADD COLUMN card_settlement_day INTEGER"
+            )
+        if "card_settlement_asset_id" not in asset_cols:
+            conn.exec_driver_sql(
+                "ALTER TABLE assets ADD COLUMN card_settlement_asset_id INTEGER"
+            )
+
         rows = conn.exec_driver_sql("PRAGMA table_info(transactions)").fetchall()
         cols = {row[1] for row in rows}
 

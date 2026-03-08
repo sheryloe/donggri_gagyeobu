@@ -12,6 +12,8 @@ class Asset(Base):
     name = Column(String, nullable=False)  # 자산명 (예: 신한은행, KB카드)
     type = Column(String, nullable=False)  # 'bank', 'card', 'cash', 'investment'
     balance = Column(Float, default=0.0)  # 현재 잔액
+    card_settlement_day = Column(Integer, nullable=True)  # 카드면 결제일(1~31)
+    card_settlement_asset_id = Column(Integer, nullable=True)  # 카드 결제 출금 통장 자산 id
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # 관계 정의

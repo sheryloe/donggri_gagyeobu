@@ -635,18 +635,9 @@
                 <div class="form-control"><label>날짜</label><input type="date" id="t-date"></div>
                 <div class="form-group" style="display:flex; flex-direction:column; gap:5px; flex:1; min-width: 100px;">
                     <label style="font-size:0.8rem; font-weight:700; color:var(--text-sub);">구분</label>
-                    <select id="t-type" onchange="updateCatSelect(); updateTxPaymentControls();"><option value="expense">지출</option><option value="income">수입</option><option value="investment">투자</option></select>
-                </div>
-                <div class="form-control">
-                    <label>지불 방식</label>
-                    <select id="t-pay-method" onchange="updateTxPaymentControls()">
-                        <option value="asset">즉시 반영</option>
-                        <option value="card">신용카드 (다음달 결제)</option>
-                    </select>
+                    <select id="t-type" onchange="updateCatSelect()"><option value="expense">지출</option><option value="income">수입</option><option value="investment">투자</option></select>
                 </div>
                 <div class="form-control"><label id="t-asset-label">자산</label><select id="t-asset"></select></div>
-                <div class="form-control" id="t-card-wrap" style="display:none;"><label>사용 카드</label><select id="t-card"></select></div>
-                <div class="form-control" id="t-settle-wrap" style="display:none;"><label>결제일</label><input type="date" id="t-settle-date"></div>
                 <div class="form-control"><label>카테고리</label><select id="t-cat"></select></div>
                 <div class="form-control" style="flex:1.5;"><label>내용</label><input type="text" id="t-desc" placeholder="내용 입력"></div>
                 <div class="form-control"><label>금액</label><input type="number" id="t-amt" placeholder="0"></div>
@@ -764,15 +755,17 @@
         <div class="card">
             <div class="input-group">
                 <div class="form-control"><label>자산 이름</label><input type="text" id="a-name" placeholder="예: 신한통장"></div>
-                <div class="form-control"><label>자산 유형</label><select id="a-type"><option value="bank">은행</option><option value="cash">현금</option><option value="card">카드</option><option value="investment">투자계좌</option></select></div>
+                <div class="form-control"><label>자산 유형</label><select id="a-type" onchange="updateAssetFormControls()"><option value="bank">은행</option><option value="cash">현금</option><option value="card">카드</option><option value="investment">투자계좌</option></select></div>
                 <div class="form-control"><label>현재 잔액</label><input type="number" id="a-bal" value="0"></div>
+                <div class="form-control" id="a-card-day-wrap" style="display:none;"><label>카드 결제일(매월)</label><input type="number" id="a-card-day" min="1" max="31" placeholder="예: 14"></div>
+                <div class="form-control" id="a-card-settle-wrap" style="display:none;"><label>결제 통장</label><select id="a-card-settle-asset"></select></div>
                 <button type="button" class="btn-main" onclick="addAsset()">자산 추가</button>
             </div>
         </div>
         <div class="card" style="padding:0;">
             <div class="table-wrapper">
                 <table id="asset-list-table">
-                    <thead><tr><th>자산명</th><th>유형</th><th style="text-align:right;">잔액</th><th style="text-align:center;">관리</th></tr></thead>
+                    <thead><tr><th>자산명</th><th>유형</th><th>카드 설정</th><th style="text-align:right;">잔액</th><th style="text-align:center;">관리</th></tr></thead>
                     <tbody id="asset-body"></tbody>
                 </table>
             </div>
@@ -880,6 +873,11 @@
 
     let db = JSON.parse(localStorage.getItem(DB_KEY)) || DEFAULT_DATA;
     if (!Array.isArray(db.assets)) db.assets = [];
+    db.assets = db.assets.map((a) => ({
+        ...a,
+        cardSettlementDay: a.cardSettlementDay ? Number(a.cardSettlementDay) : null,
+        cardSettlementAssetId: a.cardSettlementAssetId ? Number(a.cardSettlementAssetId) : null,
+    }));
     if (!Array.isArray(db.transactions)) db.transactions = [];
     db.transactions = db.transactions.map((t) => ({
         ...t,
@@ -1012,40 +1010,45 @@
         return bucket;
     }
 
-    function defaultCardSettlementDate() {
-        const txDate = document.getElementById("t-date")?.value;
-        if (!txDate) return "";
-        const d = new Date(`${txDate}T12:00:00`);
-        if (Number.isNaN(d.getTime())) return "";
-        d.setMonth(d.getMonth() + 1);
+    function calcCardSettlementDate(txDate, settlementDay) {
+        const base = new Date(`${txDate}T12:00:00`);
+        if (Number.isNaN(base.getTime())) return "";
+
+        let year = base.getFullYear();
+        let month = base.getMonth() + 1; // next month
+        if (month > 11) {
+            year += 1;
+            month = 0;
+        }
+        const lastDay = new Date(year, month + 1, 0).getDate();
+        const day = Math.max(1, Math.min(Number(settlementDay || 1), lastDay));
+        const d = new Date(year, month, day);
         return d.toISOString().slice(0, 10);
     }
 
-    function updateTxPaymentControls() {
-        const typeSel = document.getElementById("t-type");
-        const paySel = document.getElementById("t-pay-method");
-        const cardWrap = document.getElementById("t-card-wrap");
-        const settleWrap = document.getElementById("t-settle-wrap");
-        const assetLabel = document.getElementById("t-asset-label");
-        const settleInput = document.getElementById("t-settle-date");
-        if (!typeSel || !paySel || !cardWrap || !settleWrap || !assetLabel || !settleInput) return;
+    function updateAssetFormControls() {
+        const type = document.getElementById("a-type")?.value || "bank";
+        const dayWrap = document.getElementById("a-card-day-wrap");
+        const settleWrap = document.getElementById("a-card-settle-wrap");
+        const settleSel = document.getElementById("a-card-settle-asset");
+        if (!dayWrap || !settleWrap || !settleSel) return;
 
-        const txType = typeSel.value;
-        if (txType === "income" && paySel.value === "card") {
-            paySel.value = "asset";
-        }
-        const isCardMode = paySel.value === "card";
-        cardWrap.style.display = isCardMode ? "flex" : "none";
-        settleWrap.style.display = isCardMode ? "flex" : "none";
-        assetLabel.innerText = isCardMode ? "결제 통장" : "자산";
+        const isCard = type === "card";
+        dayWrap.style.display = isCard ? "flex" : "none";
+        settleWrap.style.display = isCard ? "flex" : "none";
 
-        if (isCardMode && !settleInput.value) {
-            settleInput.value = defaultCardSettlementDate();
-        }
-        if (!isCardMode) {
-            settleInput.value = "";
-            const cardSel = document.getElementById("t-card");
-            if (cardSel) cardSel.value = "";
+        const oldVal = settleSel.value;
+        settleSel.innerHTML = "";
+        db.assets
+            .filter(a => ["cash", "bank"].includes((a.type || "").toLowerCase()))
+            .forEach((a) => {
+                const opt = document.createElement("option");
+                opt.value = a.id;
+                opt.innerText = `${a.name} (${assetTypeLabel(a.type)})`;
+                settleSel.appendChild(opt);
+            });
+        if (oldVal && Array.from(settleSel.options).some(o => o.value === oldVal)) {
+            settleSel.value = oldVal;
         }
     }
 
@@ -1079,9 +1082,8 @@
         const baseDate = (!(currDate instanceof Date) || Number.isNaN(currDate.getTime())) ? new Date() : currDate;
         document.getElementById('t-date').valueAsDate = baseDate;
         document.getElementById('t-type').value = "expense";
-        document.getElementById('t-pay-method').value = "asset";
+        document.getElementById('t-asset-label').innerText = "자산";
         updateCatSelect();
-        updateTxPaymentControls();
         document.getElementById('t-desc').value = "";
         document.getElementById('t-amt').value = "";
     }
@@ -1126,14 +1128,7 @@
     window.onload = () => {
         document.getElementById('t-date').valueAsDate = new Date();
         updateInvestmentPriceField();
-        updateTxPaymentControls();
-        document.getElementById('t-date').addEventListener('change', () => {
-            const payMethod = document.getElementById("t-pay-method")?.value || "asset";
-            const settleInput = document.getElementById("t-settle-date");
-            if (payMethod === "card" && settleInput && !settleInput.value) {
-                settleInput.value = defaultCardSettlementDate();
-            }
-        });
+        updateAssetFormControls();
         (async () => {
             try {
                 await refreshFromApi();
@@ -1177,6 +1172,8 @@
             name: a.name,
             type: a.type || "bank",
             balance: Number(a.balance || 0),
+            cardSettlementDay: a.card_settlement_day ? Number(a.card_settlement_day) : null,
+            cardSettlementAssetId: a.card_settlement_asset_id ? Number(a.card_settlement_asset_id) : null,
         }));
         // 2) Transactions
         const txs = await apiGet("/api/transactions?limit=1000&offset=0");
@@ -1280,9 +1277,6 @@
             const date = document.getElementById('t-date').value;
             const type = document.getElementById('t-type').value; // expense/income/investment
             const assetId = Number(document.getElementById('t-asset').value);
-            const paymentMethod = document.getElementById('t-pay-method').value || "asset";
-            const cardAssetId = Number(document.getElementById('t-card').value);
-            const settlementDate = document.getElementById('t-settle-date').value;
             const cat = document.getElementById('t-cat').value;
             const desc = document.getElementById('t-desc').value;
             const amt = parseInt(document.getElementById('t-amt').value);
@@ -1294,33 +1288,51 @@
 
             const selectedAsset = db.assets.find(a => a.id === assetId);
             if (!selectedAsset) {
-                showToast("결제 자산을 선택해주세요");
+                showToast("자산을 선택해주세요");
                 return;
             }
 
-            if (paymentMethod === "card") {
-                if (type === "income") {
-                    showToast("수입은 신용카드 결제로 등록할 수 없습니다");
+            let paymentMethod = "asset";
+            let cardAssetId = null;
+            let settlementDate = "";
+            let effectiveAssetId = assetId;
+
+            if ((selectedAsset.type || "").toLowerCase() === "card" && type === "income") {
+                showToast("수입은 카드 자산에 직접 기록할 수 없습니다. 통장/현금 자산을 선택해주세요");
+                return;
+            }
+
+            const isCardExpense = (selectedAsset.type || "").toLowerCase() === "card" && type !== "income";
+            if (isCardExpense) {
+                const settleAssetId = Number(selectedAsset.cardSettlementAssetId || 0);
+                const settleDay = Number(selectedAsset.cardSettlementDay || 0);
+                if (!settleAssetId) {
+                    showToast("카드 설정에서 결제 통장을 먼저 지정해주세요");
                     return;
                 }
-                if (!cardAssetId) {
-                    showToast("사용한 카드를 선택해주세요");
+                if (!settleDay) {
+                    showToast("카드 설정에서 결제일(매월 몇 일)을 먼저 입력해주세요");
                     return;
                 }
-                if (!settlementDate) {
-                    showToast("카드 결제일을 입력해주세요");
+                const settleAsset = db.assets.find(a => a.id === settleAssetId);
+                if (!settleAsset) {
+                    showToast("카드 결제 통장을 찾을 수 없습니다");
                     return;
                 }
-                if ((selectedAsset.type || "").toLowerCase() === "card") {
-                    showToast("결제 통장은 카드가 아닌 은행/현금 자산으로 선택해주세요");
+                if ((settleAsset.type || "").toLowerCase() === "card") {
+                    showToast("카드 결제 통장은 카드가 아닌 자산으로 설정해주세요");
                     return;
                 }
+                paymentMethod = "card";
+                cardAssetId = selectedAsset.id;
+                effectiveAssetId = settleAssetId;
+                settlementDate = calcCardSettlementDate(date, settleDay);
             }
 
             const payload = {
                 date,
                 type,
-                asset_id: assetId,
+                asset_id: effectiveAssetId,
                 payment_method: paymentMethod,
                 category: cat,
                 description: desc,
@@ -1394,16 +1406,10 @@
 
         document.getElementById('t-date').value = t.date;
         document.getElementById('t-type').value = t.type;
-        document.getElementById('t-pay-method').value = t.paymentMethod || "asset";
 
         updateCatSelect(); // type에 맞춰 t-cat 옵션 재생성
-        updateTxPaymentControls();
-
-        document.getElementById('t-asset').value = String(t.assetId);
-        if (t.cardAssetId) {
-            document.getElementById('t-card').value = String(t.cardAssetId);
-        }
-        document.getElementById('t-settle-date').value = t.settlementDate || "";
+        document.getElementById('t-asset-label').innerText = "자산";
+        document.getElementById('t-asset').value = String(t.cardAssetId || t.assetId);
 
         // 카테고리가 옵션에 없으면(삭제된 경우 등) 일단 공백 처리
         const catSel = document.getElementById('t-cat');
@@ -1427,15 +1433,33 @@
             const name = document.getElementById('a-name').value.trim();
             const type = document.getElementById('a-type').value;
             const bal = Number(document.getElementById('a-bal').value) || 0;
+            const cardDay = Number(document.getElementById('a-card-day').value || 0);
+            const cardSettleAssetId = Number(document.getElementById('a-card-settle-asset').value || 0);
             if(!name) return;
 
-            await apiPost("/api/assets", { name, type, balance: bal });
+            const payload = { name, type, balance: bal };
+            if (type === "card") {
+                if (!cardDay || cardDay < 1 || cardDay > 31) {
+                    showToast("카드 결제일(1~31)을 입력해주세요");
+                    return;
+                }
+                if (!cardSettleAssetId) {
+                    showToast("카드 결제 통장을 선택해주세요");
+                    return;
+                }
+                payload.card_settlement_day = cardDay;
+                payload.card_settlement_asset_id = cardSettleAssetId;
+            }
+            await apiPost("/api/assets", payload);
 
             document.getElementById('a-name').value = "";
             document.getElementById('a-type').value = "bank";
             document.getElementById('a-bal').value = 0;
+            document.getElementById('a-card-day').value = "";
+            document.getElementById('a-card-settle-asset').value = "";
 
             await refreshFromApi();
+            updateAssetFormControls();
             save();
             showToast("자산 저장 완료");
         } catch (e) {
@@ -1742,23 +1766,6 @@
             if (oldVal && Array.from(sel.options).some(o => o.value === oldVal)) sel.value = oldVal;
         });
 
-        const cardSel = document.getElementById("t-card");
-        if (cardSel) {
-            const oldCard = cardSel.value;
-            cardSel.innerHTML = "";
-            db.assets
-                .filter(a => (a.type || "").toLowerCase() === "card")
-                .forEach((a) => {
-                    const opt = document.createElement("option");
-                    opt.value = a.id;
-                    opt.innerText = a.name;
-                    cardSel.appendChild(opt);
-                });
-            if (oldCard && Array.from(cardSel.options).some(o => o.value === oldCard)) {
-                cardSel.value = oldCard;
-            }
-        }
-
         // Fixed Cat Dropdown
         const fCat = document.getElementById('f-cat');
         fCat.innerHTML = ""; 
@@ -1779,7 +1786,7 @@
 
         // 현재 폼 상태가 비어있다면 업데이트 (편집중 아닐때만)
         if(!editingTxId) updateCatSelect();
-        updateTxPaymentControls();
+        updateAssetFormControls();
         updateInvestmentPriceField();
 
         // 1. Asset Tray
@@ -1904,10 +1911,18 @@
         const aBody = document.getElementById('asset-body');
         aBody.innerHTML = "";
         db.assets.forEach(a => {
+            let cardConfigText = "-";
+            if ((a.type || "").toLowerCase() === "card") {
+                const settleAsset = db.assets.find(x => x.id === Number(a.cardSettlementAssetId));
+                const settleName = settleAsset ? settleAsset.name : "미설정";
+                const dayText = a.cardSettlementDay ? `매월 ${a.cardSettlementDay}일` : "결제일 미설정";
+                cardConfigText = `${dayText} / ${settleName}`;
+            }
             aBody.innerHTML += `
                 <tr>
                     <td>${a.name}</td>
                     <td><span class="asset-pill ${assetTypeClass(a.type)}">${assetTypeLabel(a.type)}</span></td>
+                    <td>${cardConfigText}</td>
                     <td style="text-align:right;">${fmtCurrency(a.balance)}</td>
                     <td style="text-align:center;">
                         <button type="button" onclick="deleteAsset(${a.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:4px;">🗑️</button>

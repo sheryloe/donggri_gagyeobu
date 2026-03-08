@@ -10,6 +10,8 @@ class AssetBase(BaseModel):
     name: str = Field(..., min_length=1)
     type: str = Field(default="bank")  # bank/card/cash/investment
     balance: float = Field(default=0.0)
+    card_settlement_day: Optional[int] = Field(default=None, ge=1, le=31)
+    card_settlement_asset_id: Optional[int] = None
 
 
 class AssetCreate(AssetBase):
@@ -20,6 +22,8 @@ class AssetUpdate(BaseModel):
     name: Optional[str] = None
     type: Optional[str] = None
     balance: Optional[float] = None
+    card_settlement_day: Optional[int] = Field(default=None, ge=1, le=31)
+    card_settlement_asset_id: Optional[int] = None
 
 
 class AssetOut(AssetBase):

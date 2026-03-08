@@ -14,7 +14,10 @@ def list_assets(db: Session = Depends(get_db)):
 
 @router.post("/", response_model=schemas.AssetOut)
 def create_asset(asset: schemas.AssetCreate, db: Session = Depends(get_db)):
-    return crud.create_asset(db, asset)
+    try:
+        return crud.create_asset(db, asset)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.get("/{asset_id}", response_model=schemas.AssetOut)
@@ -27,7 +30,10 @@ def get_asset(asset_id: int, db: Session = Depends(get_db)):
 
 @router.patch("/{asset_id}", response_model=schemas.AssetOut)
 def patch_asset(asset_id: int, patch: schemas.AssetUpdate, db: Session = Depends(get_db)):
-    obj = crud.update_asset(db, asset_id, patch)
+    try:
+        obj = crud.update_asset(db, asset_id, patch)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     if not obj:
         raise HTTPException(status_code=404, detail="Asset not found")
     return obj
