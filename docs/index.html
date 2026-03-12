@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>donggri_gagyeobu | 로컬 PC에서 실행하는 개인 가계부 및 자산 관리 웹앱</title>
+  <meta name="description" content="FastAPI와 SQLite 기반으로 동작하는 개인용 가계부이며, 실행 후 브라우저에서 바로 사용하는 구조입니다.">
+  <meta name="keywords" content="personal finance web app, local budget tracker, fastapi ledger app, 가계부 웹앱, 로컬 자산 관리">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://sheryloe.github.io/donggri_gagyeobu/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="donggri_gagyeobu">
+  <meta property="og:description" content="FastAPI와 SQLite 기반으로 동작하는 개인용 가계부이며, 실행 후 브라우저에서 바로 사용하는 구조입니다.">
+  <meta property="og:url" content="https://sheryloe.github.io/donggri_gagyeobu/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="donggri_gagyeobu">
+  <meta name="twitter:description" content="FastAPI와 SQLite 기반으로 동작하는 개인용 가계부이며, 실행 후 브라우저에서 바로 사용하는 구조입니다.">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "SoftwareSourceCode", "name": "donggri_gagyeobu", "codeRepository": "https://github.com/sheryloe/donggri_gagyeobu", "description": "FastAPI와 SQLite 기반으로 동작하는 개인용 가계부이며, 실행 후 브라우저에서 바로 사용하는 구조입니다.", "programmingLanguage": "Python", "url": "https://sheryloe.github.io/donggri_gagyeobu/", "keywords": "personal finance web app, local budget tracker, fastapi ledger app, 가계부 웹앱, 로컬 자산 관리"}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Donggri Ledger는 클라우드 서비스인가요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 기본 가계부 기능은 로컬 PC에서 실행되고 로컬 DB에 저장됩니다."}}, {"@type": "Question", "name": "어떻게 실행하나요?", "acceptedAnswer": {"@type": "Answer", "text": "Python 환경에서 의존성 설치 후 `launcher.py`를 실행하면 됩니다."}}, {"@type": "Question", "name": "투자 시세까지 완전 오프라인인가요?", "acceptedAnswer": {"@type": "Answer", "text": "기본 가계부 기능은 로컬 중심이지만 시세 새로고침처럼 일부 기능은 인터넷이 필요할 수 있습니다."}}]}]}</script>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <span class="eyebrow">Project Landing Page</span>
+      <div>
+        <h1>donggri_gagyeobu</h1>
+        <p class="lead">FastAPI와 SQLite 기반으로 동작하는 개인용 가계부이며, 실행 후 브라우저에서 바로 사용하는 구조입니다.</p>
+      </div>
+      <div class="cta-row">
+        <a class="primary" href="https://github.com/sheryloe/donggri_gagyeobu">GitHub Repository</a>
+        <a href="https://sheryloe.github.io/">Project Hub</a>
+      </div>
+      <div class="meta-row">
+        <span class="meta-chip">로컬 PC에서 실행하는 개인 가계부 및 자산 관리 웹앱</span>
+        <span class="meta-chip">로컬 저장, 개인 예산 관리, 자산 추적, 투자 메모를 한곳에서 쓰고 싶은 사용자</span>
+      </div>
+      <div class="chip-row"><span class="chip">personal finance web app</span><span class="chip">local budget tracker</span><span class="chip">fastapi ledger app</span><span class="chip">가계부 웹앱</span><span class="chip">로컬 자산 관리</span></div>
+    </section>
+    <section class="section">
+      <h2>Why This Project Exists</h2>
+      <p>개인 재무 관리 도구가 클라우드 전제이거나 과한 기능 중심이면, 단순하고 빠른 로컬 관리가 오히려 어려워집니다.</p>
+      <div class="cards"><article class="card"><h3>Feature</h3><p>브라우저 기반 UI와 로컬 SQLite 저장</p></article><article class="card"><h3>Feature</h3><p>Python 런처로 로컬 주소와 LAN 주소를 함께 안내</p></article><article class="card"><h3>Feature</h3><p>개인 가계부, 예산, 자산/투자 관리 흐름을 단일 웹앱에 통합</p></article><article class="card"><h3>Feature</h3><p>Windows EXE 패키징을 염두에 둔 실행 구조</p></article></div>
+    </section>
+    <section class="section split">
+      <div class="stack">
+        <div>
+          <h2>Workflow</h2>
+          <ul class="clean"><li>의존성 설치</li><li>런처 실행 후 브라우저 접속</li><li>지출/수입/예산/자산을 로컬 DB에 기록</li></ul>
+        </div>
+        <div>
+          <h2>Tech Stack</h2>
+          <ul class="clean"><li>Python</li><li>FastAPI</li><li>Uvicorn</li><li>SQLAlchemy</li><li>SQLite</li></ul>
+        </div>
+      </div>
+      <div class="flow">
+        <div>
+          <h2>Quick Start</h2>
+          <pre>`py -m pip install -r requirements.txt`로 의존성을 설치합니다.
+`py launcher.py`를 실행한 뒤 `http://127.0.0.1:8000/ui/`로 접속합니다.
+데이터는 기본적으로 로컬 SQLite 경로에 저장됩니다.</pre>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <h2>Repository Structure</h2>
+      <ul class="clean"><li>`app/`: FastAPI 서버 소스</li><li>`web/`: 브라우저 UI 자산</li><li>`scripts/`, `docs/`: 운영 보조와 문서</li></ul>
+    </section>
+    <section class="section">
+      <h2>FAQ</h2>
+      <div class="cards"><article class="faq-item"><h3>Donggri Ledger는 클라우드 서비스인가요?</h3><p>아니요. 기본 가계부 기능은 로컬 PC에서 실행되고 로컬 DB에 저장됩니다.</p></article><article class="faq-item"><h3>어떻게 실행하나요?</h3><p>Python 환경에서 의존성 설치 후 `launcher.py`를 실행하면 됩니다.</p></article><article class="faq-item"><h3>투자 시세까지 완전 오프라인인가요?</h3><p>기본 가계부 기능은 로컬 중심이지만 시세 새로고침처럼 일부 기능은 인터넷이 필요할 수 있습니다.</p></article></div>
+    </section>
+    <p class="footer">Last updated: 2026-03-12 · Owner: sheryloe</p>
+  </main>
+</body>
+</html>
