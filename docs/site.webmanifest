@@ -1,0 +1,11 @@
+{
+  "name": "Donggri Ledger",
+  "short_name": "Donggri",
+  "description": "로컬 예산, 카드 결제 예정, 투자 현황을 관리하는 개인 가계부 웹앱",
+  "lang": "ko-KR",
+  "start_url": "https://sheryloe.github.io/donggri_gagyeobu/",
+  "scope": "https://sheryloe.github.io/donggri_gagyeobu/",
+  "display": "standalone",
+  "background_color": "#f4eddc",
+  "theme_color": "#1463c6"
+}

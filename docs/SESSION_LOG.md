@@ -309,3 +309,80 @@
 
 ### Remaining Issues
 - 기존 데이터의 카드 자산에는 결제일/결제통장이 비어 있을 수 있어, 해당 카드로 첫 거래 전 카드 설정 보완 필요
+
+## 2026-03-13 20:01 (Asia/Seoul)
+
+### User Requests
+- `sheryloe` 계정의 공개 저장소를 현재 폴더에 모두 클론
+- `donggri_gagyeobu`, `grid-crop-image`, `Favorit` 기준으로 GitHub Pages/SEO 구조 정리
+- 런타임 캡처를 넣어 페이지 내용을 실제 화면 중심으로 구성
+- 루트 폴더의 `repo-status.json`, `SUMMARY.md`를 읽고 이어서 작업
+
+### Changes Applied
+- GitHub 공개 저장소 9개를 `D:\Donggri Github` 아래에 클론
+- `donggri_gagyeobu` GitHub Pages 개편
+  - `docs/index.html`, `docs/styles.css`를 스크린샷 중심 랜딩 페이지로 재구성
+  - `docs/assets/screenshots/donggri-ledger-dashboard.png`
+  - `docs/assets/screenshots/donggri-ledger-investments.png`
+  - `docs/assets/favicon.svg`
+  - `docs/site.webmanifest`
+  - `docs/sitemap.xml` 날짜 갱신
+- `grid-crop-image` GitHub Pages 개편
+  - `docs/index.html`, `docs/styles.css`를 스크린샷 중심 랜딩 페이지로 재구성
+  - `docs/assets/screenshots/grid-crop-workspace.png`
+  - `docs/assets/screenshots/grid-crop-selection-detail.png`
+  - `docs/assets/favicon.svg`
+  - `docs/site.webmanifest`
+  - `docs/sitemap.xml` 날짜 갱신
+- `Favorit` SEO 보완
+  - `docs/robots.txt`에 sitemap 경로 추가
+  - `docs/sitemap.xml`에 `lastmod` 추가
+
+### Verification
+- `donggri_gagyeobu` 로컬 FastAPI 실행 후 샘플 데이터 주입, 브라우저 런타임 캡처 생성 완료
+- `grid-crop-image` 로컬 Tkinter 실행 후 실제 작업 화면 캡처 생성 완료
+- 두 신규 랜딩 페이지 모두 로컬 `http.server`로 띄워서 상대 경로와 이미지 로딩 확인 완료
+
+### Git
+- 작업 시작 기준 커밋:
+  - `c62b3a841d5d312ac085899041e225da09f691a4`
+- 변경 파일 경로:
+  - `docs/index.html`
+  - `docs/styles.css`
+  - `docs/sitemap.xml`
+  - `docs/assets/screenshots/donggri-ledger-dashboard.png`
+  - `docs/assets/screenshots/donggri-ledger-investments.png`
+  - `docs/assets/favicon.svg`
+  - `docs/site.webmanifest`
+  - `docs/SESSION_LOG.md`
+- 새 커밋: 없음
+
+### Remaining Issues
+- 없음
+
+## 2026-03-13 21:17 KST
+
+### Request
+- GitHub Pages 공통 블로그형 구조 확장
+- 여러 저장소에서 재사용할 수 있는 shared landing style 보강
+
+### Changes Applied
+- `docs/styles.css`에 텍스트형 hero note card 스타일 추가
+  - `.visual-note`
+  - `.note-badge`
+  - `.metric-row`
+  - `.metric-chip`
+  - `.note-list`
+- 이 공통 스타일을 다른 GitHub Pages 저장소에도 복사해 블로그형 랜딩 레이아웃 기반으로 사용
+
+### Verification
+- 새 스타일 추가 후 기존 `donggri_gagyeobu` 페이지 구조와 충돌하지 않는지 확인
+- 같은 스타일을 사용하는 다른 프로젝트 페이지 커버 캡처 생성에 사용
+
+### Git
+- 관련 변경 파일:
+  - `docs/styles.css`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- 없음

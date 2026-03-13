@@ -1,76 +1,318 @@
 <!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>donggri_gagyeobu | 로컬 PC에서 실행하는 개인 가계부 및 자산 관리 웹앱</title>
-  <meta name="description" content="FastAPI와 SQLite 기반으로 동작하는 개인용 가계부이며, 실행 후 브라우저에서 바로 사용하는 구조입니다.">
-  <meta name="keywords" content="personal finance web app, local budget tracker, fastapi ledger app, 가계부 웹앱, 로컬 자산 관리">
-  <meta name="robots" content="index,follow,max-image-preview:large">
-  <link rel="canonical" href="https://sheryloe.github.io/donggri_gagyeobu/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="donggri_gagyeobu">
-  <meta property="og:description" content="FastAPI와 SQLite 기반으로 동작하는 개인용 가계부이며, 실행 후 브라우저에서 바로 사용하는 구조입니다.">
-  <meta property="og:url" content="https://sheryloe.github.io/donggri_gagyeobu/">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="donggri_gagyeobu">
-  <meta name="twitter:description" content="FastAPI와 SQLite 기반으로 동작하는 개인용 가계부이며, 실행 후 브라우저에서 바로 사용하는 구조입니다.">
-  <meta name="theme-color" content="#2563eb">
-  <link rel="stylesheet" href="./styles.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "SoftwareSourceCode", "name": "donggri_gagyeobu", "codeRepository": "https://github.com/sheryloe/donggri_gagyeobu", "description": "FastAPI와 SQLite 기반으로 동작하는 개인용 가계부이며, 실행 후 브라우저에서 바로 사용하는 구조입니다.", "programmingLanguage": "Python", "url": "https://sheryloe.github.io/donggri_gagyeobu/", "keywords": "personal finance web app, local budget tracker, fastapi ledger app, 가계부 웹앱, 로컬 자산 관리"}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Donggri Ledger는 클라우드 서비스인가요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 기본 가계부 기능은 로컬 PC에서 실행되고 로컬 DB에 저장됩니다."}}, {"@type": "Question", "name": "어떻게 실행하나요?", "acceptedAnswer": {"@type": "Answer", "text": "Python 환경에서 의존성 설치 후 `launcher.py`를 실행하면 됩니다."}}, {"@type": "Question", "name": "투자 시세까지 완전 오프라인인가요?", "acceptedAnswer": {"@type": "Answer", "text": "기본 가계부 기능은 로컬 중심이지만 시세 새로고침처럼 일부 기능은 인터넷이 필요할 수 있습니다."}}]}]}</script>
-</head>
-<body>
-  <main class="shell">
-    <section class="hero">
-      <span class="eyebrow">Project Landing Page</span>
-      <div>
-        <h1>donggri_gagyeobu</h1>
-        <p class="lead">FastAPI와 SQLite 기반으로 동작하는 개인용 가계부이며, 실행 후 브라우저에서 바로 사용하는 구조입니다.</p>
-      </div>
-      <div class="cta-row">
-        <a class="primary" href="https://github.com/sheryloe/donggri_gagyeobu">GitHub Repository</a>
-        <a href="https://sheryloe.github.io/">Project Hub</a>
-      </div>
-      <div class="meta-row">
-        <span class="meta-chip">로컬 PC에서 실행하는 개인 가계부 및 자산 관리 웹앱</span>
-        <span class="meta-chip">로컬 저장, 개인 예산 관리, 자산 추적, 투자 메모를 한곳에서 쓰고 싶은 사용자</span>
-      </div>
-      <div class="chip-row"><span class="chip">personal finance web app</span><span class="chip">local budget tracker</span><span class="chip">fastapi ledger app</span><span class="chip">가계부 웹앱</span><span class="chip">로컬 자산 관리</span></div>
-    </section>
-    <section class="section">
-      <h2>Why This Project Exists</h2>
-      <p>개인 재무 관리 도구가 클라우드 전제이거나 과한 기능 중심이면, 단순하고 빠른 로컬 관리가 오히려 어려워집니다.</p>
-      <div class="cards"><article class="card"><h3>Feature</h3><p>브라우저 기반 UI와 로컬 SQLite 저장</p></article><article class="card"><h3>Feature</h3><p>Python 런처로 로컬 주소와 LAN 주소를 함께 안내</p></article><article class="card"><h3>Feature</h3><p>개인 가계부, 예산, 자산/투자 관리 흐름을 단일 웹앱에 통합</p></article><article class="card"><h3>Feature</h3><p>Windows EXE 패키징을 염두에 둔 실행 구조</p></article></div>
-    </section>
-    <section class="section split">
-      <div class="stack">
-        <div>
-          <h2>Workflow</h2>
-          <ul class="clean"><li>의존성 설치</li><li>런처 실행 후 브라우저 접속</li><li>지출/수입/예산/자산을 로컬 DB에 기록</li></ul>
-        </div>
-        <div>
-          <h2>Tech Stack</h2>
-          <ul class="clean"><li>Python</li><li>FastAPI</li><li>Uvicorn</li><li>SQLAlchemy</li><li>SQLite</li></ul>
-        </div>
-      </div>
-      <div class="flow">
-        <div>
-          <h2>Quick Start</h2>
-          <pre>`py -m pip install -r requirements.txt`로 의존성을 설치합니다.
-`py launcher.py`를 실행한 뒤 `http://127.0.0.1:8000/ui/`로 접속합니다.
-데이터는 기본적으로 로컬 SQLite 경로에 저장됩니다.</pre>
-        </div>
-      </div>
-    </section>
-    <section class="section">
-      <h2>Repository Structure</h2>
-      <ul class="clean"><li>`app/`: FastAPI 서버 소스</li><li>`web/`: 브라우저 UI 자산</li><li>`scripts/`, `docs/`: 운영 보조와 문서</li></ul>
-    </section>
-    <section class="section">
-      <h2>FAQ</h2>
-      <div class="cards"><article class="faq-item"><h3>Donggri Ledger는 클라우드 서비스인가요?</h3><p>아니요. 기본 가계부 기능은 로컬 PC에서 실행되고 로컬 DB에 저장됩니다.</p></article><article class="faq-item"><h3>어떻게 실행하나요?</h3><p>Python 환경에서 의존성 설치 후 `launcher.py`를 실행하면 됩니다.</p></article><article class="faq-item"><h3>투자 시세까지 완전 오프라인인가요?</h3><p>기본 가계부 기능은 로컬 중심이지만 시세 새로고침처럼 일부 기능은 인터넷이 필요할 수 있습니다.</p></article></div>
-    </section>
-    <p class="footer">Last updated: 2026-03-12 · Owner: sheryloe</p>
-  </main>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Donggri Ledger | 로컬 예산, 카드 결제 예정, 투자 현황을 한 화면에서 보는 가계부</title>
+    <meta
+      name="description"
+      content="FastAPI와 SQLite로 만든 로컬 실행형 가계부 웹앱입니다. 계좌, 현금, 카드 결제 예정, 예산, 투자 자산을 브라우저 UI에서 한 번에 관리할 수 있습니다."
+    >
+    <meta
+      name="keywords"
+      content="local budget tracker, personal finance dashboard, credit card settlement planner, fastapi finance app, 로컬 가계부, 카드 결제 예정, 투자 자산 관리"
+    >
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="googlebot" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#1463c6">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:site_name" content="Donggri Ledger">
+    <meta property="og:title" content="Donggri Ledger | 로컬 예산, 카드 결제 예정, 투자 현황을 한 화면에서 보는 가계부">
+    <meta
+      property="og:description"
+      content="가계부 입력, 카드 결제 예정 추적, 예산 점검, 투자 현황 확인까지 로컬 브라우저 UI로 이어지는 개인 재무 대시보드입니다."
+    >
+    <meta
+      property="og:image"
+      content="https://sheryloe.github.io/donggri_gagyeobu/assets/screenshots/donggri-ledger-dashboard.png"
+    >
+    <meta property="og:image:alt" content="Donggri Ledger 대시보드 화면">
+    <meta property="og:url" content="https://sheryloe.github.io/donggri_gagyeobu/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Donggri Ledger">
+    <meta
+      name="twitter:description"
+      content="로컬 브라우저에서 예산, 카드 결제 예정, 투자 현황을 정리하는 개인 가계부 웹앱"
+    >
+    <meta
+      name="twitter:image"
+      content="https://sheryloe.github.io/donggri_gagyeobu/assets/screenshots/donggri-ledger-dashboard.png"
+    >
+    <link rel="canonical" href="https://sheryloe.github.io/donggri_gagyeobu/">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="styles.css">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "SoftwareApplication",
+            "name": "Donggri Ledger",
+            "alternateName": "donggri_gagyeobu",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "Windows, macOS, Linux",
+            "browserRequirements": "Modern web browser",
+            "softwareVersion": "2.0",
+            "description": "FastAPI와 SQLite 기반의 로컬 실행형 가계부 웹앱으로, 예산, 카드 결제 예정, 투자 현황을 한 화면에서 관리할 수 있습니다.",
+            "url": "https://sheryloe.github.io/donggri_gagyeobu/",
+            "codeRepository": "https://github.com/sheryloe/donggri_gagyeobu",
+            "screenshot": [
+              "https://sheryloe.github.io/donggri_gagyeobu/assets/screenshots/donggri-ledger-dashboard.png",
+              "https://sheryloe.github.io/donggri_gagyeobu/assets/screenshots/donggri-ledger-investments.png"
+            ],
+            "featureList": [
+              "로컬 SQLite 저장 구조",
+              "카드 결제 예정 금액과 결제일 추적",
+              "예산과 월별 소비 점검",
+              "투자 포트폴리오와 수익률 확인"
+            ],
+            "author": {
+              "@type": "Person",
+              "name": "sheryloe"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Donggri Ledger는 클라우드 가계부인가요?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "아니요. 기본 데이터는 로컬 SQLite에 저장되고, 사용자는 자기 PC에서 FastAPI 서버를 실행한 뒤 브라우저로 접속해 사용합니다."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "카드 결제 예정 금액도 따로 볼 수 있나요?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "가능합니다. 카드 자산과 결제일, 출금 계좌를 연결해 이번 달 카드 결제 예정 금액을 요약 카드로 확인할 수 있습니다."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "예산과 투자 현황까지 한 앱에서 보나요?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "네. 가계부 입력뿐 아니라 월별 예산, 고정지출, 투자 자산과 수익률까지 같은 UI 안에서 관리할 수 있습니다."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Donggri Ledger 첫 화면으로 이동">
+          <span class="brand-mark">DG</span>
+          <span class="brand-text">
+            <strong>Donggri Ledger</strong>
+            <span>Local-first finance workspace</span>
+          </span>
+        </a>
+        <nav class="topnav" aria-label="페이지 이동">
+          <a href="#features">핵심 기능</a>
+          <a href="#workflow">흐름</a>
+          <a href="#screenshots">스크린샷</a>
+          <a href="#faq">FAQ</a>
+          <a href="https://github.com/sheryloe/donggri_gagyeobu">GitHub</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Local-first finance workspace</p>
+            <h1>로컬에 남기고<br>브라우저에서 정리하는<br>개인 가계부 대시보드</h1>
+            <p class="hero-body">
+              Donggri Ledger는 계좌, 현금, 카드 결제 예정, 예산, 투자 현황을 하나의 흐름으로 이어 주는
+              로컬 실행형 가계부 웹앱입니다. 복잡한 클라우드 가입 없이 바로 띄워서, 내 PC 안에서 재무 기록을
+              정리하는 데 초점을 맞췄습니다.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="https://github.com/sheryloe/donggri_gagyeobu">GitHub 저장소 보기</a>
+              <a class="button secondary" href="https://sheryloe.github.io/">프로젝트 허브로 이동</a>
+            </div>
+            <ul class="hero-meta">
+              <li>로컬 SQLite 저장</li>
+              <li>카드 결제 예정 추적</li>
+              <li>예산 · 고정지출 · 투자 통합</li>
+            </ul>
+          </div>
+
+          <div class="hero-visual" aria-label="Donggri Ledger 주요 화면">
+            <figure class="visual-card visual-main">
+              <img
+                src="assets/screenshots/donggri-ledger-dashboard.png"
+                alt="Donggri Ledger 가계부 대시보드 화면"
+                loading="eager"
+              >
+            </figure>
+            <figure class="visual-card visual-side">
+              <img
+                src="assets/screenshots/donggri-ledger-investments.png"
+                alt="Donggri Ledger 투자 현황 화면"
+                loading="lazy"
+              >
+            </figure>
+            <div class="visual-caption">
+              <strong>월별 현금 흐름과 투자 요약을 한 흐름으로</strong>
+              <p>거래 기록과 카드 예정 결제, 포트폴리오 수익률을 분리하지 않고 같은 대시보드 계열 안에서 이어서 봅니다.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="feature-strip" id="features">
+          <article>
+            <span>01</span>
+            <h2>데이터는 로컬에, 화면은 브라우저에</h2>
+            <p>FastAPI 서버를 내 PC에서 띄우고 브라우저 UI로 접속하는 구조라서, 사용 흐름은 편하지만 저장은 로컬 중심입니다.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h2>카드 결제 예정까지 월 흐름에 반영</h2>
+            <p>카드 자산과 결제일, 출금 계좌를 연결해 실제 현금 흐름과 예정 결제를 함께 점검할 수 있습니다.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h2>가계부와 투자 현황을 분리하지 않음</h2>
+            <p>예산, 고정지출, 투자 자산과 수익률을 같은 앱에서 확인해서 월말 정리 동선을 짧게 유지합니다.</p>
+          </article>
+        </section>
+
+        <section class="workflow" id="workflow">
+          <div class="section-heading">
+            <p class="eyebrow">Workflow</p>
+            <h2>복잡한 초기 세팅보다, 매달 다시 열어 쓰기 쉬운 흐름</h2>
+            <p class="section-body">
+              이 앱은 회계 시스템처럼 입력 단계를 늘리기보다, 자산과 결제 수단을 먼저 정리한 뒤 월별 거래를 빠르게 기록하고
+              요약 카드를 통해 다시 점검하는 흐름에 맞춰져 있습니다.
+            </p>
+          </div>
+          <div class="workflow-grid">
+            <article class="workflow-card">
+              <strong>1. 자산과 카드 연결</strong>
+              <p>은행, 현금, 카드, 투자 계좌를 등록하고 카드 결제 계좌를 지정해 기본 구조를 만듭니다.</p>
+            </article>
+            <article class="workflow-card">
+              <strong>2. 월별 거래 입력</strong>
+              <p>수입과 지출, 카드 사용분을 기록하면서 이번 달 현금 흐름과 예정 결제를 함께 누적합니다.</p>
+            </article>
+            <article class="workflow-card">
+              <strong>3. 예산과 투자 점검</strong>
+              <p>예산 사용률, 고정지출, 투자 수익률을 나란히 확인해 한 달 마감에 필요한 판단을 빠르게 끝냅니다.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="screenshots" id="screenshots">
+          <div class="section-heading">
+            <p class="eyebrow">Runtime capture</p>
+            <h2>실행 화면 기준으로 어떤 정보가 보이는지 바로 확인할 수 있습니다</h2>
+            <p class="section-body">
+              아래 이미지는 실제 로컬 실행 환경에서 캡처한 화면입니다. 첫 화면은 월별 가계부와 카드 결제 예정 요약,
+              두 번째 화면은 같은 앱 안에서 이어지는 투자 포트폴리오 탭입니다.
+            </p>
+          </div>
+          <div class="flow-banner" aria-label="사용 단계 안내">
+            <article class="flow-step">
+              <span>STEP 1</span>
+              <strong>가계부 대시보드에서 월 흐름 확인</strong>
+              <p>가용 현금, 카드 결제 예정, 자산별 잔액, 최근 거래가 같은 구간에 배치됩니다.</p>
+            </article>
+            <article class="flow-step">
+              <span>STEP 2</span>
+              <strong>투자 탭에서 수익률까지 이어 보기</strong>
+              <p>투자 원금, 평가금, 수익률과 종목별 평가 현황을 별도 서비스 없이 같은 앱 안에서 확인합니다.</p>
+            </article>
+          </div>
+          <div class="screen-grid">
+            <figure class="screen-card wide">
+              <img src="assets/screenshots/donggri-ledger-dashboard.png" alt="Donggri Ledger 대시보드 화면" loading="lazy">
+              <figcaption>
+                <strong>1. 월별 재무 상태를 한 번에 보는 대시보드</strong>
+                <span>상단 카드 영역에서 자산 잔액과 카드 결제 예정 금액을 먼저 확인하고, 아래에서 최근 거래를 이어서 점검합니다.</span>
+                <ul class="screen-points">
+                  <li>가용 현금 잔액과 카드 결제 예정 금액이 분리되어 보여 실제 사용 가능 금액을 빠르게 파악할 수 있습니다.</li>
+                  <li>은행, 현금, 카드, 투자 계좌가 같은 요약 영역에 배치돼 월별 흐름을 끊지 않습니다.</li>
+                  <li>바로 아래 입력 폼과 거래 테이블에서 수정과 삭제까지 이어서 처리할 수 있습니다.</li>
+                </ul>
+              </figcaption>
+            </figure>
+            <figure class="screen-card tall">
+              <img src="assets/screenshots/donggri-ledger-investments.png" alt="Donggri Ledger 투자 현황 탭" loading="lazy">
+              <figcaption>
+                <strong>2. 포트폴리오 원금, 평가금, 수익률 점검</strong>
+                <span>투자 탭에서는 종목별 평가 현황과 전체 수익률이 같은 시선 안에 배치되어 월말 정리에 유용합니다.</span>
+                <ul class="screen-points">
+                  <li>주식과 코인을 같은 포트폴리오 표로 관리할 수 있습니다.</li>
+                  <li>현재 평가금과 수익률이 상단 요약 카드에 먼저 보여서 숫자 확인 속도가 빠릅니다.</li>
+                  <li>투자 계좌를 일반 자산 흐름과 분리하지 않아 전체 재무 상태를 한 문맥에서 볼 수 있습니다.</li>
+                </ul>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="seo-copy">
+          <div class="section-heading">
+            <p class="eyebrow">Search intent</p>
+            <h2>이런 검색어로 들어온 사용자가 바로 이해할 수 있게 구성했습니다</h2>
+          </div>
+          <div class="seo-grid">
+            <article>
+              <h3>한국어 검색 의도</h3>
+              <p>로컬 가계부, 개인 자산 관리 웹앱, 카드 결제 예정 가계부, 투자까지 보는 가계부 같은 검색 흐름을 페이지 문장에 반영했습니다.</p>
+            </article>
+            <article>
+              <h3>영문 검색 의도</h3>
+              <p>local budget tracker, personal finance dashboard, credit card settlement planner, fastapi finance app 같은 표현을 함께 담았습니다.</p>
+            </article>
+            <article>
+              <h3>공유 미리보기 대응</h3>
+              <p>대표 런타임 스크린샷을 Open Graph 이미지로 지정해 GitHub Pages 링크를 공유했을 때 대시보드 특성이 바로 보이게 했습니다.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="faq" id="faq">
+          <div class="section-heading">
+            <p class="eyebrow">FAQ</p>
+            <h2>자주 묻는 질문</h2>
+          </div>
+          <div class="faq-list">
+            <details open>
+              <summary>Donggri Ledger는 클라우드 서비스인가요?</summary>
+              <p>아니요. 기본 데이터는 로컬 SQLite에 저장되고, 사용자는 자기 PC에서 FastAPI 서버를 띄운 뒤 브라우저로 접속해 사용합니다.</p>
+            </details>
+            <details>
+              <summary>카드 결제 예정 금액도 따로 관리할 수 있나요?</summary>
+              <p>가능합니다. 카드 자산과 결제일, 출금 계좌를 지정해 월별 카드 결제 예정 금액을 상단 요약 카드에서 확인할 수 있습니다.</p>
+            </details>
+            <details>
+              <summary>투자 자산까지 꼭 같이 넣어야 하나요?</summary>
+              <p>필수는 아니지만, 투자 계좌를 등록해 두면 전체 재무 흐름과 포트폴리오 수익률을 같은 앱 안에서 이어서 볼 수 있습니다.</p>
+            </details>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>Donggri Ledger · Local-first personal finance dashboard</p>
+        <a href="https://github.com/sheryloe/donggri_gagyeobu">저장소 바로가기</a>
+      </footer>
+    </div>
+  </body>
 </html>
