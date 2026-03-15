@@ -8,6 +8,7 @@
 - App: https://donggri-gagyeobu.vercel.app/
 - GitHub Pages: https://sheryloe.github.io/donggri_gagyeobu/
 - Repository: https://github.com/sheryloe/donggri_gagyeobu
+- Wiki: [wiki/Home.md](./wiki/Home.md)
 
 ## Current Snapshot
 

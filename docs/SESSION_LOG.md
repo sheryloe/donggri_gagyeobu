@@ -1200,6 +1200,51 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
 
+## 2026-03-15 23:25 (Asia/Seoul)
+
+### User Requests
+- Donggri Ledger에 대한 위키 문서를 GitHub 기준으로 보기 좋게 작성
+- 최근 GitHub 문서 레이아웃 감각에 맞게 제품/기능/구조/운영/로드맵을 나눠서 정리
+
+### Changes Applied
+- 저장소 내 `wiki/` 문서 세트 추가
+  - `wiki/Home.md`
+  - `wiki/Product-Overview.md`
+  - `wiki/Feature-Guide.md`
+  - `wiki/Architecture.md`
+  - `wiki/Operations-and-Deployment.md`
+  - `wiki/Roadmap.md`
+  - `wiki/_Sidebar.md`
+  - `wiki/_Footer.md`
+  - `wiki/README.md`
+- `README.md`
+  - Quick Links에 `Wiki` 링크 추가
+
+### Notes
+- 실제 GitHub Wiki 원격(`.wiki.git`)은 현재 `repository not found`로 확인되어 직접 push할 수 없는 상태
+- 대신 GitHub에서 바로 읽기 좋은 위키 스타일 문서를 저장소 내부 `wiki/` 폴더로 먼저 구성
+
+### Results
+- 저장소 안에서 바로 읽을 수 있는 위키 허브와 섹션별 문서가 추가됨
+- 제품 소개, 기능 안내, 기술 구조, 운영, 로드맵을 각각 분리해 보기 쉬운 형태로 정리함
+
+### Git
+- Changed files:
+  - `README.md`
+  - `wiki/Home.md`
+  - `wiki/Product-Overview.md`
+  - `wiki/Feature-Guide.md`
+  - `wiki/Architecture.md`
+  - `wiki/Operations-and-Deployment.md`
+  - `wiki/Roadmap.md`
+  - `wiki/_Sidebar.md`
+  - `wiki/_Footer.md`
+  - `wiki/README.md`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
+
 ## 2026-03-15 23:23 (Asia/Seoul)
 
 ### User Requests
