@@ -1877,3 +1877,24 @@
 
 ### Remaining Issues
 - `refresh-market-prices`, `search-market-symbols` 재배포와 실사용 검증은 여전히 우선 처리 항목
+
+## 2026-03-16 00:55 (Asia/Seoul)
+
+### User Requests
+- Notion `Step 6` 페이지의 한글 깨짐을 UTF-8 기준으로 다시 바로잡아 달라고 요청
+
+### Changes Applied
+- 로컬 Step 6 원고 확인
+  - `docs/BUILD_STORY_STEP6.md`
+  - UTF-8 한글 원고는 정상 상태임을 확인
+- Notion Step 6 페이지 접근 시도
+  - URL: `https://www.notion.so/Step-6-ETF-32461b8ed53c81be8500c7c002c708e6`
+  - `notion-fetch` 호출 단계에서 `Auth required` 오류로 차단
+
+### Results
+- 문제 원인이 로컬 원고 인코딩이 아니라 현재 세션의 Notion MCP 인증 끊김이라는 점을 확인
+- Notion 연결만 복구되면 로컬 원고 기준으로 Step 6 본문을 다시 덮어쓸 준비가 된 상태
+
+### Remaining Issues
+- Notion MCP 인증 재연결 필요
+- 인증 복구 후 `Step 6` 페이지에 UTF-8 한글 원고 재적용 필요
