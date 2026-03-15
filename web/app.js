@@ -28,21 +28,6 @@ const SECURITY_QUESTION_OPTIONS = [
 const SECURITY_QUESTION_MAP = Object.fromEntries(
     SECURITY_QUESTION_OPTIONS.map((item) => [item.key, item.label])
 );
-const AUTH_MODE_META = {
-    login: {
-        title: "로그인",
-        copy: "저장해둔 자산과 거래 내역을 바로 이어서 관리하세요.",
-    },
-    signup: {
-        title: "회원가입",
-        copy: "아이디, 비밀번호, 보안질문 3개만 정하면 바로 사용할 수 있습니다.",
-    },
-    recovery: {
-        title: "비밀번호 찾기",
-        copy: "아이디와 보안질문 답변으로 새 비밀번호를 설정합니다.",
-    },
-};
-
 function cloneDefaultData() {
     return {
         assets: [],
@@ -582,26 +567,11 @@ function resetRecoveryForm(preserveUsername = false) {
     setRecoveryQuestions([]);
 }
 
-function syncAuthPanelMeta(mode) {
-    const meta = AUTH_MODE_META[mode] || AUTH_MODE_META.login;
-    const title = document.getElementById("auth-panel-title");
-    const copy = document.getElementById("auth-panel-copy");
-    const registrationNote = document.getElementById("auth-registration-note");
-
-    if (title) title.textContent = meta.title;
-    if (copy) copy.textContent = meta.copy;
-    if (registrationNote) registrationNote.hidden = mode !== "signup";
-}
-
 function setAuthMode(mode) {
     authMode = mode;
-    document.querySelectorAll("[data-auth-panel]").forEach((panel) => {
-        panel.hidden = panel.getAttribute("data-auth-panel") !== mode;
+    document.querySelectorAll("[data-auth-screen]").forEach((panel) => {
+        panel.hidden = panel.getAttribute("data-auth-screen") !== mode;
     });
-    document.querySelectorAll("[data-auth-mode]").forEach((button) => {
-        button.classList.toggle("active", button.getAttribute("data-auth-mode") === mode);
-    });
-    syncAuthPanelMeta(mode);
 }
 
 function setAuthMessage(message, tone = "default") {

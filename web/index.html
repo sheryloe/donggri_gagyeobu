@@ -958,17 +958,16 @@
 
 <div id="auth-shell" class="auth-shell">
     <div class="auth-layout">
-        <section class="auth-panel">
+        <div id="auth-message" class="auth-message" hidden></div>
+
+        <section class="auth-panel" data-auth-screen="login">
             <div class="auth-panel-head">
                 <span class="auth-panel-kicker">Account Access</span>
-                <h2 id="auth-panel-title" class="auth-panel-title">로그인</h2>
-                <p id="auth-panel-copy" class="auth-panel-copy">저장해둔 자산과 거래 내역을 바로 이어서 관리하세요.</p>
+                <h2 class="auth-panel-title">로그인</h2>
+                <p class="auth-panel-copy">가입된 계정으로 바로 들어오는 기본 진입 화면입니다.</p>
             </div>
 
-            <div id="auth-registration-note" class="auth-registration-note" hidden>회원가입 가능 인원을 확인하는 중입니다.</div>
-            <div id="auth-message" class="auth-message" hidden></div>
-
-            <form id="login-form" class="auth-form" data-auth-panel="login">
+            <form id="login-form" class="auth-form">
                 <div class="auth-form-intro">회원가입이 끝난 계정으로 바로 로그인할 수 있습니다. 기본 첫 화면은 이 로그인 폼 하나만 보이게 유지합니다.</div>
                 <div class="auth-stack">
                     <label for="login-username">아이디</label>
@@ -986,8 +985,18 @@
                 </div>
                 <div class="auth-helper">아이디와 비밀번호가 있으면 이 화면에서 바로 들어오면 됩니다.</div>
             </form>
+        </section>
 
-            <form id="signup-form" class="auth-form" data-auth-panel="signup" hidden>
+        <section class="auth-panel" data-auth-screen="signup" hidden>
+            <div class="auth-panel-head">
+                <span class="auth-panel-kicker">Create Account</span>
+                <h2 class="auth-panel-title">회원가입</h2>
+                <p class="auth-panel-copy">로그인 화면에서 넘어왔을 때만 열리는 가입 전용 화면입니다.</p>
+            </div>
+
+            <div id="auth-registration-note" class="auth-registration-note">회원가입 가능 인원을 확인하는 중입니다.</div>
+
+            <form id="signup-form" class="auth-form">
                 <button type="button" class="auth-back-btn" data-auth-mode="login">로그인으로 돌아가기</button>
                 <div class="auth-form-intro">가입은 세 단계입니다. 아이디를 정하고, 비밀번호를 입력하고, 보안질문 3개와 답변을 저장하면 끝입니다.</div>
                 <div class="auth-stack">
@@ -1054,8 +1063,16 @@
                 <button type="submit" class="btn-main auth-submit" data-auth-submit>회원가입</button>
                 <div class="auth-helper">아이디는 모두 소문자로 저장되고, 남은 가입 가능 인원은 위 안내에서 확인할 수 있습니다.</div>
             </form>
+        </section>
 
-            <form id="recovery-form" class="auth-form" data-auth-panel="recovery" hidden>
+        <section class="auth-panel" data-auth-screen="recovery" hidden>
+            <div class="auth-panel-head">
+                <span class="auth-panel-kicker">Reset Password</span>
+                <h2 class="auth-panel-title">비밀번호 찾기</h2>
+                <p class="auth-panel-copy">로그인 화면에서 넘어와 아이디와 보안질문 답변으로 새 비밀번호를 만드는 화면입니다.</p>
+            </div>
+
+            <form id="recovery-form" class="auth-form">
                 <button type="button" class="auth-back-btn" data-auth-mode="login">로그인으로 돌아가기</button>
                 <div class="auth-form-intro">가입한 아이디를 입력하면 저장해둔 질문 3개를 불러옵니다. 질문 답변이 맞으면 새 비밀번호로 바로 교체합니다.</div>
                 <div class="auth-stack">
