@@ -96,13 +96,47 @@ create table if not exists public.investments (
     symbol text not null,
     name text,
     type text not null check (type in ('stock', 'crypto', 'etf', 'fund')),
+    market text not null default 'MANUAL',
+    currency text not null default 'KRW',
     quantity numeric(20, 8) not null check (quantity > 0),
     average_buy_price numeric(20, 8) not null check (average_buy_price > 0),
     current_price numeric(20, 8),
+    fx_rate_krw numeric(20, 8) not null default 1,
+    price_source text not null default 'manual',
     roi numeric(10, 4),
     last_updated timestamptz,
     created_at timestamptz not null default timezone('utc', now())
 );
+
+alter table public.investments
+    add column if not exists market text not null default 'MANUAL';
+
+alter table public.investments
+    add column if not exists currency text not null default 'KRW';
+
+alter table public.investments
+    add column if not exists fx_rate_krw numeric(20, 8) not null default 1;
+
+alter table public.investments
+    add column if not exists price_source text not null default 'manual';
+
+update public.investments
+set market = case
+        when type = 'crypto' then 'CRYPTO'
+        when type = 'fund' then 'MANUAL'
+        else coalesce(nullif(market, ''), 'MANUAL')
+    end,
+    currency = case
+        when type = 'crypto' then 'USD'
+        when type = 'fund' then 'KRW'
+        else coalesce(nullif(currency, ''), 'KRW')
+    end,
+    fx_rate_krw = case
+        when coalesce(fx_rate_krw, 0) > 0 then fx_rate_krw
+        when currency = 'USD' then 1
+        else 1
+    end,
+    price_source = coalesce(nullif(price_source, ''), case when type = 'fund' then 'manual' else 'yahoo' end);
 
 create index if not exists idx_assets_user_id on public.assets (user_id);
 create index if not exists idx_transactions_user_id_date on public.transactions (user_id, date desc);

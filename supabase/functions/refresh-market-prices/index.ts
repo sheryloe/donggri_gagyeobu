@@ -115,6 +115,13 @@ async function fetchUsdKrwRate() {
     throw new Error("USD/KRW rate fetch failed");
 }
 
+function normalizeCurrency(value: string | null | undefined, type: string) {
+    const currency = String(value || "").trim().toUpperCase();
+    if (currency) return currency;
+    if (type === "crypto") return "USD";
+    return "KRW";
+}
+
 Deno.serve(async (request) => {
     if (request.method === "OPTIONS") {
         return new Response("ok", { headers: corsHeaders });
@@ -154,7 +161,7 @@ Deno.serve(async (request) => {
 
         const { data: investments, error: investmentError } = await supabase
             .from("investments")
-            .select("id, symbol, type, quantity, average_buy_price")
+            .select("id, symbol, type, quantity, average_buy_price, currency, market")
             .in("type", ["stock", "crypto", "etf"]);
 
         if (investmentError) {
@@ -169,22 +176,26 @@ Deno.serve(async (request) => {
                 const quote = await fetchMarketQuote(symbol);
                 if (quote.price == null) continue;
 
-                let marketPrice = Number(quote.price);
-                if (quote.currency === "USD") {
+                const currency = normalizeCurrency(quote.currency, investment.type);
+                let fxRateKrw = 1;
+                if (currency === "USD") {
                     usdKrwRate = usdKrwRate ?? await fetchUsdKrwRate();
-                    marketPrice *= usdKrwRate;
+                    fxRateKrw = usdKrwRate;
                 }
 
                 const roi = calculateRoi(
                     Number(investment.quantity || 0),
                     Number(investment.average_buy_price || 0),
-                    marketPrice
+                    Number(quote.price)
                 );
 
                 const { error: updateError } = await supabase
                     .from("investments")
                     .update({
-                        current_price: marketPrice,
+                        current_price: Number(quote.price),
+                        currency,
+                        fx_rate_krw: fxRateKrw,
+                        price_source: "yahoo",
                         roi,
                         last_updated: new Date().toISOString(),
                     })

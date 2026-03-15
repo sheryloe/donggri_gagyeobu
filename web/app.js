@@ -146,9 +146,13 @@ function normalizeSnapshotData(loaded) {
             ...item,
             id: Number(item.id),
             assetId: Number(item.assetId ?? item.asset_id),
+            market: item.market || "MANUAL",
+            currency: item.currency || "KRW",
             quantity: Number(item.quantity || 0),
             averageBuyPrice: Number(item.averageBuyPrice ?? item.average_buy_price ?? 0),
             currentPrice: Number(item.currentPrice ?? item.current_price ?? 0),
+            fxRateKrw: Number(item.fxRateKrw ?? item.fx_rate_krw ?? 1),
+            priceSource: item.priceSource || item.price_source || "manual",
             roi: Number(item.roi || 0),
             createdAt: item.createdAt || item.created_at || null,
             lastUpdated: item.lastUpdated || item.last_updated || null,
@@ -202,6 +206,8 @@ let registrationSlotsRemaining = null;
 let authMode = "login";
 let recoveryQuestions = [];
 let recoveryUsername = "";
+let investmentSearchResults = [];
+let selectedInvestmentSearchResult = null;
 let editingTxId = null;
     let currDate = new Date();
     let charts = { pie: null, line: null };
@@ -215,13 +221,86 @@ let editingTxId = null;
         card: "카드",
         investment: "투자계좌",
     };
+    const INVESTMENT_MARKET_LABELS = {
+        KRX: "국내",
+        NASDAQ: "미국 나스닥",
+        NYSE: "미국 뉴욕",
+        AMEX: "미국 AMEX",
+        CRYPTO: "가상자산",
+        MANUAL: "수동",
+        UNKNOWN: "기타",
+    };
+    const INVESTMENT_PRICE_SOURCE_LABELS = {
+        yahoo: "Yahoo Finance",
+        manual: "수동 입력",
+    };
 
     function fmtCurrency(v) {
         return `${Math.round(Number(v || 0)).toLocaleString()}원`;
     }
 
+    function fmtMoney(value, currency = "KRW", maxFraction = 2) {
+        const numeric = Number(value || 0);
+        if (currency === "USD") {
+            const fractionDigits = Math.abs(numeric) < 1 ? 6 : maxFraction;
+            return `$${numeric.toLocaleString(undefined, {
+                minimumFractionDigits: numeric % 1 === 0 ? 0 : Math.min(2, fractionDigits),
+                maximumFractionDigits: fractionDigits,
+            })}`;
+        }
+        return fmtCurrency(numeric);
+    }
+
     function fmtNumber(v, maxFraction = 2) {
         return Number(v || 0).toLocaleString(undefined, { maximumFractionDigits: maxFraction });
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    function investmentTypeLabel(type) {
+        return type === "fund" ? "펀드" : type === "crypto" ? "코인" : type === "etf" ? "ETF" : "주식";
+    }
+
+    function investmentMarketLabel(market) {
+        return INVESTMENT_MARKET_LABELS[market] || market || "기타";
+    }
+
+    function investmentPriceSourceLabel(source) {
+        return INVESTMENT_PRICE_SOURCE_LABELS[source] || source || "미확인";
+    }
+
+    function resolveInvestmentFxRate(currency, fxRateKrw) {
+        if ((currency || "KRW") === "KRW") return 1;
+        const numeric = Number(fxRateKrw || 0);
+        return Number.isFinite(numeric) && numeric > 0 ? numeric : null;
+    }
+
+    function convertInvestmentValueToKrw(amount, currency, fxRateKrw) {
+        const numeric = Number(amount || 0);
+        if (!Number.isFinite(numeric)) return null;
+        if ((currency || "KRW") === "KRW") return numeric;
+        const fxRate = resolveInvestmentFxRate(currency, fxRateKrw);
+        if (!fxRate) return null;
+        return numeric * fxRate;
+    }
+
+    function formatInvestmentNativeAndKrw(amount, currency, fxRateKrw) {
+        const nativeText = fmtMoney(amount, currency);
+        const converted = convertInvestmentValueToKrw(amount, currency, fxRateKrw);
+        if ((currency || "KRW") === "KRW") {
+            return { main: nativeText, sub: "" };
+        }
+        return {
+            main: nativeText,
+            sub: converted != null ? `약 ${fmtCurrency(converted)}` : "환율 반영 대기",
+        };
     }
 
     function getMonthKey(dateObj) {
@@ -405,18 +484,199 @@ let editingTxId = null;
         showToast("수정 취소");
     }
 
+    function clearInvestmentSearchResults() {
+        investmentSearchResults = [];
+        const container = document.getElementById("i-search-results");
+        if (!container) return;
+        container.hidden = true;
+        container.innerHTML = "";
+    }
+
+    function clearInvestmentSelection(keepSearchQuery = false) {
+        selectedInvestmentSearchResult = null;
+        document.getElementById("i-symbol").value = "";
+        document.getElementById("i-name").value = "";
+        document.getElementById("i-market").value = "";
+        document.getElementById("i-currency").value = "";
+        document.getElementById("i-price-source").value = "";
+        const note = document.getElementById("i-selected-note");
+        if (note) {
+            note.innerText = "실시간 연동 종목은 검색 결과에서 선택한 뒤 추가하세요.";
+        }
+        if (!keepSearchQuery) {
+            const queryInput = document.getElementById("i-search-query");
+            if (queryInput) queryInput.value = "";
+        }
+    }
+
+    function applyInvestmentSelection(result) {
+        selectedInvestmentSearchResult = result || null;
+        const queryInput = document.getElementById("i-search-query");
+        if (queryInput && result?.symbol) {
+            queryInput.value = result.symbol;
+        }
+        document.getElementById("i-symbol").value = result?.symbol || "";
+        document.getElementById("i-name").value = result?.name || "";
+        document.getElementById("i-market").value = investmentMarketLabel(result?.market || "");
+        document.getElementById("i-currency").value = result?.currency || "";
+        document.getElementById("i-price-source").value = investmentPriceSourceLabel(result?.priceSource || "yahoo");
+        const note = document.getElementById("i-selected-note");
+        if (note) {
+            note.innerText = result
+                ? `${result.symbol} · ${investmentMarketLabel(result.market)} · ${result.currency} 종목이 선택되었습니다. 평균 매수가는 해당 통화 기준으로 입력해주세요.`
+                : "실시간 연동 종목은 검색 결과에서 선택한 뒤 추가하세요.";
+        }
+        renderInvestmentSearchResults();
+    }
+
+    function renderInvestmentSearchResults() {
+        const container = document.getElementById("i-search-results");
+        if (!container) return;
+        if (!investmentSearchResults.length) {
+            container.hidden = true;
+            container.innerHTML = "";
+            return;
+        }
+        container.hidden = false;
+        container.innerHTML = investmentSearchResults
+            .map((item, index) => {
+                const isActive =
+                    selectedInvestmentSearchResult &&
+                    selectedInvestmentSearchResult.symbol === item.symbol &&
+                    selectedInvestmentSearchResult.market === item.market;
+                const priceText = item.currentPrice != null ? fmtMoney(item.currentPrice, item.currency) : "현재가 대기";
+                return `
+                    <div class="invest-search-card ${isActive ? "active" : ""}">
+                        <div class="invest-search-main">
+                            <div class="invest-search-symbol">${escapeHtml(item.symbol)}</div>
+                            <div class="invest-search-name">${escapeHtml(item.name || item.symbol)}</div>
+                            <div class="invest-search-meta">
+                                <span class="invest-search-badge">${escapeHtml(investmentTypeLabel(item.type))}</span>
+                                <span class="invest-search-badge market">${escapeHtml(investmentMarketLabel(item.market))}</span>
+                                <span class="invest-search-badge currency">${escapeHtml(item.currency)}</span>
+                                <span class="invest-search-badge">${escapeHtml(priceText)}</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-main secondary" onclick="selectInvestmentSearchResult(${index})">${isActive ? "선택됨" : "선택"}</button>
+                    </div>
+                `;
+            })
+            .join("");
+    }
+
+    async function searchInvestmentSymbols() {
+        const type = document.getElementById("i-type").value;
+        if (!LIVE_INVEST_TYPES.has(type)) {
+            showToast("펀드는 심볼 검색 없이 수동으로 입력합니다");
+            return;
+        }
+
+        const query = document.getElementById("i-search-query").value.trim();
+        if (query.length < 2) {
+            showToast("검색어를 2글자 이상 입력해주세요");
+            return;
+        }
+
+        const searchBtn = document.getElementById("i-search-btn");
+        if (searchBtn) {
+            searchBtn.disabled = true;
+            searchBtn.innerText = "검색 중...";
+        }
+
+        try {
+            const result = await apiPost("/api/investments/search-symbols", { query, type });
+            investmentSearchResults = Array.isArray(result?.results) ? result.results : [];
+            if (!investmentSearchResults.length) {
+                clearInvestmentSelection(true);
+                const container = document.getElementById("i-search-results");
+                if (container) {
+                    container.hidden = false;
+                    container.innerHTML = `<div class="invest-search-empty">검색 결과가 없습니다. 심볼 또는 종목명을 조금 더 구체적으로 입력해보세요.</div>`;
+                }
+                return;
+            }
+            if (selectedInvestmentSearchResult) {
+                const nextSelected = investmentSearchResults.find(
+                    (item) =>
+                        item.symbol === selectedInvestmentSearchResult.symbol &&
+                        item.market === selectedInvestmentSearchResult.market
+                );
+                if (!nextSelected) {
+                    clearInvestmentSelection(true);
+                } else {
+                    applyInvestmentSelection(nextSelected);
+                }
+            }
+            renderInvestmentSearchResults();
+        } catch (error) {
+            console.error(error);
+            clearInvestmentSearchResults();
+            showToast(error?.message || "심볼 검색 실패");
+        } finally {
+            if (searchBtn) {
+                searchBtn.disabled = false;
+                searchBtn.innerText = "심볼 검색";
+            }
+        }
+    }
+
+    function selectInvestmentSearchResult(index) {
+        const next = investmentSearchResults[index];
+        if (!next) return;
+        applyInvestmentSelection(next);
+    }
+
     function updateInvestmentPriceField() {
         const type = document.getElementById("i-type")?.value || "stock";
         const wrap = document.getElementById("i-current-wrap");
         const help = document.getElementById("i-help");
-        if (!wrap || !help) return;
+        const queryInput = document.getElementById("i-search-query");
+        const symbolInput = document.getElementById("i-symbol");
+        const nameInput = document.getElementById("i-name");
+        const marketInput = document.getElementById("i-market");
+        const currencyInput = document.getElementById("i-currency");
+        const priceSourceInput = document.getElementById("i-price-source");
+        const searchWrap = document.getElementById("i-search-query-wrap");
+        const searchBtn = document.getElementById("i-search-btn");
+        const selectionWrap = document.getElementById("i-selection-wrap");
+        const selectedNote = document.getElementById("i-selected-note");
+        if (!wrap || !help || !queryInput || !symbolInput || !nameInput || !marketInput || !currencyInput || !priceSourceInput || !searchWrap || !searchBtn || !selectionWrap || !selectedNote) return;
 
         if (type === "fund") {
             wrap.style.display = "flex";
-            help.innerText = "펀드는 현재가를 수동 입력해서 관리합니다.";
+            searchWrap.style.display = "none";
+            searchBtn.style.display = "none";
+            selectionWrap.hidden = true;
+            selectedNote.style.display = "none";
+            clearInvestmentSearchResults();
+            clearInvestmentSelection(true);
+            symbolInput.readOnly = false;
+            nameInput.readOnly = false;
+            marketInput.value = investmentMarketLabel("MANUAL");
+            currencyInput.value = "KRW";
+            priceSourceInput.value = investmentPriceSourceLabel("manual");
+            help.innerText = "펀드는 심볼과 종목명을 직접 입력하고 현재가를 수동으로 관리합니다.";
         } else {
+            if (selectedInvestmentSearchResult && selectedInvestmentSearchResult.type !== type) {
+                clearInvestmentSelection(true);
+                clearInvestmentSearchResults();
+            }
             wrap.style.display = "none";
-            help.innerText = "주식/코인/ETF는 실시간 가격을 연동합니다. 해외 종목은 원화 환산 가격으로 반영되므로 평균 매수가는 원화 기준으로 입력해주세요.";
+            searchWrap.style.display = "flex";
+            searchBtn.style.display = "inline-flex";
+            selectionWrap.hidden = false;
+            selectedNote.style.display = "block";
+            symbolInput.readOnly = true;
+            nameInput.readOnly = true;
+            if (!selectedInvestmentSearchResult) {
+                symbolInput.value = "";
+                nameInput.value = "";
+                marketInput.value = "";
+                currencyInput.value = "";
+                priceSourceInput.value = "";
+            }
+            queryInput.placeholder = type === "crypto" ? "예: BTC, ETH, SOL" : type === "etf" ? "예: BITO, SPY, TIGER" : "예: AAPL, 삼성전자, TSLA";
+            help.innerText = "주식/코인/ETF는 심볼 검색 후 선택해 추가하세요. 평균 매수가는 선택된 통화 기준으로 입력하고, 표와 요약은 원화 환산값도 함께 보여줍니다.";
         }
     }
 
@@ -1082,15 +1342,27 @@ async function apiPost(path, body) {
             symbol: normalizeInvestmentSymbol(body.symbol, body.type),
             name: body.name || null,
             type: body.type,
+            market: body.market || "MANUAL",
+            currency: body.currency || "KRW",
             quantity: Number(body.quantity || 0),
             average_buy_price: Number(body.average_buy_price || 0),
             current_price: currentPrice,
+            fx_rate_krw: Number(body.fx_rate_krw || 1),
+            price_source: body.price_source || (body.type === "fund" ? "manual" : "yahoo"),
             roi: calculateInvestmentRoi(body.quantity, body.average_buy_price, currentPrice),
             last_updated: body.last_updated || (body.type === "fund" ? new Date().toISOString() : null),
         };
         const { data, error } = await client.from("investments").insert(payload).select().single();
         if (error) throw new Error(parseSupabaseError(error, "투자 항목 저장 실패"));
         return data;
+    }
+
+    if (path === "/api/investments/search-symbols") {
+        requireAuth();
+        return invokeEdgeFunction("search-market-symbols", {
+            query: body.query,
+            type: body.type,
+        });
     }
 
     if (path === "/api/investments/refresh-prices") {
@@ -1130,6 +1402,7 @@ async function apiPatch(path, body) {
             const currentPrice = Number(body.current_price || 0);
             payload.current_price = currentPrice;
             payload.last_updated = new Date().toISOString();
+            payload.price_source = body.price_source || "manual";
         }
         const existing = db.investments.find((item) => item.id === investmentId);
         if (existing && payload.current_price != null) {
@@ -1260,9 +1533,13 @@ function mapInvestmentRow(row) {
         symbol: row.symbol,
         name: row.name || "",
         type: row.type,
+        market: row.market || "MANUAL",
+        currency: row.currency || "KRW",
         quantity: Number(row.quantity || 0),
         averageBuyPrice: Number(row.average_buy_price || 0),
         currentPrice: Number(row.current_price || 0),
+        fxRateKrw: Number(row.fx_rate_krw || 1),
+        priceSource: row.price_source || "manual",
         roi: Number(row.roi || 0),
         lastUpdated: row.last_updated,
         createdAt: row.created_at,
@@ -1730,17 +2007,13 @@ async function refreshFromApi() {
     async function addInvestment() {
         try {
             const type = document.getElementById("i-type").value;
-            const symbol = document.getElementById("i-symbol").value.trim();
-            const name = document.getElementById("i-name").value.trim();
             const assetId = Number(document.getElementById("i-asset").value);
             const quantity = Number(document.getElementById("i-qty").value);
             const averageBuyPrice = Number(document.getElementById("i-buy-price").value);
             const currentPrice = Number(document.getElementById("i-current-price").value);
+            const symbol = document.getElementById("i-symbol").value.trim();
+            const name = document.getElementById("i-name").value.trim();
 
-            if (!symbol) {
-                showToast("심볼/코드를 입력해주세요");
-                return;
-            }
             if (!assetId) {
                 showToast("연결 자산을 선택해주세요");
                 return;
@@ -1749,28 +2022,64 @@ async function refreshFromApi() {
                 showToast("수량/평균매수가를 확인해주세요");
                 return;
             }
-            if (type === "fund" && (!Number.isFinite(currentPrice) || currentPrice <= 0)) {
-                showToast("펀드는 현재가(수동)를 입력해주세요");
-                return;
-            }
 
-            const payload = {
-                asset_id: assetId,
-                symbol,
-                name: name || null,
-                type,
-                quantity,
-                average_buy_price: averageBuyPrice,
-            };
-            if (type === "fund") payload.current_price = currentPrice;
+            let payload;
+            if (type === "fund") {
+                if (!symbol) {
+                    showToast("펀드 심볼/코드를 입력해주세요");
+                    return;
+                }
+                if (!Number.isFinite(currentPrice) || currentPrice <= 0) {
+                    showToast("펀드는 현재가(수동)를 입력해주세요");
+                    return;
+                }
+                payload = {
+                    asset_id: assetId,
+                    symbol,
+                    name: name || null,
+                    type,
+                    market: "MANUAL",
+                    currency: "KRW",
+                    quantity,
+                    average_buy_price: averageBuyPrice,
+                    current_price: currentPrice,
+                    fx_rate_krw: 1,
+                    price_source: "manual",
+                };
+            } else {
+                if (!selectedInvestmentSearchResult) {
+                    showToast("검색 결과에서 종목을 먼저 선택해주세요");
+                    return;
+                }
+                payload = {
+                    asset_id: assetId,
+                    symbol: selectedInvestmentSearchResult.symbol,
+                    name: selectedInvestmentSearchResult.name || null,
+                    type,
+                    market: selectedInvestmentSearchResult.market || "UNKNOWN",
+                    currency: selectedInvestmentSearchResult.currency || "KRW",
+                    quantity,
+                    average_buy_price: averageBuyPrice,
+                    current_price:
+                        Number(selectedInvestmentSearchResult.currentPrice || 0) > 0
+                            ? Number(selectedInvestmentSearchResult.currentPrice)
+                            : averageBuyPrice,
+                    fx_rate_krw:
+                        Number(selectedInvestmentSearchResult.fxRateKrw || 0) > 0
+                            ? Number(selectedInvestmentSearchResult.fxRateKrw)
+                            : 1,
+                    price_source: selectedInvestmentSearchResult.priceSource || "yahoo",
+                };
+            }
 
             await apiPost("/api/investments", payload);
 
-            document.getElementById("i-symbol").value = "";
-            document.getElementById("i-name").value = "";
+            clearInvestmentSelection();
+            clearInvestmentSearchResults();
             document.getElementById("i-qty").value = "";
             document.getElementById("i-buy-price").value = "";
             document.getElementById("i-current-price").value = "";
+            document.getElementById("i-search-query").value = "";
 
             await refreshFromApi();
             save();
@@ -1804,7 +2113,7 @@ async function refreshFromApi() {
         }
 
         try {
-            await apiPatch(`/api/investments/${id}`, { current_price: price });
+            await apiPatch(`/api/investments/${id}`, { current_price: price, price_source: "manual" });
             await refreshFromApi();
             renderInvest();
             showToast("펀드 현재가 업데이트 완료");
@@ -2140,15 +2449,21 @@ async function refreshFromApi() {
                 const currentPrice = Number(i.currentPrice || i.averageBuyPrice || 0);
                 const cost = Number(i.quantity || 0) * Number(i.averageBuyPrice || 0);
                 const value = Number(i.quantity || 0) * currentPrice;
-                const profit = value - cost;
-                const roi = cost > 0 ? (profit / cost) * 100 : 0;
+                const costKrw = convertInvestmentValueToKrw(cost, i.currency, i.fxRateKrw);
+                const valueKrw = convertInvestmentValueToKrw(value, i.currency, i.fxRateKrw);
+                const profitNative = value - cost;
+                const roi = cost > 0 ? (profitNative / cost) * 100 : 0;
                 const assetName = db.assets.find(a => a.id === i.assetId)?.name || "-";
 
-                totalCost += cost;
-                totalValue += value;
+                totalCost += costKrw ?? 0;
+                totalValue += valueKrw ?? 0;
 
                 const roiClass = roi >= 0 ? "roi-positive" : "roi-negative";
-                const typeLabel = i.type === "fund" ? "펀드" : i.type === "crypto" ? "코인" : i.type === "etf" ? "ETF" : "주식";
+                const typeLabel = investmentTypeLabel(i.type);
+                const averagePriceText = formatInvestmentNativeAndKrw(i.averageBuyPrice, i.currency, i.fxRateKrw);
+                const currentPriceText = formatInvestmentNativeAndKrw(currentPrice, i.currency, i.fxRateKrw);
+                const costText = formatInvestmentNativeAndKrw(cost, i.currency, i.fxRateKrw);
+                const valueText = formatInvestmentNativeAndKrw(value, i.currency, i.fxRateKrw);
                 const priceCell = i.type === "fund"
                     ? `
                         <div class="inline-price-editor">
@@ -2156,20 +2471,41 @@ async function refreshFromApi() {
                             <button type="button" class="btn-main secondary" style="height:34px; padding:0 10px;" onclick="updateFundPrice(${i.id})">반영</button>
                         </div>
                     `
-                    : fmtCurrency(currentPrice);
+                    : `
+                        <div class="invest-money-main">${currentPriceText.main}</div>
+                        ${currentPriceText.sub ? `<div class="invest-money-sub">${currentPriceText.sub}</div>` : ""}
+                    `;
 
                 body.innerHTML += `
                     <tr>
-                        <td><strong>${i.symbol}</strong><br><small>${i.name || ""}</small></td>
+                        <td>
+                            <div class="invest-row-symbol">
+                                <strong>${escapeHtml(i.symbol)}</strong>
+                                <small>${escapeHtml(i.name || "")}</small>
+                                <div class="invest-row-badges">
+                                    <span class="invest-search-badge market">${escapeHtml(investmentMarketLabel(i.market))}</span>
+                                    <span class="invest-search-badge currency">${escapeHtml(i.currency || "KRW")}</span>
+                                </div>
+                            </div>
+                        </td>
                         <td>${typeLabel}</td>
                         <td>${assetName}</td>
                         <td style="text-align:right;">${fmtNumber(i.quantity, 6)}</td>
-                        <td style="text-align:right;">${fmtCurrency(i.averageBuyPrice)}</td>
+                        <td style="text-align:right;">
+                            <div class="invest-money-main">${averagePriceText.main}</div>
+                            ${averagePriceText.sub ? `<div class="invest-money-sub">${averagePriceText.sub}</div>` : ""}
+                        </td>
                         <td style="text-align:right;">${priceCell}</td>
-                        <td style="text-align:right;">${fmtCurrency(cost)}</td>
-                        <td style="text-align:right;">${fmtCurrency(value)}</td>
+                        <td style="text-align:right;">
+                            <div class="invest-money-main">${costKrw != null ? fmtCurrency(costKrw) : "-"}</div>
+                            <div class="invest-money-sub">${costText.main}</div>
+                        </td>
+                        <td style="text-align:right;">
+                            <div class="invest-money-main">${valueKrw != null ? fmtCurrency(valueKrw) : "-"}</div>
+                            <div class="invest-money-sub">${valueText.main}</div>
+                        </td>
                         <td style="text-align:right;"><span class="${roiClass}">${roi.toFixed(2)}%</span></td>
-                        <td>${formatDateTime(i.lastUpdated)}</td>
+                        <td>${formatDateTime(i.lastUpdated)}<br><small>${escapeHtml(investmentPriceSourceLabel(i.priceSource))}</small></td>
                         <td style="text-align:center;">
                             <button type="button" aria-label="투자 항목 삭제" title="삭제" onclick="deleteInvestment(${i.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:6px; cursor:pointer;">🗑</button>
                         </td>
@@ -2310,9 +2646,13 @@ function buildExportSnapshot() {
             symbol: item.symbol,
             name: item.name || "",
             type: item.type,
+            market: item.market || "MANUAL",
+            currency: item.currency || "KRW",
             quantity: Number(item.quantity || 0),
             averageBuyPrice: Number(item.averageBuyPrice || 0),
             currentPrice: Number(item.currentPrice || 0),
+            fxRateKrw: Number(item.fxRateKrw || 1),
+            priceSource: item.priceSource || "manual",
             roi: Number(item.roi || 0),
             lastUpdated: item.lastUpdated || null,
             createdAt: item.createdAt || null,
@@ -2462,9 +2802,13 @@ async function importSnapshotToSupabase(loaded) {
             symbol: normalizeInvestmentSymbol(item.symbol, item.type),
             name: item.name || null,
             type: item.type,
+            market: item.market || "MANUAL",
+            currency: item.currency || "KRW",
             quantity: Number(item.quantity || 0),
             average_buy_price: Number(item.averageBuyPrice || 0),
             current_price: Number(item.currentPrice || item.averageBuyPrice || 0),
+            fx_rate_krw: Number(item.fxRateKrw || 1),
+            price_source: item.priceSource || (item.type === "fund" ? "manual" : "yahoo"),
             roi: Number(item.roi || calculateInvestmentRoi(item.quantity, item.averageBuyPrice, item.currentPrice || item.averageBuyPrice || 0)),
             last_updated: item.lastUpdated || null,
         }))

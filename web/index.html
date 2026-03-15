@@ -399,6 +399,134 @@
             color: var(--text-sub);
         }
 
+        .invest-search-wrap {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .invest-search-results {
+            margin-top: 14px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .invest-search-results[hidden] {
+            display: none;
+        }
+
+        .invest-search-empty {
+            padding: 14px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            background: #f8fafc;
+        }
+
+        .invest-search-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 10px;
+            align-items: center;
+            padding: 14px;
+            border: 2px solid #dbe3ef;
+            border-radius: 14px;
+            background: #fff;
+        }
+
+        .invest-search-card.active {
+            border-color: #1774d1;
+            background: #eef6ff;
+        }
+
+        .invest-search-main {
+            min-width: 0;
+        }
+
+        .invest-search-symbol {
+            font-size: 1rem;
+            font-weight: 900;
+            color: #10203a;
+        }
+
+        .invest-search-name {
+            margin-top: 4px;
+            color: var(--text-sub);
+            font-size: 0.84rem;
+            line-height: 1.35;
+        }
+
+        .invest-search-meta {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .invest-search-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 8px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 0.72rem;
+            font-weight: 800;
+        }
+
+        .invest-search-badge.market {
+            background: #ecfccb;
+            color: #3f6212;
+        }
+
+        .invest-search-badge.currency {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .invest-selection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .invest-selection-grid[hidden] {
+            display: none;
+        }
+
+        .invest-selected-note {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+        }
+
+        .invest-money-main {
+            font-weight: 800;
+            color: #10203a;
+        }
+
+        .invest-money-sub {
+            margin-top: 3px;
+            font-size: 0.76rem;
+            color: var(--text-sub);
+        }
+
+        .invest-row-symbol {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .invest-row-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
         .inline-price-editor {
             display: inline-flex;
             gap: 6px;
@@ -1222,28 +1350,37 @@
             </div>
             <div class="input-group" style="margin-top:14px;">
                 <div class="form-control"><label>유형</label><select id="i-type" onchange="updateInvestmentPriceField()"><option value="stock">주식</option><option value="crypto">코인</option><option value="etf">ETF</option><option value="fund">펀드(수동)</option></select></div>
-                <div class="form-control"><label>심볼/코드</label><input type="text" id="i-symbol" placeholder="AAPL, BTC-USD, 005930.KS"></div>
-                <div class="form-control"><label>종목명</label><input type="text" id="i-name" placeholder="선택"></div>
+                <div class="form-control" id="i-search-query-wrap"><label>심볼 검색</label><input type="text" id="i-search-query" placeholder="예: BITO, AAPL, 삼성전자"></div>
+                <button type="button" class="btn-main secondary" id="i-search-btn" onclick="searchInvestmentSymbols()">심볼 검색</button>
+                <div class="form-control"><label>심볼/코드</label><input type="text" id="i-symbol" placeholder="선택 후 자동 입력"></div>
+                <div class="form-control"><label>종목명</label><input type="text" id="i-name" placeholder="선택 후 자동 입력"></div>
                 <div class="form-control"><label>연결 자산</label><select id="i-asset"></select></div>
                 <div class="form-control"><label>보유 수량</label><input type="number" id="i-qty" step="0.000001" placeholder="0"></div>
                 <div class="form-control"><label>평균 매수가</label><input type="number" id="i-buy-price" step="0.01" placeholder="0"></div>
                 <div class="form-control" id="i-current-wrap" style="display:none;"><label>현재가(수동)</label><input type="number" id="i-current-price" step="0.01" placeholder="펀드 현재가"></div>
                 <button type="button" class="btn-main" onclick="addInvestment()">투자 추가</button>
             </div>
-            <div id="i-help" class="invest-form-note">주식/코인/ETF는 새로고침 버튼으로 실시간 가격을 가져옵니다. 해외 종목은 원화 환산 가격으로 반영되며, 펀드는 현재가를 수동 입력해 관리합니다.</div>
+            <div id="i-selection-wrap" class="invest-selection-grid">
+                <div class="form-control"><label>시장</label><input type="text" id="i-market" placeholder="자동 입력" readonly></div>
+                <div class="form-control"><label>통화</label><input type="text" id="i-currency" placeholder="자동 입력" readonly></div>
+                <div class="form-control"><label>가격 소스</label><input type="text" id="i-price-source" placeholder="자동 입력" readonly></div>
+            </div>
+            <div id="i-selected-note" class="invest-selected-note">실시간 연동 종목은 검색 결과에서 선택한 뒤 추가하세요.</div>
+            <div id="i-search-results" class="invest-search-results" hidden></div>
+            <div id="i-help" class="invest-form-note">주식/코인/ETF는 검색 결과에서 종목을 선택한 뒤 저장하고, 실시간 가격 새로고침으로 최신 시세를 갱신합니다. 펀드는 수동 입력으로 관리합니다.</div>
         </div>
 
         <div class="invest-summary-grid">
-            <div class="invest-card"><div class="label">투자 원금</div><div class="value" id="invest-total-cost">0원</div></div>
-            <div class="invest-card"><div class="label">현재 평가금</div><div class="value" id="invest-total-value">0원</div></div>
-            <div class="invest-card"><div class="label">평가 손익</div><div class="value" id="invest-total-profit">0원</div></div>
+            <div class="invest-card"><div class="label">투자 원금(원화 환산)</div><div class="value" id="invest-total-cost">0원</div></div>
+            <div class="invest-card"><div class="label">현재 평가금(원화 환산)</div><div class="value" id="invest-total-value">0원</div></div>
+            <div class="invest-card"><div class="label">평가 손익(원화 환산)</div><div class="value" id="invest-total-profit">0원</div></div>
             <div class="invest-card"><div class="label">총 수익률</div><div class="value" id="invest-total-roi">0.00%</div></div>
         </div>
 
         <div class="card" style="padding:0;">
             <div class="table-wrapper">
                 <table id="invest-table">
-                    <thead><tr><th>종목</th><th>유형</th><th>연결자산</th><th style="text-align:right;">수량</th><th style="text-align:right;">평균매수가</th><th style="text-align:right;">현재가</th><th style="text-align:right;">원금</th><th style="text-align:right;">평가금</th><th style="text-align:right;">수익률</th><th>업데이트</th><th style="text-align:center;">관리</th></tr></thead>
+                    <thead><tr><th>종목</th><th>유형</th><th>연결자산</th><th style="text-align:right;">수량</th><th style="text-align:right;">평균매수가</th><th style="text-align:right;">현재가</th><th style="text-align:right;">원금(원화)</th><th style="text-align:right;">평가금(원화)</th><th style="text-align:right;">수익률</th><th>업데이트</th><th style="text-align:center;">관리</th></tr></thead>
                     <tbody id="invest-list"></tbody>
                 </table>
             </div>
