@@ -774,3 +774,40 @@
 ### Remaining Issues
 - 이 설정과 `package.json`, `scripts/build-web.mjs`, `web/*`, `supabase/*` 변경이 GitHub에 push되어야 Vercel 배포에 반영됨
 - push 후 Vercel redeploy 및 회원가입/로그인/비밀번호 찾기 테스트 필요
+## 2026-03-15 20:10 (Asia/Seoul)
+
+### User Requests
+- 최신 Supabase/Vercel 전환 작업을 커밋하고 GitHub로 push
+- 이후 Vercel 배포 상태 확인까지 이어가기
+
+### Changes Applied
+- 작업 커밋 생성
+  - `0049a6a2b3bec4f8b6f4167400f5fcca2d1cdb7f`
+  - 메시지: `feat: move ledger web app to supabase auth flow`
+- 포함 파일
+  - `web/index.html`
+  - `web/app.js`
+  - `web/app-config.js`
+  - `package.json`
+  - `scripts/build-web.mjs`
+  - `supabase/schema.sql`
+  - `supabase/functions/register-account/index.ts`
+  - `supabase/functions/recover-account/index.ts`
+  - `supabase/functions/refresh-market-prices/index.ts`
+  - `vercel.json`
+
+### Results
+- Supabase 기반 username/security-question auth 웹앱 코드가 로컬 Git commit 상태로 정리됨
+- 다음 단계는 remote push 후 Vercel 재빌드 확인
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- New commit:
+  - `0049a6a2b3bec4f8b6f4167400f5fcca2d1cdb7f`
+- Push:
+  - 진행 전
+
+### Remaining Issues
+- origin/master push 필요
+- Vercel이 새 commit 기준으로 재배포되는지 확인 필요
