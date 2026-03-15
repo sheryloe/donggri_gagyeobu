@@ -1714,3 +1714,53 @@
 
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
+## 2026-03-16 00:10 (Asia/Seoul)
+
+### User Requests
+- Supabase `investments` 스키마를 해외 주식/해외 ETF/코인까지 감당할 수 있게 수정
+- 투자 입력 UI를 심볼 직접 타이핑이 아니라 검색 후 선택하는 흐름으로 변경
+- 투자 표 렌더링을 통화/시장 기준으로 다시 구성
+- `refresh-market-prices`를 원화 강제 환산이 아니라 원통화 기준 시세 저장 구조로 수정
+
+### Changes Applied
+- 투자 데이터 모델 확장
+  - `supabase/schema.sql`
+  - `investments`에 `market`, `currency`, `fx_rate_krw`, `price_source` 컬럼 추가
+  - 기존 데이터 호환을 위해 `alter table ... add column if not exists`와 기본값 보정 SQL 추가
+- 실시간 시세 갱신 함수 수정
+  - `supabase/functions/refresh-market-prices/index.ts`
+  - Yahoo 시세를 원통화 그대로 저장하고 USD 종목은 `fx_rate_krw`만 별도로 저장하도록 변경
+- 심볼 검색 Edge Function 추가
+  - `supabase/functions/search-market-symbols/index.ts`
+  - Yahoo search 결과를 `symbol`, `name`, `market`, `currency`, `currentPrice`, `fxRateKrw` 형태로 반환
+- 투자 입력 화면 개편
+  - `web/index.html`
+  - 실시간 종목은 `심볼 검색 -> 결과 선택 -> 추가` 흐름으로 변경
+  - 펀드는 수동 입력 유지
+- 투자 렌더링 로직 개편
+  - `web/app.js`
+  - 원통화 가격과 원화 환산값을 함께 보여주도록 표/요약/백업복원 로직 갱신
+
+### Verification
+- `node --check web/app.js`
+- `node scripts/build-web.mjs`
+
+### Results
+- BITO 같은 미국 ETF도 원통화(`USD`) 기준 평균매수/현재가/수익률을 다룰 수 있는 구조로 정리됨
+- 실시간 연동 종목은 검색 결과를 고른 뒤 저장하므로 심볼 오타로 인한 실패 가능성이 크게 줄어듦
+
+### Git
+- Code commit:
+  - `d6f77ab`
+  - `feat: support multi-currency investment search flow`
+- Changed files:
+  - `supabase/schema.sql`
+  - `supabase/functions/refresh-market-prices/index.ts`
+  - `supabase/functions/search-market-symbols/index.ts`
+  - `web/index.html`
+  - `web/app.js`
+
+### Remaining Issues
+- Supabase SQL Editor에서 최신 `supabase/schema.sql`을 다시 실행해야 함
+- Supabase Dashboard에서 `refresh-market-prices`, `search-market-symbols` 두 Edge Function을 최신 코드로 다시 배포해야 함
+- Vercel 반영 후 실제 투자 탭에서 `심볼 검색 -> 추가 -> 실시간 가격 새로고침` 검증이 한 번 더 필요
