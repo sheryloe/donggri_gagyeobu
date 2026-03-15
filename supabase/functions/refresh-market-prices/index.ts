@@ -16,6 +16,33 @@ function jsonResponse(body: unknown, status = 200) {
     });
 }
 
+function describeError(error: unknown) {
+    if (error instanceof Error && error.message) {
+        return error.message;
+    }
+    if (typeof error === "string" && error.trim()) {
+        return error;
+    }
+    if (error && typeof error === "object") {
+        const parts = [
+            (error as { message?: string }).message,
+            (error as { error?: string }).error,
+            (error as { details?: string }).details,
+            (error as { hint?: string }).hint,
+            (error as { code?: string }).code,
+        ].filter((value): value is string => Boolean(value && String(value).trim()));
+        if (parts.length) {
+            return parts.join(" | ");
+        }
+        try {
+            return JSON.stringify(error);
+        } catch {
+            return "Unexpected error";
+        }
+    }
+    return "Unexpected error";
+}
+
 function normalizeSymbol(symbol: string, type: string) {
     const normalized = String(symbol || "").trim().toUpperCase();
     if (type === "crypto" && normalized && !normalized.includes("-")) {
@@ -143,7 +170,7 @@ Deno.serve(async (request) => {
         });
     } catch (error) {
         return jsonResponse(
-            { error: error instanceof Error ? error.message : "Unexpected error" },
+            { error: describeError(error) },
             500
         );
     }

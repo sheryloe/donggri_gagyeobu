@@ -999,3 +999,61 @@
 ### Remaining Issues
 - `register-account`, `recover-account` Edge Function 재배포 필요
 - 재시도 후 실제 에러 문구 확인 필요
+
+## 2026-03-15 21:02 (Asia/Seoul)
+
+### User Requests
+- 회원가입 재시도 시 `Invalid API key` 오류 원인 확인
+- 현재 단계에서 어떤 키를 다시 맞춰야 하는지 즉시 복구 가능한 순서 안내
+
+### Changes Applied
+- 원인 분류 정리
+  - `profiles.username` 누락 문제는 SQL 재실행으로 해소
+  - 현재 오류는 schema가 아니라 Supabase API key / project URL mismatch 가능성이 높다고 정리
+- 점검 포인트 정리
+  - Vercel `SUPABASE_URL`과 `SUPABASE_ANON_KEY`가 같은 Supabase 프로젝트에서 발급된 값인지 확인
+  - Edge Function 기본 secret과 수동 override 충돌 가능성 확인
+
+### Results
+- 현재 우선순위는 코드 수정이 아니라 Supabase / Vercel 키 매칭 확인으로 정리
+
+### Git
+- Changed files:
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- Vercel env의 `SUPABASE_URL`, `SUPABASE_ANON_KEY` 재확인 필요
+- Supabase Edge Functions에서 `SUPABASE_SERVICE_ROLE_KEY`를 수동으로 잘못 넣은 적이 있는지 확인 필요
+
+## 2026-03-15 21:49 (Asia/Seoul)
+
+### User Requests
+- 투자 탭 `실시간 가격 새로고침` 시 `Edge Function returned a non-2xx status code` 오류 점검
+- 실제 원인을 좁히고 재시도 가능한 상태로 정리
+
+### Changes Applied
+- refresh-market-prices 호출 경로 개선
+  - `web/app.js`
+  - 공통 `invokeEdgeFunction()`에서 현재 세션 access token을 명시적으로 `Authorization` 헤더로 전달
+  - 투자 시세 새로고침도 공통 Edge Function 헬퍼를 사용하도록 변경
+- refresh-market-prices 함수 에러 본문 보강
+  - `supabase/functions/refresh-market-prices/index.ts`
+  - plain object / PostgREST 에러도 `message`, `details`, `hint`, `code`까지 문자열로 반환하도록 `describeError()` 추가
+
+### Verification
+- `node --check web/app.js` 통과
+- `node scripts/build-web.mjs` 통과
+
+### Results
+- 실시간 가격 새로고침 요청이 사용자 세션 토큰을 명시적으로 싣고 호출되도록 보강됨
+- 다음 실패부터는 `non-2xx` 대신 실제 함수 에러 문구가 더 잘 보이도록 준비됨
+
+### Git
+- Changed files:
+  - `web/app.js`
+  - `supabase/functions/refresh-market-prices/index.ts`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 필요
+- 재시도 후 실제 오류 문구 확인 필요

@@ -645,7 +645,14 @@ async function loadCurrentProfile() {
 
 async function invokeEdgeFunction(functionName, body) {
     const client = ensureSupabase();
-    const { data, error } = await client.functions.invoke(functionName, { body });
+    const accessToken =
+        currentSession?.access_token ||
+        (await client.auth.getSession()).data.session?.access_token ||
+        "";
+    const { data, error } = await client.functions.invoke(functionName, {
+        body,
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+    });
     if (error) {
         let message = parseSupabaseError(error, `${functionName} 호출 실패`);
         if (error.context && typeof error.context.text === "function") {
@@ -1085,11 +1092,8 @@ async function apiPost(path, body) {
     }
 
     if (path === "/api/investments/refresh-prices") {
-        const { data, error } = await client.functions.invoke("refresh-market-prices", {
-            body: {},
-        });
-        if (error) throw new Error(parseSupabaseError(error, "실시간 가격 갱신 실패"));
-        return data;
+        requireAuth();
+        return invokeEdgeFunction("refresh-market-prices", {});
     }
 
     throw new Error(`지원하지 않는 API 경로입니다: ${path}`);
