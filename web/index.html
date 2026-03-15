@@ -281,6 +281,14 @@
             box-shadow: 3px 3px 0 #94a3b8;
         }
 
+        a.btn-main {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            line-height: 1;
+        }
+
         .fixed-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -1103,6 +1111,7 @@
         <div style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">가가가가계부 <small style="font-size:0.8rem; color:var(--text-sub);">Supabase Edition</small></div>
         <div class="header-actions">
             <span id="user-name-badge" class="user-badge">로그인 필요</span>
+            <a href="https://github.com/sheryloe/donggri_gagyeobu" target="_blank" rel="noreferrer" class="btn-main secondary">GitHub 레포</a>
             <button type="button" id="signout-btn" class="btn-main" style="background:#475569;" hidden>로그아웃</button>
             <button type="button" onclick="exportData()" class="btn-main" style="background:#1e293b;">💾 백업</button>
             <input type="file" id="file-load" style="display:none" onchange="importData(this)">
