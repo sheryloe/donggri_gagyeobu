@@ -386,3 +386,391 @@
 
 ### Remaining Issues
 - 없음
+## 2026-03-15 13:23 (Asia/Seoul)
+
+### User Requests
+- 濡쒖뺄 ?쒕쾭 ??? `Supabase + Vercel + GitHub` 湲곕컲 ?쇰? 諛곗룷/愿由??곸꽭 媛?ν븳吏 寃??
+- Supabase 臾대즺 ?꾨줈?앺듃 ?좊? 踰붿쐞瑜?怨듭떇 臾몄꽌 湲곗? ?뺤씤
+
+### Changes Applied
+- ?꾩옱 援ъ“ ?꾨즺 ???곗튂 寃??
+  - `app/main.py`
+  - `app/database.py`
+  - `app/models.py`
+  - `web/index.html`
+- 怨듭떇 臾몄꽌 湲곗?濡?諛곗룷 諛⑹떇/臾대즺 ?뺤콉 ?먮룞
+  - Supabase pricing / usage
+  - Supabase auth / RLS
+  - Vercel Python runtime / SQLite guidance
+  - GitHub Pages limits
+- ?묒뾽 濡쒓렇 異붽?
+  - `docs/SESSION_LOG.md`
+
+### Results
+- ?꾩옱 援ъ“(FastAPI + 濡쒖뺄 SQLite + same-origin UI)瑜?洹몃?濡?Vercel + GitHub Pages濡??⑥씠湲곕뒗 諛붾줈?좎? ?딆쓬
+- 沅뚯옣 援ъ“:
+  - Frontend: Vercel
+  - Database/Auth: Supabase
+  - Code management: GitHub
+- GitHub Pages??留덉폆/?덈궡 ?섏씠吏濡??ъ슜?섎뒗 寃껋? 媛?ν븯吏?留?媛怨꾨? ?ㅼ젣 ?앹쓣 Vercel濡??곸슜?섎뒗 寃껋쓣 沅뚯옣
+- Supabase 臾대즺 ?꾨줈?앺듃 媛쒖닔/??怨듭떇 臾몄꽌 ?곌꼍?쇰줈 ?ㅼ떆 ?뺤씤 ?꾩슂 ?먮룞
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - ?놁쓬 (advisory only)
+
+### Remaining Issues
+- Supabase濡??대━?섎젮硫?user/auth/RLS 湲곕컲?쇰줈 ?뚯씠釉??ъ슜?먮? ?ㅼ떆 ?ㅺ퀬?대뒗 ?섏젙 ?꾩슂
+- `web/index.html`??`API_BASE = location.origin` 媛믪쓣 ?곸슜 ?ㅼ젙 ?먮━ API URL ?ㅼ젙 諛⑹떇?쇰줈 諛붿꿔??媛먮뒫
+## 2026-03-15 13:36 (Asia/Seoul)
+
+### User Requests
+- `Supabase + Vercel + GitHub` ?곸꽭濡?媛怨꾨?瑜?옱援ъ꽦???좎쟾???ㅼ젣濡?諛?湲곕뒫 ?⑥씠?덈뒗 ?⑥닚瑜?濡쒓렇 諛쒖깮
+- ?ъ슜?먭? 吏곸젒 ?댁빞 ???곗쇅 ?ㅼ젙(Supabase/Vercel/GitHub)怨?肄붾뱶 蹂寃?踰붿쐞瑜?遺꾨━???ㅻ챸 ?붿껌
+
+### Changes Applied
+- ?꾩옱 API 援ъ“ ?ㅼ떆 ?뺤씤
+  - `app/routers/assets.py`
+  - `app/routers/transactions.py`
+- ?꾨뜑 ?대낫?꾩닔? 肄붾뱶 蹂寃?踰붿쐞瑜?湲곗?濡?留덉씠洹몃젅?댁뀡 ?⑥닚 ???낅뜲?댄듃
+- ?묒뾽 濡쒓렇 異붽?
+  - `docs/SESSION_LOG.md`
+
+### Results
+- ?ъ슜?먭? ?댄빐?⑸땲??:
+  - Supabase ?꾨줈?앺듃/DB/Auth/RLS ?앹꽦
+  - GitHub ??μ냼 濡쒖꽕愿由?
+  - Vercel import / env ?ㅼ젙 / 諛곗룷
+- 肄붾뱶 ?묒뾽 ?⑥닚:
+  - SQLite -> Supabase(Postgres) ?ㅻ쾭
+  - same-origin API -> 遺꾨━ API URL
+  - user/auth/RLS 湲곕컲?쇰줈 ?뚯씠釉??댁슜?먮? 諛붽퓭??怨좊젮
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - ?놁쓬 (planning/advice only)
+
+### Remaining Issues
+- ?ㅼ쓬 ?몄뀡??Supabase schema / RLS / env ?ㅼ젙?쒗뵆由?肄붾뱶濡?援ы쁽 ?꾩슂
+## 2026-03-15 14:40 (Asia/Seoul)
+
+### User Requests
+- 媛怨꾨?瑜?濡쒖뺄 FastAPI/SQLite ?곸꽭?먯꽌 `Supabase + Vercel + GitHub` 援ъ“濡?肄붾뱶 ?ш컨 ?대━
+- 50紐?媛?낅젣??, ?대찓???뚮줈?좎슜/鍮꾨?踰덊샇 媛?낅줉濡쒖씤, 鍮꾨?踰덊샇 ?ㅼ궡湲?湲곕뒫 ?щ?
+- ??곸쑝濡?肄붾뱶瑜?紐낆? ?곸꽭濡?留뚮뱾怨? ?ㅽ뻾 ?꾩닔???ㅼ쓬 ?곗쇅 ?ㅼ젙 ?⑥닚? ?좎궡
+
+### Changes Applied
+- Supabase 吏곸껜 ?곗튂?쒕줈 ?꾨줎???좎뒪 蹂寃?
+  - `web/index.html`
+  - `web/app.js`
+  - `web/app-config.js`
+- Vercel ?묒쟾 ?붾뱶 ?ㅽ겕由쏀듃/援ъ꽦 異붽?
+  - `package.json`
+  - `scripts/build-web.mjs`
+- Supabase SQL/Edge Function 異붽?
+  - `supabase/schema.sql`
+  - `supabase/functions/refresh-market-prices/index.ts`
+- 以묒슂 湲곕뒫 諛섏쁺
+  - email/password login/signup
+  - password reset flow
+  - 50-user signup cap trigger
+  - profile/category seed trigger
+  - RLS policies
+  - asset cascade delete RPC
+  - backup/export + restore/import
+
+### Results
+- 濡쒖뺄 API(`location.origin`) ?꾩젣瑜?젣嫄??섍퀬 Supabase JS 湲곕컲 ?앹뾽濡??대━?
+- UI ?섏씠吏? auth shell??붿?瑜?諛묒씠?먯꽌 ?좏삎??蹂寃쎈맖
+- JS 臾몃쾿 寃利?:
+  - `node --check web/app.js` ?듦낵
+- 諛곗룷 ?붾뱶 寃利?:
+  - `node scripts/build-web.mjs` ?듦낵
+  - `dist/` ?앹꽦 ?뺤씤
+- ??Supabase ?ㅼ젙媛?뺤젣濡??놁뼱 ?ㅼ젣 login/query ?뚯뒪?몃뒗 ?섏? 紐삵븿
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `web/index.html`
+  - `web/app.js`
+  - `web/app-config.js`
+  - `package.json`
+  - `scripts/build-web.mjs`
+  - `supabase/schema.sql`
+  - `supabase/functions/refresh-market-prices/index.ts`
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - ?놁쓬 (working tree changes only)
+
+### Remaining Issues
+- Supabase SQL ?ㅼ젙/Edge Function 諛곗룷/Vercel env ?ㅼ젙???꾨즺?섏빞 ?ㅼ젣 ?쒖뒪?꾩슜 媛??
+- FastAPI/SQLite 湲곗〈 肄붾뱶? repo???꾨줈?좎? 殷? ?덈굔, ?꾪썑 ?앹꽦?덈뒗 legacy 濡? ?곗젅 ?곸슜 媛??
+## 2026-03-15 14:43 (Asia/Seoul)
+
+### User Requests
+- Supabase/Vercel ?ㅼ젙???꾩슂?섎뒗 ?ъ슜??泥섏쓬遺??1?⑤떒怨꾨줈 ?뺣━
+- email/password login + password reset + 50-user limit ?곸슜 ?좎쟾 ?ㅼ젙 順??媛?대뱶 ?붿껌
+
+### Changes Applied
+- 怨듭떇 臾몄꽌 湲곗? ?ㅼ젙 ?⑥닚 ?먮룞
+  - Supabase Auth email/password
+  - Supabase URL configuration / redirect
+  - Supabase SMTP requirements
+  - Supabase Edge Functions deploy
+  - Vercel env/build settings
+- ?묒뾽 濡쒓렇 異붽?
+  - `docs/SESSION_LOG.md`
+
+### Results
+- ?ъ슜?먭? 吏곸젒 ?댁빞 ???곗쇅 ?ㅼ젙?쒕줈瑜?1?⑤떒怨꾨줈 ?뺣━???좎쟾 ?ㅼ젙 ?꾩쐞? ?먮룞??- ?듭궗?쒓컙:
+  - Supabase 湲곕낯 SMTP瑜?洹몃?濡??ъ슜?섎㈃ ?ㅽ듃?몃뒗 ?됱뒪??/???쒕쾭 ?④?遺???좎슜 ?ㅻ챸? 鍮꾨?踰덊샇 李얘린? ?좎씤???④퍡蹂대떎
+  - ?ㅼ젣 50紐?媛?낅젣??+ 鍮꾨?踰덊샇 李얘린瑜?쒖슜?섎젮硫?custom SMTP媛 ?ㅼ쓬 ?꾩닔
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - ?놁쓬 (guidance only)
+
+### Remaining Issues
+- ?ㅼ쓬 ?몄뀡??Supabase SQL ?ㅼ젙怨?Vercel import ?⑥닚瑜?泥섎쾭???좎빞 ??
+## 2026-03-15 14:52 (Asia/Seoul)
+
+### User Requests
+- `supabase/schema.sql` ?곸껌 ?묒슜 ???뺤씤
+- SQL ?묒슜???깃났 ??(`Success. No rows returned`) ?ㅻⅨ ?ㅼ쓬 ?⑤떒怨꾨줈 ?곸꽭 媛?대뱶 ?붿껌
+
+### Changes Applied
+- SQL ?묒슜 寃곌낵 ?먮룞
+  - `Success. No rows returned`媛 DDL/trigger/policy ?뺤긽 ?깃났 ?곹깭?쇰줈 ?ㅻ챸
+- ?ㅼ쓬 ?⑤떒怨?(`Edge Function` 諛곗룷) ?곸꽭 ?⑥닚 ?묒꽦
+- ?묒뾽 濡쒓렇 異붽?
+  - `docs/SESSION_LOG.md`
+
+### Results
+- Supabase SQL schema ?묒슜 1李? ?깃났 ?먯쑝濡??먮떎
+- ?ㅼ쓬 ?⑤떒怨?蹂대룄:
+  - `refresh-market-prices` Edge Function??Dashboard ?먯꽌 `Via Editor`濡?諛곗룷
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - ?놁쓬 (guidance only)
+
+### Remaining Issues
+- Edge Function 諛곗룷
+- SMTP / URL Configuration / Vercel env ?ㅼ젙
+## 2026-03-15 16:27 (Asia/Seoul)
+
+### User Requests
+- 블루스크린으로 끊긴 Supabase/Vercel 전환 작업 이어서 복구
+- 이메일/SMTP 기반 인증을 버리고 `아이디 + 비밀번호 + 보안질문 3개` 구조로 재설계
+- 회원가입 시 10개 질문 중 3개 선택/답변 저장, 비밀번호 찾기는 질문 답변 검증 후 새 비밀번호 설정
+
+### Changes Applied
+- 프론트 인증 UI 전면 교체
+  - `web/index.html`
+  - 로그인/회원가입/비밀번호 찾기를 아이디 기준으로 변경
+  - 질문 10개 목록, 질문 3개 선택, 복구 질문 로딩/답변 입력 UI 추가
+- 프론트 인증 로직 교체
+  - `web/app.js`
+  - 이메일 로그인/회원가입/메일 재설정 제거
+  - 숨겨진 synthetic email(`users.donggri.local`) 기반 로그인 처리
+  - `register-account`, `recover-account` Edge Function 호출 로직 추가
+  - 사용자 배지를 이메일 대신 username 기준으로 변경
+- Supabase 스키마 재설계
+  - `supabase/schema.sql`
+  - `profiles.username`, `recovery_failed_attempts`, `recovery_locked_until` 추가
+  - `security_question_answers` 테이블 추가
+  - auth user 생성 trigger를 username 기반으로 교체
+  - 50명 제한 유지, RLS 재정리
+- Edge Function 추가
+  - `supabase/functions/register-account/index.ts`
+  - `supabase/functions/recover-account/index.ts`
+  - 회원가입/보안질문 검증/비밀번호 재설정 서버 처리 추가
+
+### Results
+- 로컬 코드 기준으로 메일/도메인 없이 동작하는 username auth 흐름으로 전환 완료
+- `node --check web/app.js` 통과
+- `node scripts/build-web.mjs` 통과
+- 로컬에 `deno`가 없어 Edge Function 타입 체크는 미실행
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `web/index.html`
+  - `web/app.js`
+  - `supabase/schema.sql`
+  - `supabase/functions/register-account/index.ts`
+  - `supabase/functions/recover-account/index.ts`
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - 없음 (working tree changes only)
+
+### Remaining Issues
+- Supabase Dashboard에 새 `schema.sql`을 다시 실행해야 함
+- `register-account`, `recover-account`, `refresh-market-prices` Edge Function 배포 필요
+- Edge Functions secrets에 `SUPABASE_SERVICE_ROLE_KEY` 추가 필요
+- 실제 Supabase 프로젝트에서 회원가입/로그인/비밀번호 찾기 E2E 테스트 필요
+## 2026-03-15 16:48 (Asia/Seoul)
+
+### User Requests
+- 새 `schema.sql` 재실행 성공 이후 다음 단계 안내
+- Edge Function 배포를 바로 이어서 진행
+
+### Changes Applied
+- 안내 정정
+  - Supabase 공식 문서 기준 hosted Edge Functions에는 `SUPABASE_SERVICE_ROLE_KEY`가 기본 제공된다는 점 확인
+  - `SUPABASE_` prefix custom secret 직접 추가 단계는 제거
+- 다음 원격 작업 순서를 정리
+  - Edge Function 3개 배포
+  - 이후 Vercel 재배포 및 E2E 테스트
+
+### Results
+- 사용자 기준 현재 상태:
+  - `schema.sql` 재실행 성공
+  - 다음 시작점은 `register-account`, `recover-account`, `refresh-market-prices` 배포
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - 없음 (guidance only)
+
+### Remaining Issues
+- Edge Function 3개 배포 필요
+- 이후 실제 회원가입/로그인/비밀번호 찾기 테스트 필요
+## 2026-03-15 17:12 (Asia/Seoul)
+
+### User Requests
+- `schema.sql` 재실행 성공 이후 Edge Function 배포 완료 상태에서 다음 단계 안내
+
+### Changes Applied
+- 운영 안내 보강
+  - `register-account`, `recover-account`, `refresh-market-prices` 3개 배포 완료 상태를 기준으로 다음 원격 작업 순서 정리
+  - Supabase Edge Functions auth/key 동작 기준으로 Vercel key 선택과 테스트 순서 주의사항 정리
+
+### Results
+- 현재 원격 진행 상태:
+  - `schema.sql` 재실행 성공
+  - Edge Function 3개 배포 완료
+- 다음 시작점:
+  - Vercel env 확인
+  - 재배포
+  - 회원가입/로그인/비밀번호 찾기 E2E 테스트
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - 없음 (guidance only)
+
+### Remaining Issues
+- Vercel에 어떤 Supabase key를 넣는지 확인 필요
+- 실제 브라우저 E2E 테스트 필요
+## 2026-03-15 17:20 (Asia/Seoul)
+
+### User Requests
+- Supabase 유지 방향 확정
+- Vercel 프로젝트 생성부터 단계별 안내 요청
+
+### Changes Applied
+- 운영 방향 확정 내용 정리
+  - local-only 전환 대신 `Supabase + Vercel` 조합 유지
+- Vercel 생성/배포 안내 준비
+  - GitHub import
+  - Build & Output Settings
+  - Environment Variables
+  - Redeploy / E2E test 순서로 안내
+
+### Results
+- 현재 기준 다음 시작점은 Vercel 프로젝트 생성
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - 없음 (guidance only)
+
+### Remaining Issues
+- Vercel 프로젝트 생성 및 env 입력 필요
+- 이후 회원가입/로그인/비밀번호 찾기 테스트 필요
+## 2026-03-15 20:00 (Asia/Seoul)
+
+### User Requests
+- Vercel 프로젝트 생성 중 열린 배포 상세 링크 확인 요청
+
+### Changes Applied
+- 배포 링크 상태 확인
+  - 공유된 Vercel deployment URL은 배포 상세/개요 페이지로 식별
+- 다음 확인 포인트 정리
+  - 실제 오류는 `Status` 또는 `Deployment Logs`에서 확인하도록 안내
+  - env/build 설정이 아직 안 끝났으면 그대로 이어서 진행하도록 안내
+
+### Results
+- 링크 자체만으로는 구체적인 빌드 에러 문구는 확인되지 않음
+- 현재 단계는 Vercel 프로젝트 생성/배포 진행 중으로 판단
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - 없음 (guidance only)
+
+### Remaining Issues
+- 실제 배포 에러가 있으면 `Deployment Logs` 문구 확인 필요
+- env/build/output 설정 완료 후 재배포 및 E2E 테스트 필요
+## 2026-03-15 20:08 (Asia/Seoul)
+
+### User Requests
+- Vercel build failure(`Command "uv pip install" exited with 1`) 원인 확인 및 해결
+
+### Changes Applied
+- Vercel 정적 빌드 강제 설정 추가
+  - `vercel.json`
+  - `framework: null`
+  - `installCommand: npm install`
+  - `buildCommand: npm run build`
+  - `outputDirectory: dist`
+
+### Results
+- 저장소 루트에 Python 파일/`requirements.txt`가 있어도 Vercel이 정적 웹앱 빌드 흐름을 우선 사용하도록 설정
+- 로컬 검증:
+  - `vercel.json` 값 확인 스크립트 통과
+
+### Git
+- Base commit:
+  - `59e91d14f4a222dfcdcfd459d2e40344fb8735e2`
+- Changed files:
+  - `vercel.json`
+  - `docs/SESSION_LOG.md`
+- New commit:
+  - 없음 (working tree changes only)
+
+### Remaining Issues
+- 이 설정과 `package.json`, `scripts/build-web.mjs`, `web/*`, `supabase/*` 변경이 GitHub에 push되어야 Vercel 배포에 반영됨
+- push 후 Vercel redeploy 및 회원가입/로그인/비밀번호 찾기 테스트 필요

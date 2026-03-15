@@ -1,0 +1,150 @@
+import { createClient } from "npm:@supabase/supabase-js@2";
+
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
+function jsonResponse(body: unknown, status = 200) {
+    return new Response(JSON.stringify(body), {
+        status,
+        headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+        },
+    });
+}
+
+function normalizeSymbol(symbol: string, type: string) {
+    const normalized = String(symbol || "").trim().toUpperCase();
+    if (type === "crypto" && normalized && !normalized.includes("-")) {
+        return `${normalized}-USD`;
+    }
+    return normalized;
+}
+
+function calculateRoi(quantity: number, averageBuyPrice: number, currentPrice: number) {
+    const cost = Number(quantity || 0) * Number(averageBuyPrice || 0);
+    if (cost <= 0) return 0;
+    const value = Number(quantity || 0) * Number(currentPrice || 0);
+    return ((value - cost) / cost) * 100;
+}
+
+function extractMarketPrice(payload: any): number | null {
+    const result = payload?.chart?.result?.[0];
+    if (!result) return null;
+
+    const price = result?.meta?.regularMarketPrice;
+    if (price != null) return Number(price);
+
+    const closes = result?.indicators?.quote?.[0]?.close || [];
+    for (let index = closes.length - 1; index >= 0; index -= 1) {
+        if (closes[index] != null) return Number(closes[index]);
+    }
+    return null;
+}
+
+async function fetchMarketPrice(symbol: string) {
+    const encoded = encodeURIComponent(symbol);
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encoded}?interval=1m&range=1d`;
+    const response = await fetch(url, {
+        headers: {
+            "User-Agent": "Mozilla/5.0",
+            "Accept": "application/json",
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`Yahoo Finance request failed: ${response.status}`);
+    }
+    const payload = await response.json();
+    return extractMarketPrice(payload);
+}
+
+Deno.serve(async (request) => {
+    if (request.method === "OPTIONS") {
+        return new Response("ok", { headers: corsHeaders });
+    }
+
+    if (request.method !== "POST") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+    }
+
+    try {
+        const authHeader = request.headers.get("Authorization");
+        if (!authHeader) {
+            return jsonResponse({ error: "Missing Authorization header" }, 401);
+        }
+
+        const supabaseUrl = Deno.env.get("SUPABASE_URL");
+        const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
+        if (!supabaseUrl || !supabaseAnonKey) {
+            return jsonResponse({ error: "Supabase environment is not configured" }, 500);
+        }
+
+        const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+            global: {
+                headers: {
+                    Authorization: authHeader,
+                },
+            },
+        });
+
+        const {
+            data: { user },
+            error: userError,
+        } = await supabase.auth.getUser();
+        if (userError || !user) {
+            return jsonResponse({ error: "Unauthorized" }, 401);
+        }
+
+        const { data: investments, error: investmentError } = await supabase
+            .from("investments")
+            .select("id, symbol, type, quantity, average_buy_price")
+            .in("type", ["stock", "crypto", "etf"]);
+
+        if (investmentError) {
+            return jsonResponse({ error: investmentError.message }, 400);
+        }
+
+        let updated = 0;
+        for (const investment of investments || []) {
+            try {
+                const symbol = normalizeSymbol(investment.symbol, investment.type);
+                const price = await fetchMarketPrice(symbol);
+                if (price == null) continue;
+
+                const roi = calculateRoi(
+                    Number(investment.quantity || 0),
+                    Number(investment.average_buy_price || 0),
+                    price
+                );
+
+                const { error: updateError } = await supabase
+                    .from("investments")
+                    .update({
+                        current_price: price,
+                        roi,
+                        last_updated: new Date().toISOString(),
+                    })
+                    .eq("id", investment.id);
+
+                if (!updateError) {
+                    updated += 1;
+                }
+            } catch {
+                // Skip symbols that fail to fetch so the rest of the batch can continue.
+            }
+        }
+
+        return jsonResponse({
+            total: (investments || []).length,
+            updated,
+        });
+    } catch (error) {
+        return jsonResponse(
+            { error: error instanceof Error ? error.message : "Unexpected error" },
+            500
+        );
+    }
+});

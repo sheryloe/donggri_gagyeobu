@@ -1,0 +1,8 @@
+{
+  "name": "donggri-gagyeobu",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-web.mjs",
+    "check": "node --check web/app.js"
+  }
+}

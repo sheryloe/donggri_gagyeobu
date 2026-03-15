@@ -586,14 +586,323 @@
                 padding: 10px 7px;
             }
         }
+            .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 42px;
+            padding: 0 14px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            color: #1e293b;
+            font-size: 0.82rem;
+            font-weight: 800;
+            border: 2px solid #1f2a44;
+            box-shadow: 4px 4px 0 #1f2a44;
+        }
+
+        .auth-shell {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .auth-card {
+            width: min(560px, 100%);
+            background: rgba(255, 254, 248, 0.96);
+            border: 2px solid #1f2a44;
+            border-radius: 26px;
+            box-shadow: 0 18px 40px rgba(31, 42, 68, 0.16);
+            padding: 28px;
+            backdrop-filter: blur(12px);
+        }
+
+        .auth-title {
+            margin: 0;
+            font-size: 1.9rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .auth-subtitle {
+            margin: 10px 0 0;
+            color: var(--text-sub);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .auth-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 22px 0 12px;
+        }
+
+        .auth-tab {
+            border: 2px solid #1f2a44;
+            background: white;
+            color: #1f2a44;
+            border-radius: 12px;
+            padding: 12px 10px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 #1f2a44;
+        }
+
+        .auth-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: #0a4b8f;
+            box-shadow: 4px 4px 0 #0a4b8f;
+        }
+
+        .auth-form {
+            display: grid;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .auth-stack {
+            display: grid;
+            gap: 8px;
+        }
+
+        .auth-stack label {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--text-sub);
+        }
+
+        .auth-submit {
+            margin-top: 8px;
+        }
+
+        .auth-note {
+            margin-top: 8px;
+            font-size: 0.82rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        .auth-message {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .auth-message[data-tone="error"] {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .auth-message[data-tone="success"] {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .auth-registration-note {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 0.86rem;
+            font-weight: 700;
+            line-height: 1.45;
+        }
+
+        .auth-helper {
+            margin-top: 6px;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            line-height: 1.45;
+        }
+
+        .auth-question-bank {
+            padding: 14px;
+            border-radius: 16px;
+            background: #fff7ed;
+            border: 1px solid #fdba74;
+            color: #7c2d12;
+        }
+
+        .auth-question-bank strong {
+            display: block;
+            font-size: 0.88rem;
+        }
+
+        .auth-question-list {
+            margin: 10px 0 0;
+            padding-left: 18px;
+            display: grid;
+            gap: 6px;
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
+
+        .auth-question-row {
+            display: grid;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+        }
+
+        .auth-question-card {
+            padding: 12px;
+            border-radius: 14px;
+            background: white;
+            border: 1px solid #cbd5e1;
+        }
+
+        .auth-question-number {
+            font-size: 0.76rem;
+            font-weight: 800;
+            color: #475569;
+        }
+
+        .auth-question-text {
+            margin-top: 6px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #1e293b;
+            line-height: 1.45;
+        }
+
+        .auth-recovery-wrap {
+            margin-top: 4px;
+            display: grid;
+            gap: 12px;
+        }
+
+        #app-shell[hidden],
+        #auth-shell[hidden] {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div id="auth-shell" class="auth-shell">
+    <div class="auth-card">
+        <h1 class="auth-title">동그리 가계부</h1>
+        <p class="auth-subtitle">아이디와 비밀번호로 바로 로그인하고, 비밀번호 찾기는 가입할 때 고른 보안질문 3개로 처리합니다. 메일 인증 없이 소규모 사용자용으로 단순하게 운영할 수 있게 바꿨습니다.</p>
+
+        <div class="auth-tabs">
+            <button type="button" class="auth-tab active" data-auth-mode="login">로그인</button>
+            <button type="button" class="auth-tab" data-auth-mode="signup">회원가입</button>
+            <button type="button" class="auth-tab" data-auth-mode="recovery">비밀번호 찾기</button>
+        </div>
+
+        <div id="auth-registration-note" class="auth-registration-note">회원가입 가능 인원을 확인하는 중입니다.</div>
+        <div id="auth-message" class="auth-message" hidden></div>
+
+        <form id="login-form" class="auth-form" data-auth-panel="login">
+            <div class="auth-stack">
+                <label for="login-username">아이디</label>
+                <input type="text" id="login-username" placeholder="영문 소문자/숫자/밑줄, 4~20자" autocomplete="username">
+            </div>
+            <div class="auth-stack">
+                <label for="login-password">비밀번호</label>
+                <input type="password" id="login-password" placeholder="8자 이상" autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn-main auth-submit" data-auth-submit>로그인</button>
+        </form>
+
+        <form id="signup-form" class="auth-form" data-auth-panel="signup" hidden>
+            <div class="auth-stack">
+                <label for="signup-username">아이디</label>
+                <input type="text" id="signup-username" placeholder="영문 소문자/숫자/밑줄, 4~20자" autocomplete="username">
+            </div>
+            <div class="auth-stack">
+                <label for="signup-password">비밀번호</label>
+                <input type="password" id="signup-password" placeholder="8자 이상" autocomplete="new-password">
+            </div>
+            <div class="auth-stack">
+                <label for="signup-password-confirm">비밀번호 확인</label>
+                <input type="password" id="signup-password-confirm" placeholder="비밀번호 다시 입력" autocomplete="new-password">
+            </div>
+            <div class="auth-question-bank">
+                <strong>보안질문 10개 중 3개를 골라서 답변까지 저장하세요.</strong>
+                <ol id="signup-question-bank" class="auth-question-list"></ol>
+            </div>
+            <div class="auth-question-row" data-signup-question-row>
+                <div class="auth-stack">
+                    <label>질문 1</label>
+                    <select data-signup-question-select></select>
+                </div>
+                <div class="auth-stack">
+                    <label>답변 1</label>
+                    <input type="text" data-signup-question-answer placeholder="정확히 기억할 수 있는 답변" autocomplete="off">
+                </div>
+            </div>
+            <div class="auth-question-row" data-signup-question-row>
+                <div class="auth-stack">
+                    <label>질문 2</label>
+                    <select data-signup-question-select></select>
+                </div>
+                <div class="auth-stack">
+                    <label>답변 2</label>
+                    <input type="text" data-signup-question-answer placeholder="정확히 기억할 수 있는 답변" autocomplete="off">
+                </div>
+            </div>
+            <div class="auth-question-row" data-signup-question-row>
+                <div class="auth-stack">
+                    <label>질문 3</label>
+                    <select data-signup-question-select></select>
+                </div>
+                <div class="auth-stack">
+                    <label>답변 3</label>
+                    <input type="text" data-signup-question-answer placeholder="정확히 기억할 수 있는 답변" autocomplete="off">
+                </div>
+            </div>
+            <button type="submit" class="btn-main auth-submit" data-auth-submit>회원가입</button>
+            <div class="auth-helper">아이디는 모두 소문자로 저장되고, 최대 50명까지만 가입할 수 있게 제한합니다.</div>
+        </form>
+
+        <form id="recovery-form" class="auth-form" data-auth-panel="recovery" hidden>
+            <div class="auth-stack">
+                <label for="recovery-username">아이디</label>
+                <input type="text" id="recovery-username" placeholder="가입한 아이디" autocomplete="username">
+            </div>
+            <button type="button" id="recovery-load-btn" class="btn-main auth-submit" data-auth-submit>질문 불러오기</button>
+            <div id="recovery-hint" class="auth-helper">질문 3개를 연속으로 5번 틀리면 30분 동안 다시 시도할 수 없습니다.</div>
+            <div id="recovery-question-wrap" class="auth-recovery-wrap" hidden>
+                <div id="recovery-question-list" class="auth-recovery-wrap"></div>
+                <div class="auth-stack">
+                    <label for="recovery-password">새 비밀번호</label>
+                    <input type="password" id="recovery-password" placeholder="8자 이상" autocomplete="new-password">
+                </div>
+                <div class="auth-stack">
+                    <label for="recovery-password-confirm">새 비밀번호 확인</label>
+                    <input type="password" id="recovery-password-confirm" placeholder="비밀번호 다시 입력" autocomplete="new-password">
+                </div>
+                <button type="submit" class="btn-main auth-submit" data-auth-submit>답변 확인 후 비밀번호 변경</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container" id="app-shell" hidden>
     <header class="header">
-        <div style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">가가가가계부 <small style="font-size:0.8rem; color:var(--text-sub);">v2.0</small></div>
-        <div style="display:flex; gap:10px;">
+        <div style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">가가가가계부 <small style="font-size:0.8rem; color:var(--text-sub);">Supabase Edition</small></div>
+        <div class="header-actions">
+            <span id="user-name-badge" class="user-badge">로그인 필요</span>
+            <button type="button" id="signout-btn" class="btn-main" style="background:#475569;" hidden>로그아웃</button>
             <button type="button" onclick="exportData()" class="btn-main" style="background:#1e293b;">💾 백업</button>
             <input type="file" id="file-load" style="display:none" onchange="importData(this)">
             <button type="button" onclick="document.getElementById('file-load').click()" class="btn-main" style="background:#cbd5e1; color:#1e293b;">📂 복원</button>
@@ -799,1389 +1108,9 @@
 
 <div id="toast">메시지</div>
 
-<script>
-    // =========================
-    // API 공통 (여기에 추가)
-    // =========================
-    const API_BASE = location.origin;
-    function parseApiErrorText(text, fallback = "요청 실패") {
-        if (!text) return fallback;
-        try {
-            const payload = JSON.parse(text);
-            if (payload && typeof payload.detail === "string" && payload.detail.trim()) {
-                return payload.detail.trim();
-            }
-        } catch (err) {
-            // Keep raw text fallback.
-        }
-        return text.trim() || fallback;
-    }
-
-    async function ensureOk(res, fallback) {
-        if (res.ok) return;
-        const text = await res.text();
-        throw new Error(parseApiErrorText(text, fallback));
-    }
-
-    async function apiGet(path) {
-        const res = await fetch(`${API_BASE}${path}`);
-        await ensureOk(res, "조회 실패");
-        return res.json();
-    }
-    async function apiPost(path, body) {
-        const res = await fetch(`${API_BASE}${path}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-        });
-        await ensureOk(res, "저장 실패");
-        return res.json();
-    }
-    async function apiDelete(path) {
-        const res = await fetch(`${API_BASE}${path}`, { method: "DELETE" });
-        await ensureOk(res, "삭제 실패");
-        return res.json();
-    }
-
-    async function apiPatch(path, body) {
-        const res = await fetch(`${API_BASE}${path}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-        });
-        await ensureOk(res, "수정 실패");
-        return res.json();
-    }
-
-
-    // --- Data Architecture ---
-    const DB_KEY = "ULTIMATE_LEDGER_DATA";
-    const DEFAULT_DATA = {
-        assets: [{ id: 1, name: "현금", type: "cash", balance: 0 }],
-        categories: {
-            expense: ["식비", "교통", "주거", "통신", "의료", "할부", "기타"],
-            income: ["월급", "상여", "부수입"],
-            investment: ["주식", "코인", "예적금"],
-            fixed: ["고정지출"],
-        },
-        categoryItems: [],
-        transactions: [],
-        fixed: [],
-        budgets: {},
-        investments: [],
-    };
-
-    let db = JSON.parse(localStorage.getItem(DB_KEY)) || DEFAULT_DATA;
-    if (!Array.isArray(db.assets)) db.assets = [];
-    db.assets = db.assets.map((a) => ({
-        ...a,
-        cardSettlementDay: a.cardSettlementDay ? Number(a.cardSettlementDay) : null,
-        cardSettlementAssetId: a.cardSettlementAssetId ? Number(a.cardSettlementAssetId) : null,
-    }));
-    if (!Array.isArray(db.transactions)) db.transactions = [];
-    db.transactions = db.transactions.map((t) => ({
-        ...t,
-        paymentMethod: t.paymentMethod || "asset",
-        cardAssetId: t.cardAssetId ?? null,
-        settlementDate: t.settlementDate || "",
-        isSettled: Boolean(t.isSettled),
-    }));
-    if (!Array.isArray(db.fixed)) db.fixed = [];
-    if (!Array.isArray(db.investments)) db.investments = [];
-    if (!db.budgets || typeof db.budgets !== "object") db.budgets = {};
-    if (!db.categories || typeof db.categories !== "object") db.categories = DEFAULT_DATA.categories;
-    if (!Array.isArray(db.categoryItems)) db.categoryItems = [];
-
-    let editingTxId = null;
-    let currDate = new Date();
-    let charts = { pie: null, line: null };
-    let investmentAutoRefreshTimer = null;
-
-    const CASH_ASSET_TYPES = new Set(["cash", "bank"]);
-    const LIVE_INVEST_TYPES = new Set(["stock", "crypto", "etf"]);
-    const ASSET_TYPE_LABELS = {
-        bank: "은행",
-        cash: "현금",
-        card: "카드",
-        investment: "투자계좌",
-    };
-
-    function fmtCurrency(v) {
-        return `${Math.round(Number(v || 0)).toLocaleString()}원`;
-    }
-
-    function fmtNumber(v, maxFraction = 2) {
-        return Number(v || 0).toLocaleString(undefined, { maximumFractionDigits: maxFraction });
-    }
-
-    function getMonthKey(dateObj) {
-        const y = dateObj.getFullYear();
-        const m = String(dateObj.getMonth() + 1).padStart(2, "0");
-        return `${y}-${m}`;
-    }
-
-    function normalizeCurrDateForLedger() {
-        if (!(currDate instanceof Date) || Number.isNaN(currDate.getTime())) {
-            currDate = new Date();
-        }
-        if (!Array.isArray(db.transactions) || db.transactions.length === 0) return;
-
-        const monthKey = getMonthKey(currDate);
-        const hasTxInMonth = db.transactions.some(t => (t.date || "").startsWith(monthKey));
-        if (hasTxInMonth) return;
-
-        // If current month has no rows, jump to latest transaction month.
-        const latestDate = db.transactions
-            .map(t => t.date)
-            .filter(Boolean)
-            .sort()
-            .slice(-1)[0];
-
-        if (!latestDate) return;
-        const d = new Date(`${latestDate}T12:00:00`);
-        if (!Number.isNaN(d.getTime())) {
-            currDate = d;
-        }
-    }
-
-    function assetTypeLabel(type) {
-        return ASSET_TYPE_LABELS[type] || "기타";
-    }
-
-    function assetTypeClass(type) {
-        if (["cash", "card", "investment"].includes(type)) return type;
-        return "bank";
-    }
-
-    function isCashAsset(asset) {
-        return CASH_ASSET_TYPES.has((asset.type || "bank").toLowerCase());
-    }
-
-    function monthInRange(monthStr, startMonth, endMonth) {
-        if (!startMonth) return false;
-        if (monthStr < startMonth) return false;
-        if (endMonth && monthStr > endMonth) return false;
-        return true;
-    }
-
-    function calcPendingFixedExpense(monthStr) {
-        return db.fixed.reduce((acc, f) => {
-            if (!monthInRange(monthStr, f.start, f.end)) return acc;
-
-            const paid = db.transactions.some((t) => {
-                return (
-                    t.type === "expense" &&
-                    t.date.startsWith(monthStr) &&
-                    (t.category || "") === (f.category || "") &&
-                    (t.desc || "").trim() === (f.desc || "").trim() &&
-                    Number(t.amount || 0) === Number(f.amount || 0)
-                );
-            });
-
-            return acc + (paid ? 0 : Number(f.amount || 0));
-        }, 0);
-    }
-
-    function calcCashBalance() {
-        return db.assets.reduce((sum, asset) => {
-            if (!isCashAsset(asset)) return sum;
-            return sum + Number(asset.balance || 0);
-        }, 0);
-    }
-
-    function calcCardDueByMonth(monthStr) {
-        return db.transactions.reduce((sum, t) => {
-            if ((t.paymentMethod || "asset") !== "card") return sum;
-            if (t.isSettled) return sum;
-            if (!(t.settlementDate || "").startsWith(monthStr)) return sum;
-            return sum + Number(t.amount || 0);
-        }, 0);
-    }
-
-    function calcCardDueByCard(monthStr) {
-        const bucket = {};
-        db.transactions.forEach((t) => {
-            if ((t.paymentMethod || "asset") !== "card") return;
-            if (t.isSettled) return;
-            if (!(t.settlementDate || "").startsWith(monthStr)) return;
-            const cardKey = String(t.cardAssetId || 0);
-            bucket[cardKey] = (bucket[cardKey] || 0) + Number(t.amount || 0);
-        });
-        return bucket;
-    }
-
-    function calcCardSettlementDate(txDate, settlementDay) {
-        const base = new Date(`${txDate}T12:00:00`);
-        if (Number.isNaN(base.getTime())) return "";
-
-        let year = base.getFullYear();
-        let month = base.getMonth() + 1; // next month
-        if (month > 11) {
-            year += 1;
-            month = 0;
-        }
-        const lastDay = new Date(year, month + 1, 0).getDate();
-        const day = Math.max(1, Math.min(Number(settlementDay || 1), lastDay));
-        const d = new Date(year, month, day);
-        return d.toISOString().slice(0, 10);
-    }
-
-    function updateAssetFormControls() {
-        const type = document.getElementById("a-type")?.value || "bank";
-        const dayWrap = document.getElementById("a-card-day-wrap");
-        const settleWrap = document.getElementById("a-card-settle-wrap");
-        const settleSel = document.getElementById("a-card-settle-asset");
-        if (!dayWrap || !settleWrap || !settleSel) return;
-
-        const isCard = type === "card";
-        dayWrap.style.display = isCard ? "flex" : "none";
-        settleWrap.style.display = isCard ? "flex" : "none";
-
-        const oldVal = settleSel.value;
-        settleSel.innerHTML = "";
-        db.assets
-            .filter(a => ["cash", "bank"].includes((a.type || "").toLowerCase()))
-            .forEach((a) => {
-                const opt = document.createElement("option");
-                opt.value = a.id;
-                opt.innerText = `${a.name} (${assetTypeLabel(a.type)})`;
-                settleSel.appendChild(opt);
-            });
-        if (oldVal && Array.from(settleSel.options).some(o => o.value === oldVal)) {
-            settleSel.value = oldVal;
-        }
-    }
-
-    function formatDateTime(ts) {
-        if (!ts) return "-";
-        const d = new Date(ts);
-        if (Number.isNaN(d.getTime())) return "-";
-        const yy = String(d.getFullYear()).slice(2);
-        const mm = String(d.getMonth() + 1).padStart(2, "0");
-        const dd = String(d.getDate()).padStart(2, "0");
-        const hh = String(d.getHours()).padStart(2, "0");
-        const mi = String(d.getMinutes()).padStart(2, "0");
-        return `${yy}.${mm}.${dd} ${hh}:${mi}`;
-    }
-
-    function setTxEditMode(on) {
-        const submitBtn = document.getElementById("t-submit-btn");
-        const cancelBtn = document.getElementById("t-cancel-btn");
-        if (!submitBtn || !cancelBtn) return;
-
-        if (on) {
-            submitBtn.innerText = "수정 저장";
-            cancelBtn.style.display = "inline-block";
-        } else {
-            submitBtn.innerText = "입력";
-            cancelBtn.style.display = "none";
-        }
-    }
-
-    function clearTxForm() {
-        const baseDate = (!(currDate instanceof Date) || Number.isNaN(currDate.getTime())) ? new Date() : currDate;
-        document.getElementById('t-date').valueAsDate = baseDate;
-        document.getElementById('t-type').value = "expense";
-        document.getElementById('t-asset-label').innerText = "자산";
-        updateCatSelect();
-        document.getElementById('t-desc').value = "";
-        document.getElementById('t-amt').value = "";
-    }
-
-    function cancelEditTransaction() {
-        editingTxId = null;
-        setTxEditMode(false);
-        clearTxForm();
-        showToast("수정 취소");
-    }
-
-    function updateInvestmentPriceField() {
-        const type = document.getElementById("i-type")?.value || "stock";
-        const wrap = document.getElementById("i-current-wrap");
-        const help = document.getElementById("i-help");
-        if (!wrap || !help) return;
-
-        if (type === "fund") {
-            wrap.style.display = "flex";
-            help.innerText = "펀드는 현재가를 수동 입력해서 관리합니다.";
-        } else {
-            wrap.style.display = "none";
-            help.innerText = "주식/코인/ETF는 실시간 가격을 연동합니다. 펀드는 수동 업데이트 방식입니다.";
-        }
-    }
-
-    function startInvestmentAutoRefresh() {
-        stopInvestmentAutoRefresh();
-        investmentAutoRefreshTimer = setInterval(() => {
-            if (getActiveTabId() === "investment") refreshInvestmentPrices(false);
-        }, 60000);
-    }
-
-    function stopInvestmentAutoRefresh() {
-        if (investmentAutoRefreshTimer) {
-            clearInterval(investmentAutoRefreshTimer);
-            investmentAutoRefreshTimer = null;
-        }
-    }
-
-
-    window.onload = () => {
-        document.getElementById('t-date').valueAsDate = new Date();
-        updateInvestmentPriceField();
-        updateAssetFormControls();
-        (async () => {
-            try {
-                await refreshFromApi();
-                localStorage.setItem(DB_KEY, JSON.stringify(db));
-            } catch (e) {
-                console.error(e);
-                showToast(e?.message || "백엔드 연결 실패(로컬 모드)");
-            }
-            renderAll();
-
-            switchTab(localStorage.getItem("UL_ACTIVE_TAB") || "ledger");
-        })();
-    };
-
-    function getActiveTabId() {
-        const active = document.querySelector(".view-section.active");
-        return active ? active.id.replace("view-", "") : "ledger";
-    }
-    function save() {
-        const tabId = localStorage.getItem("UL_ACTIVE_TAB") || getActiveTabId();
-        localStorage.setItem(DB_KEY, JSON.stringify(db));
-        renderAll();
-        // 탭/스크롤 복원
-        switchTab(tabId);
-    }
-
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.innerText = msg; t.style.opacity = 1;
-        setTimeout(() => t.style.opacity = 0, 1500);
-    }
-
-    // =========================
-    // API -> db 동기화 (assets, transactions)
-    // =========================
-    async function refreshFromApi() {
-        // 1) Assets
-        const assets = await apiGet("/api/assets");
-        db.assets = assets.map(a => ({
-            id: a.id,
-            name: a.name,
-            type: a.type || "bank",
-            balance: Number(a.balance || 0),
-            cardSettlementDay: a.card_settlement_day ? Number(a.card_settlement_day) : null,
-            cardSettlementAssetId: a.card_settlement_asset_id ? Number(a.card_settlement_asset_id) : null,
-        }));
-        // 2) Transactions
-        const txs = await apiGet("/api/transactions?limit=1000&offset=0");
-        db.transactions = txs.map(t => ({
-            id: t.id,
-            date: t.date,
-            type: t.type,
-            assetId: Number(t.asset_id),
-            paymentMethod: t.payment_method || "asset",
-            cardAssetId: t.card_asset_id ? Number(t.card_asset_id) : null,
-            settlementDate: t.settlement_date || "",
-            isSettled: Boolean(t.is_settled),
-            category: t.category || "",
-            desc: t.description || "",
-            amount: Number(t.amount || 0),
-        }));
-        // 3) Fixed
-        const fxs = await apiGet("/api/fixed?limit=2000&offset=0");
-        db.fixed = fxs.map(f => ({
-            id: f.id,
-            start: f.start_month,
-            end: f.end_month,
-            assetId: f.asset_id,
-            category: f.category || "",
-            desc: f.description || "",
-            amount: Number(f.amount || 0),
-        }));
-        // 4) Budgets
-        const budgets = await apiGet("/api/budgets");
-        db.budgets = {};
-        budgets.forEach(b => {
-            db.budgets[b.category] = Number(b.amount || 0);
-        });
-        // 5) Categories (여기가 반드시 async 함수 안에 있어야 함)
-        const cats = await apiGet("/api/categories");
-        db.categoryItems = cats; // id/type/name 원본
-        db.categories = { expense: [], income: [], investment: [], fixed: [] };
-        cats.forEach(c => {
-            if (!db.categories[c.type]) db.categories[c.type] = [];
-            db.categories[c.type].push(c.name);
-        });
-
-        // 6) Investments
-        const investments = await apiGet("/api/investments");
-        db.investments = investments.map(i => ({
-            id: i.id,
-            assetId: Number(i.asset_id),
-            symbol: i.symbol,
-            name: i.name || "",
-            type: i.type,
-            quantity: Number(i.quantity || 0),
-            averageBuyPrice: Number(i.average_buy_price || 0),
-            currentPrice: Number(i.current_price || 0),
-            roi: Number(i.roi || 0),
-            lastUpdated: i.last_updated,
-            createdAt: i.created_at,
-        }));
-    }
-
-
-    // --- Tab & Month Logic ---
-    function switchTab(id) {
-        // 탭 상태 저장(리로드돼도 복원용)
-        localStorage.setItem("UL_ACTIVE_TAB", id);
-        document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('view-' + id).classList.add('active');
-        // 어떤 버튼이 눌렸는지 event에 의존하지 않고 onclick 문자열로 매칭
-        document.querySelectorAll('.nav-btn').forEach(b => {
-            const oc = b.getAttribute("onclick") || "";
-            if (oc.includes(`switchTab('${id}'`)) {
-                b.classList.add('active');
-                // 모바일에서 활성 탭이 보이도록 스크롤 이동
-                if(window.innerWidth <= 768) {
-                    b.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                }
-            }
-        });
-        const monthNav = document.getElementById('month-nav');
-        if(['search', 'assets', 'settings', 'investment'].includes(id)) monthNav.style.display = 'none';
-        else monthNav.style.display = 'flex';
-        if(id === 'report') renderReport();
-        if (id === "investment") {
-            updateInvestmentPriceField();
-            startInvestmentAutoRefresh();
-            refreshInvestmentPrices(false);
-        } else {
-            stopInvestmentAutoRefresh();
-        }
-    }
-
-
-    function changeMonth(delta) {
-        currDate.setMonth(currDate.getMonth() + delta);
-        renderAll();
-    }
-
-    // --- Core CRUD ---
-    async function addTransaction() {
-        try {
-            const date = document.getElementById('t-date').value;
-            const type = document.getElementById('t-type').value; // expense/income/investment
-            const assetId = Number(document.getElementById('t-asset').value);
-            const cat = document.getElementById('t-cat').value;
-            const desc = document.getElementById('t-desc').value;
-            const amt = parseInt(document.getElementById('t-amt').value);
-
-            if(!desc || isNaN(amt)) {
-                showToast("내용과 금액을 입력해주세요");
-                return;
-            }
-
-            const selectedAsset = db.assets.find(a => a.id === assetId);
-            if (!selectedAsset) {
-                showToast("자산을 선택해주세요");
-                return;
-            }
-
-            let paymentMethod = "asset";
-            let cardAssetId = null;
-            let settlementDate = "";
-            let effectiveAssetId = assetId;
-
-            if ((selectedAsset.type || "").toLowerCase() === "card" && type === "income") {
-                showToast("수입은 카드 자산에 직접 기록할 수 없습니다. 통장/현금 자산을 선택해주세요");
-                return;
-            }
-
-            const isCardExpense = (selectedAsset.type || "").toLowerCase() === "card" && type !== "income";
-            if (isCardExpense) {
-                const settleAssetId = Number(selectedAsset.cardSettlementAssetId || 0);
-                const settleDay = Number(selectedAsset.cardSettlementDay || 0);
-                if (!settleAssetId) {
-                    showToast("카드 설정에서 결제 통장을 먼저 지정해주세요");
-                    return;
-                }
-                if (!settleDay) {
-                    showToast("카드 설정에서 결제일(매월 몇 일)을 먼저 입력해주세요");
-                    return;
-                }
-                const settleAsset = db.assets.find(a => a.id === settleAssetId);
-                if (!settleAsset) {
-                    showToast("카드 결제 통장을 찾을 수 없습니다");
-                    return;
-                }
-                if ((settleAsset.type || "").toLowerCase() === "card") {
-                    showToast("카드 결제 통장은 카드가 아닌 자산으로 설정해주세요");
-                    return;
-                }
-                paymentMethod = "card";
-                cardAssetId = selectedAsset.id;
-                effectiveAssetId = settleAssetId;
-                settlementDate = calcCardSettlementDate(date, settleDay);
-            }
-
-            const payload = {
-                date,
-                type,
-                asset_id: effectiveAssetId,
-                payment_method: paymentMethod,
-                category: cat,
-                description: desc,
-                amount: amt
-            };
-            if (paymentMethod === "card") {
-                payload.card_asset_id = cardAssetId;
-                payload.settlement_date = settlementDate;
-            }
-
-            if (editingTxId) {
-                await apiPatch(`/api/transactions/${editingTxId}`, payload);
-                editingTxId = null;
-                setTxEditMode(false);   // <-- 추가
-            } else {
-                await apiPost("/api/transactions", payload);
-            }
-
-
-            document.getElementById('t-desc').value = "";
-            document.getElementById('t-amt').value = "";
-
-            // Save month focus to the saved transaction month so the new row is visible.
-            if (date) {
-                const focusDate = new Date(`${date}T12:00:00`);
-                if (!Number.isNaN(focusDate.getTime())) {
-                    currDate = focusDate;
-                }
-            }
-
-            await refreshFromApi();
-            save(); // renderAll 포함
-            showToast("거래 저장 완료");
-            clearTxForm();
-        } catch (e) {
-            console.error(e);
-            showToast(e?.message || "거래 저장 실패");
-        }
-    }
-
-
-    async function deleteTransaction(id) {
-        if(!confirm("삭제하시겠습니까?")) return;
-        try {
-            await apiDelete(`/api/transactions/${id}`);
-            await refreshFromApi();
-            save();
-            showToast("삭제 완료");
-        } catch (e) {
-            console.error(e);
-            const message = e?.message || "삭제 실패";
-            if (message.includes("Transaction not found")) {
-                try {
-                    await refreshFromApi();
-                    save();
-                } catch (syncErr) {
-                    console.error(syncErr);
-                }
-                showToast("이미 삭제된 거래입니다. 목록 동기화 완료");
-                return;
-            }
-            showToast(message);
-        }
-    }
-    function startEditTransaction(id) {
-        const t = db.transactions.find(x => x.id === id);
-        if (!t) return;
-
-        editingTxId = id;
-        setTxEditMode(true);
-
-        document.getElementById('t-date').value = t.date;
-        document.getElementById('t-type').value = t.type;
-
-        updateCatSelect(); // type에 맞춰 t-cat 옵션 재생성
-        document.getElementById('t-asset-label').innerText = "자산";
-        document.getElementById('t-asset').value = String(t.cardAssetId || t.assetId);
-
-        // 카테고리가 옵션에 없으면(삭제된 경우 등) 일단 공백 처리
-        const catSel = document.getElementById('t-cat');
-        const hasCat = Array.from(catSel.options).some(o => o.value === (t.category ?? ""));
-        if (hasCat) catSel.value = t.category ?? "";
-        else catSel.selectedIndex = 0;
-
-        document.getElementById('t-desc').value = t.desc ?? "";
-        document.getElementById('t-amt').value = t.amount ?? 0;
-
-        // 폼 있는 위치로 스크롤(선택)
-        document.querySelector('.input-group').scrollIntoView({ behavior: 'smooth' });
-        document.getElementById('t-desc').focus();
-
-        showToast("수정 모드로 전환되었습니다.");
-    }
-
-
-    async function addAsset() {
-        try {
-            const name = document.getElementById('a-name').value.trim();
-            const type = document.getElementById('a-type').value;
-            const bal = Number(document.getElementById('a-bal').value) || 0;
-            const cardDay = Number(document.getElementById('a-card-day').value || 0);
-            const cardSettleAssetId = Number(document.getElementById('a-card-settle-asset').value || 0);
-            if(!name) return;
-
-            const payload = { name, type, balance: bal };
-            if (type === "card") {
-                if (!cardDay || cardDay < 1 || cardDay > 31) {
-                    showToast("카드 결제일(1~31)을 입력해주세요");
-                    return;
-                }
-                if (!cardSettleAssetId) {
-                    showToast("카드 결제 통장을 선택해주세요");
-                    return;
-                }
-                payload.card_settlement_day = cardDay;
-                payload.card_settlement_asset_id = cardSettleAssetId;
-            }
-            await apiPost("/api/assets", payload);
-
-            document.getElementById('a-name').value = "";
-            document.getElementById('a-type').value = "bank";
-            document.getElementById('a-bal').value = 0;
-            document.getElementById('a-card-day').value = "";
-            document.getElementById('a-card-settle-asset').value = "";
-
-            await refreshFromApi();
-            updateAssetFormControls();
-            save();
-            showToast("자산 저장 완료");
-        } catch (e) {
-            console.error(e);
-            showToast(e?.message || "자산 저장 실패");
-        }
-        }
-
-    async function addFixed() {
-    try {
-        const start = document.getElementById('f-start').value; // YYYY-MM
-        const end = document.getElementById('f-end').value;     // YYYY-MM
-        const assetId = Number(document.getElementById('f-asset').value);
-        const cat = document.getElementById('f-cat').value;
-        const desc = document.getElementById('f-desc').value;
-        const amt = parseInt(document.getElementById('f-amt').value);
-        if(!start || !end || !desc || isNaN(amt)) return;
-        await apiPost("/api/fixed", {
-        start_month: start,
-        end_month: end,
-        asset_id: assetId,
-        category: cat,
-        description: desc,
-        amount: amt
-        });
-        document.getElementById('f-desc').value = "";
-        document.getElementById('f-amt').value = "";
-        await refreshFromApi();
-        save();
-        showToast("고정지출 등록 완료");
-    } catch (e) {
-        console.error(e);
-        showToast(e?.message || "고정지출 등록 실패");
-    }
-    }
-    async function deleteFixed(id) {
-    if(!confirm("고정 지출을 삭제할까요?")) return;
-    try {
-        await apiDelete(`/api/fixed/${id}`);
-        await refreshFromApi();
-        save();
-        showToast("고정지출 삭제 완료");
-    } catch (e) {
-        console.error(e);
-        showToast(e?.message || "고정지출 삭제 실패");
-    }
-    }
-
-    async function deleteAsset(id) {
-        if(!confirm("자산을 삭제하면 관련된 내역에 문제가 생길 수 있습니다.")) return;
-        try {
-            await apiDelete(`/api/assets/${id}`);
-            await refreshFromApi();
-            save();
-            showToast("자산 삭제 완료");
-        } catch (e) {
-            console.error(e);
-            const message = e?.message || "자산 삭제 실패";
-            const hasLinkedData = message.includes("연결된 데이터");
-            if (message.includes("Asset not found")) {
-                try {
-                    await refreshFromApi();
-                    save();
-                } catch (syncErr) {
-                    console.error(syncErr);
-                }
-                showToast("이미 삭제된 자산입니다. 목록 동기화 완료");
-                return;
-            }
-            if (!hasLinkedData) {
-                showToast(message);
-                return;
-            }
-
-            const dateMatch = message.match(/\d{4}-\d{2}-\d{2}/);
-            if (dateMatch) {
-                const focusDate = new Date(`${dateMatch[0]}T12:00:00`);
-                if (!Number.isNaN(focusDate.getTime())) {
-                    currDate = focusDate;
-                }
-            }
-            switchTab("ledger");
-            renderAll();
-
-            const forceDelete = confirm(
-                `${message}\n\n연결된 내역까지 모두 삭제하고 자산을 강제 삭제할까요?`
-            );
-            if (!forceDelete) {
-                showToast("자산 삭제가 취소되었습니다");
-                return;
-            }
-
-            try {
-                await apiDelete(`/api/assets/${id}?force=true`);
-                await refreshFromApi();
-                save();
-                showToast("자산/연결내역 강제 삭제 완료");
-            } catch (forceError) {
-                console.error(forceError);
-                showToast(forceError?.message || "강제 삭제 실패");
-            }
-        }
-    }
-
-    async function setBudget() {
-        try {
-            const cat = document.getElementById('b-cat').value;
-            const amt = parseInt(document.getElementById('b-amt').value);
-            if(!cat || isNaN(amt)) return;
-
-            await apiPost("/api/budgets", { category: cat, amount: amt });
-
-            await refreshFromApi();
-            save();
-            showToast("예산 저장 완료");
-        } catch (e) {
-            console.error(e);
-            showToast(e?.message || "예산 저장 실패");
-        }
-    }
-        async function addCategory(type) {
-        const inputId = type === "expense" ? "new-cat-exp" : (type === "income" ? "new-cat-inc" : null);
-            if (!inputId) return;
-
-            const name = document.getElementById(inputId).value.trim();
-            if (!name) return;
-
-            try {
-                await apiPost("/api/categories", { type, name, sort_order: 0, is_active: true });
-                document.getElementById(inputId).value = "";
-                await refreshFromApi();
-                save();
-                showToast("카테고리 추가 완료");
-            } catch (e) {
-                console.error(e);
-                showToast(e?.message || "카테고리 추가 실패");
-            }
-        }
-
-        async function deleteCategory(id) {
-            if (!confirm("카테고리를 삭제할까요?")) return;
-            try {
-                await apiDelete(`/api/categories/${id}`);
-                await refreshFromApi();
-                save();
-                showToast("카테고리 삭제 완료");
-            } catch (e) {
-                console.error(e);
-                showToast(e?.message || "카테고리 삭제 실패");
-            }
-        }
-
-    async function addInvestment() {
-        try {
-            const type = document.getElementById("i-type").value;
-            const symbol = document.getElementById("i-symbol").value.trim();
-            const name = document.getElementById("i-name").value.trim();
-            const assetId = Number(document.getElementById("i-asset").value);
-            const quantity = Number(document.getElementById("i-qty").value);
-            const averageBuyPrice = Number(document.getElementById("i-buy-price").value);
-            const currentPrice = Number(document.getElementById("i-current-price").value);
-
-            if (!symbol) {
-                showToast("심볼/코드를 입력해주세요");
-                return;
-            }
-            if (!assetId) {
-                showToast("연결 자산을 선택해주세요");
-                return;
-            }
-            if (!Number.isFinite(quantity) || quantity <= 0 || !Number.isFinite(averageBuyPrice) || averageBuyPrice <= 0) {
-                showToast("수량/평균매수가를 확인해주세요");
-                return;
-            }
-            if (type === "fund" && (!Number.isFinite(currentPrice) || currentPrice <= 0)) {
-                showToast("펀드는 현재가(수동)를 입력해주세요");
-                return;
-            }
-
-            const payload = {
-                asset_id: assetId,
-                symbol,
-                name: name || null,
-                type,
-                quantity,
-                average_buy_price: averageBuyPrice,
-            };
-            if (type === "fund") payload.current_price = currentPrice;
-
-            await apiPost("/api/investments", payload);
-
-            document.getElementById("i-symbol").value = "";
-            document.getElementById("i-name").value = "";
-            document.getElementById("i-qty").value = "";
-            document.getElementById("i-buy-price").value = "";
-            document.getElementById("i-current-price").value = "";
-
-            await refreshFromApi();
-            save();
-            showToast("투자 항목 추가 완료");
-        } catch (e) {
-            console.error(e);
-            showToast(e?.message || "투자 항목 추가 실패");
-        }
-    }
-
-    async function deleteInvestment(id) {
-        if (!confirm("투자 항목을 삭제할까요?")) return;
-        try {
-            await apiDelete(`/api/investments/${id}`);
-            await refreshFromApi();
-            save();
-            showToast("투자 항목 삭제 완료");
-        } catch (e) {
-            console.error(e);
-            showToast(e?.message || "투자 항목 삭제 실패");
-        }
-    }
-
-    async function updateFundPrice(id) {
-        const input = document.getElementById(`fund-price-${id}`);
-        if (!input) return;
-        const price = Number(input.value);
-        if (!Number.isFinite(price) || price <= 0) {
-            showToast("현재가를 정확히 입력해주세요");
-            return;
-        }
-
-        try {
-            await apiPatch(`/api/investments/${id}`, { current_price: price });
-            await refreshFromApi();
-            renderInvest();
-            showToast("펀드 현재가 업데이트 완료");
-        } catch (e) {
-            console.error(e);
-            showToast(e?.message || "펀드 현재가 업데이트 실패");
-        }
-    }
-
-    async function refreshInvestmentPrices(showToastMessage = false) {
-        const liveCount = db.investments.filter(i => LIVE_INVEST_TYPES.has(i.type)).length;
-        if (liveCount === 0) {
-            if (showToastMessage) showToast("실시간 가격 연동 가능한 항목이 없습니다");
-            return;
-        }
-
-        const refreshBtn = document.getElementById("invest-refresh-btn");
-        if (refreshBtn) {
-            refreshBtn.disabled = true;
-            refreshBtn.innerText = "갱신 중...";
-        }
-
-        try {
-            const result = await apiPost("/api/investments/refresh-prices", {});
-            await refreshFromApi();
-            renderInvest();
-            if (showToastMessage) {
-                showToast(`${result.updated}/${result.total}개 가격 갱신`);
-            }
-        } catch (e) {
-            console.error(e);
-            if (showToastMessage) showToast(e?.message || "실시간 가격 갱신 실패");
-        } finally {
-            if (refreshBtn) {
-                refreshBtn.disabled = false;
-                refreshBtn.innerText = "실시간 가격 새로고침";
-            }
-        }
-    }
-
-
-
-    // --- Rendering Engines ---
-    function updateCatSelect() {
-        const type = document.getElementById('t-type').value;
-        const catSel = document.getElementById('t-cat');
-        catSel.innerHTML = "";
-        if(db.categories[type]) {
-            db.categories[type].forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c; opt.innerText = c;
-                catSel.appendChild(opt);
-            });
-        }
-    }
-
-    function renderAll() {
-        normalizeCurrDateForLedger();
-        const monthStr = getMonthKey(currDate);
-        document.getElementById('display-month').innerText = `${currDate.getFullYear()}년 ${currDate.getMonth() + 1}월`;
-
-        // Asset Dropdowns
-        ['t-asset', 'f-asset', 'i-asset'].forEach(id => {
-            const sel = document.getElementById(id);
-            if (!sel) return;
-            const oldVal = sel.value; // 값 유지 시도
-            sel.innerHTML = "";
-            db.assets.forEach(a => {
-                const opt = document.createElement('option');
-                opt.value = a.id;
-                opt.innerText = `${a.name} (${assetTypeLabel(a.type)})`;
-                sel.appendChild(opt);
-            });
-            if (oldVal && Array.from(sel.options).some(o => o.value === oldVal)) sel.value = oldVal;
-        });
-
-        // Fixed Cat Dropdown
-        const fCat = document.getElementById('f-cat');
-        fCat.innerHTML = ""; 
-        if(db.categories.expense) {
-            db.categories.expense.forEach(c => {
-                const opt = document.createElement('option'); opt.value = c; opt.innerText = c; fCat.appendChild(opt);
-            });
-        }
-
-        // Budget Cat Dropdown
-        const bCat = document.getElementById('b-cat');
-        bCat.innerHTML = ""; 
-        if(db.categories.expense) {
-            db.categories.expense.forEach(c => {
-                const opt = document.createElement('option'); opt.value = c; opt.innerText = c; bCat.appendChild(opt);
-            });
-        }
-
-        // 현재 폼 상태가 비어있다면 업데이트 (편집중 아닐때만)
-        if(!editingTxId) updateCatSelect();
-        updateAssetFormControls();
-        updateInvestmentPriceField();
-
-        // 1. Asset Tray
-        const tray = document.getElementById('asset-tray-display');
-        const cashTotal = calcCashBalance();
-        const pendingFixed = calcPendingFixedExpense(monthStr);
-        const cardDue = calcCardDueByMonth(monthStr);
-        const safeBalance = cashTotal - pendingFixed - cardDue;
-
-        tray.innerHTML = `
-            <div class="asset-item total-cash">
-                <div class="asset-top">
-                <div class="asset-name">가용 현금 잔액</div>
-                    <span class="asset-type-badge cash">현금 기준</span>
-                </div>
-                <div class="asset-balance">${fmtCurrency(safeBalance)}</div>
-                <div class="asset-meta">현금합계 ${fmtCurrency(cashTotal)} - 미지출 고정비 ${fmtCurrency(pendingFixed)} - 카드결제예정 ${fmtCurrency(cardDue)}</div>
-            </div>
-        `;
-
-        const dueByCard = calcCardDueByCard(monthStr);
-        Object.keys(dueByCard).forEach((cardKey) => {
-            const cardAsset = db.assets.find(a => String(a.id) === String(cardKey));
-            if (!cardAsset) return;
-            tray.innerHTML += `
-                <div class="asset-item">
-                    <div class="asset-top">
-                        <div class="asset-name">${cardAsset.name}</div>
-                        <span class="asset-type-badge card">카드 결제예정</span>
-                    </div>
-                    <div class="asset-balance">${fmtCurrency(dueByCard[cardKey])}</div>
-                    <div class="asset-meta">${monthStr} 결제 예정</div>
-                </div>
-            `;
-        });
-
-        db.assets
-            .slice()
-            .sort((a, b) => Number(b.balance || 0) - Number(a.balance || 0))
-            .forEach(a => {
-                tray.innerHTML += `
-                    <div class="asset-item">
-                        <div class="asset-top">
-                            <div class="asset-name">${a.name}</div>
-                            <span class="asset-type-badge ${assetTypeClass(a.type)}">${assetTypeLabel(a.type)}</span>
-                        </div>
-                        <div class="asset-balance">${fmtCurrency(a.balance)}</div>
-                        <div class="asset-meta">잔액 입력값 + 거래 내역 반영</div>
-                    </div>
-                `;
-            });
-
-        // 2. Summary & Ledger
-        let mInc = 0, mExp = 0;
-        const list = document.getElementById('ledger-list');
-        list.innerHTML = "";
-        
-        // 이월금 계산 (간소화)
-        let carry = 0;
-        db.transactions.forEach(t => {
-            if(t.date < monthStr + "-01") {
-                if(t.type === 'income') carry += t.amount; else carry -= t.amount;
-            }
-        });
-
-        const monthTx = db.transactions
-            .filter(t => t.date.startsWith(monthStr))
-            .sort((a,b)=>new Date(b.date)-new Date(a.date));
-
-        if (monthTx.length === 0) {
-            list.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-sub); padding:28px 12px;">해당 월 거래 내역이 없습니다. 저장한 날짜의 월을 확인해 주세요.</td></tr>`;
-        }
-
-        monthTx.forEach(t => {
-            if(t.type === 'income') mInc += t.amount;
-            else if (t.type === 'expense') mExp += t.amount;
-
-            const settleAssetName = db.assets.find(a => a.id == t.assetId)?.name || "-";
-            const cardName = t.cardAssetId ? (db.assets.find(a => a.id == t.cardAssetId)?.name || "카드") : "";
-            const payLabel = (t.paymentMethod || "asset") === "card"
-                ? `${cardName} -> ${settleAssetName}${t.settlementDate ? ` (${t.settlementDate})` : ""}${t.isSettled ? " [결제완료]" : " [결제전]"}`
-                : settleAssetName;
-            const typeLabel = t.type === "income" ? "수입" : t.type === "investment" ? "투자" : "지출";
-            const typeColor = t.type === "income" ? "var(--income)" : t.type === "investment" ? "var(--invest)" : "var(--expense)";
-
-            list.innerHTML += `
-                <tr>
-                    <td>${t.date.slice(5)}</td>
-                    <td style="color:${typeColor}; font-weight:800;">${typeLabel}</td>
-                    <td>${payLabel}</td>
-                    <td>${t.category || "-"}</td>
-                    <td>${t.desc || ""}</td>
-                    <td style="text-align:right; font-weight:700;">${fmtCurrency(t.amount)}</td>
-                    <td style="text-align:center;">
-                        <button type="button" onclick="startEditTransaction(${t.id})" style="border:1px solid #cbd5e1; background:white; border-radius:4px; cursor:pointer;">✏️</button>
-                        <button type="button" onclick="deleteTransaction(${t.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:4px; cursor:pointer; margin-left:4px;">🗑️</button>
-                    </td>
-                </tr>
-            `;
-        });
-        document.getElementById('val-carry').innerText = fmtCurrency(carry);
-        document.getElementById('val-inc').innerText = fmtCurrency(mInc);
-        document.getElementById('val-exp').innerText = fmtCurrency(mExp);
-        document.getElementById('val-pending').innerText = fmtCurrency(pendingFixed);
-        document.getElementById('val-card-due').innerText = fmtCurrency(cardDue);
-        document.getElementById('val-bal').innerText = fmtCurrency(safeBalance);
-        document.getElementById('val-bal-sub').innerText = `현금 ${fmtCurrency(cashTotal)} / 고정비 남음 ${fmtCurrency(pendingFixed)} / 카드결제예정 ${fmtCurrency(cardDue)}`;
-
-        // 3. Calendar
-        renderCalendar(monthStr);
-
-        // 4. Fixed (Grouped)
-        renderFixedGrouped();
-
-        // 5. Budget
-        renderBudgets(monthStr);
-
-        // 6. Investment
-        renderInvest();
-
-        // 7. Assets Table
-        const aBody = document.getElementById('asset-body');
-        aBody.innerHTML = "";
-        db.assets.forEach(a => {
-            let cardConfigText = "-";
-            if ((a.type || "").toLowerCase() === "card") {
-                const settleAsset = db.assets.find(x => x.id === Number(a.cardSettlementAssetId));
-                const settleName = settleAsset ? settleAsset.name : "미설정";
-                const dayText = a.cardSettlementDay ? `매월 ${a.cardSettlementDay}일` : "결제일 미설정";
-                cardConfigText = `${dayText} / ${settleName}`;
-            }
-            aBody.innerHTML += `
-                <tr>
-                    <td>${a.name}</td>
-                    <td><span class="asset-pill ${assetTypeClass(a.type)}">${assetTypeLabel(a.type)}</span></td>
-                    <td>${cardConfigText}</td>
-                    <td style="text-align:right;">${fmtCurrency(a.balance)}</td>
-                    <td style="text-align:center;">
-                        <button type="button" onclick="deleteAsset(${a.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:4px;">🗑️</button>
-                    </td>
-                </tr>
-            `;
-        });
-
-        // 8. Settings
-        renderSettings();
-
-    }
-
-    function renderCalendar(monthStr) {
-        const body = document.getElementById('calendar-body');
-        body.innerHTML = "";
-        const year = currDate.getFullYear(), month = currDate.getMonth();
-        const firstDay = new Date(year, month, 1).getDay();
-        const lastDate = new Date(year, month + 1, 0).getDate();
-
-        for(let i=0; i<firstDay; i++) body.innerHTML += `<div class="day-cell" style="background:#f8fafc"></div>`;
-        for(let i=1; i<=lastDate; i++) {
-            const dayStr = `${monthStr}-${String(i).padStart(2,'0')}`;
-            let dInc = 0, dExp = 0;
-            db.transactions.filter(t => t.date === dayStr).forEach(t => {
-                if(t.type === 'income') dInc += t.amount;
-                else if (t.type === 'expense') dExp += t.amount;
-            });
-            body.innerHTML += `
-                <div class="day-cell">
-                    <div class="day-num">${i}</div>
-                    <div class="day-stat" style="color:var(--income)">${dInc?'+'+(dInc/10000).toFixed(0)+'만':''}</div>
-                    <div class="day-stat" style="color:var(--expense)">${dExp?'-'+(dExp/10000).toFixed(0)+'만':''}</div>
-                </div>
-            `;
-        }
-    }
-
-    function renderFixedGrouped() {
-        const grid = document.getElementById('fixed-display-grid');
-        grid.innerHTML = "";
-        const groups = db.fixed.reduce((acc, f) => {
-            if(!acc[f.category]) acc[f.category] = [];
-            acc[f.category].push(f);
-            return acc;
-        }, {});
-
-        Object.keys(groups).forEach(cat => {
-            let entries = groups[cat].map(f => `
-            <div class="fixed-entry">
-                <div>
-                <strong>${f.desc}</strong><br>
-                <small>${f.start} ~ ${f.end}</small>
-                </div>
-                <div style="text-align:right">
-                <strong>${f.amount.toLocaleString()}원</strong><br>
-                <button type="button" onclick="deleteFixed(${f.id})" style="font-size:0.7rem; border:none; cursor:pointer; background:#fee2e2; color:#ef4444; padding:2px 6px; border-radius:4px; margin-top:2px;">삭제</button>
-                </div>
-            </div>
-            `).join("");
-
-            grid.innerHTML += `<div class="fixed-cat-card"><h4>${cat}</h4>${entries}</div>`;
-        });
-    }
-
-    function renderBudgets(monthStr) {
-        const list = document.getElementById('budget-list');
-        list.innerHTML = "";
-        const spends = db.transactions.filter(t => t.date.startsWith(monthStr) && t.type === 'expense').reduce((acc, t) => {
-            acc[t.category] = (acc[t.category] || 0) + t.amount; return acc;
-        }, {});
-
-        Object.keys(db.budgets).forEach(cat => {
-            const goal = Number(db.budgets[cat] || 0);
-            if (goal <= 0) return;
-            const used = spends[cat] || 0;
-            const per = Math.min((used / goal) * 100, 100);
-            const color = per > 90 ? 'var(--expense)' : (per > 70 ? 'var(--invest)' : 'var(--income)');
-            list.innerHTML += `
-                <div class="card">
-                    <div style="display:flex; justify-content:space-between;"><strong>${cat}</strong><span>${Math.round(per)}%</span></div>
-                    <div class="budget-bar-bg"><div class="budget-bar-fill" style="width:${per}%; background:${color};"></div></div>
-                    <div style="font-size:0.8rem; margin-top:5px; color:var(--text-sub);">${fmtCurrency(used)} / ${fmtCurrency(goal)}</div>
-                </div>
-            `;
-        });
-    }
-
-    function renderInvest() {
-        const body = document.getElementById("invest-list");
-        body.innerHTML = "";
-
-        let totalCost = 0;
-        let totalValue = 0;
-
-        db.investments
-            .slice()
-            .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
-            .forEach(i => {
-                const currentPrice = Number(i.currentPrice || i.averageBuyPrice || 0);
-                const cost = Number(i.quantity || 0) * Number(i.averageBuyPrice || 0);
-                const value = Number(i.quantity || 0) * currentPrice;
-                const profit = value - cost;
-                const roi = cost > 0 ? (profit / cost) * 100 : 0;
-                const assetName = db.assets.find(a => a.id === i.assetId)?.name || "-";
-
-                totalCost += cost;
-                totalValue += value;
-
-                const roiClass = roi >= 0 ? "roi-positive" : "roi-negative";
-                const typeLabel = i.type === "fund" ? "펀드" : i.type === "crypto" ? "코인" : i.type === "etf" ? "ETF" : "주식";
-                const priceCell = i.type === "fund"
-                    ? `
-                        <div class="inline-price-editor">
-                            <input type="number" id="fund-price-${i.id}" value="${Number(currentPrice || 0)}" step="0.01">
-                            <button type="button" class="btn-main secondary" style="height:34px; padding:0 10px;" onclick="updateFundPrice(${i.id})">반영</button>
-                        </div>
-                    `
-                    : fmtCurrency(currentPrice);
-
-                body.innerHTML += `
-                    <tr>
-                        <td><strong>${i.symbol}</strong><br><small>${i.name || ""}</small></td>
-                        <td>${typeLabel}</td>
-                        <td>${assetName}</td>
-                        <td style="text-align:right;">${fmtNumber(i.quantity, 6)}</td>
-                        <td style="text-align:right;">${fmtCurrency(i.averageBuyPrice)}</td>
-                        <td style="text-align:right;">${priceCell}</td>
-                        <td style="text-align:right;">${fmtCurrency(cost)}</td>
-                        <td style="text-align:right;">${fmtCurrency(value)}</td>
-                        <td style="text-align:right;"><span class="${roiClass}">${roi.toFixed(2)}%</span></td>
-                        <td>${formatDateTime(i.lastUpdated)}</td>
-                        <td style="text-align:center;">
-                            <button type="button" onclick="deleteInvestment(${i.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:6px; cursor:pointer;">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-        const totalProfit = totalValue - totalCost;
-        const totalRoi = totalCost > 0 ? (totalProfit / totalCost) * 100 : 0;
-
-        document.getElementById("invest-total-cost").innerText = fmtCurrency(totalCost);
-        document.getElementById("invest-total-value").innerText = fmtCurrency(totalValue);
-
-        const profitEl = document.getElementById("invest-total-profit");
-        profitEl.innerText = fmtCurrency(totalProfit);
-        profitEl.className = `value ${totalProfit >= 0 ? "roi-positive" : "roi-negative"}`;
-
-        const roiEl = document.getElementById("invest-total-roi");
-        roiEl.innerText = `${totalRoi.toFixed(2)}%`;
-        roiEl.className = `value ${totalRoi >= 0 ? "roi-positive" : "roi-negative"}`;
-    }
-
-    function searchData() {
-        const q = document.getElementById('s-query').value.toLowerCase();
-        const body = document.getElementById('search-list'); body.innerHTML = "";
-        db.transactions.filter(t => (t.desc || "").toLowerCase().includes(q) || (t.category || "").toLowerCase().includes(q)).forEach(t => {
-            body.innerHTML += `<tr><td>${t.date}</td><td>${t.category || "-"}</td><td>${t.desc || ""}</td><td style="text-align:right">${fmtCurrency(t.amount)}</td></tr>`;
-        });
-    }
-
-    function renderSettings() {
-        const expBox = document.getElementById('set-cat-exp');
-        const incBox = document.getElementById('set-cat-inc');
-        expBox.innerHTML = "";
-        incBox.innerHTML = "";
-
-        const items = db.categoryItems || [];
-
-        items.filter(c => c.type === "expense").forEach(c => {
-            expBox.innerHTML += `
-            <span style="background:#f1f5f9; padding:8px 12px; border-radius:15px; font-size:0.85rem; display:inline-flex; align-items:center;">
-                ${c.name}
-                <button type="button" onclick="deleteCategory(${c.id})" style="margin-left:6px; border:none; cursor:pointer; background:#cbd5e1; border-radius:50%; width:18px; height:18px; line-height:18px; font-size:10px; padding:0;">✕</button>
-            </span>`;
-        });
-
-        items.filter(c => c.type === "income").forEach(c => {
-            incBox.innerHTML += `
-            <span style="background:#f1f5f9; padding:8px 12px; border-radius:15px; font-size:0.85rem; display:inline-flex; align-items:center;">
-                ${c.name}
-                <button type="button" onclick="deleteCategory(${c.id})" style="margin-left:6px; border:none; cursor:pointer; background:#cbd5e1; border-radius:50%; width:18px; height:18px; line-height:18px; font-size:10px; padding:0;">✕</button>
-            </span>`;
-        });
-    }
-
-    function renderReport() {
-        const monthStr = getMonthKey(currDate);
-        const catData = db.transactions.filter(t => t.date.startsWith(monthStr) && t.type === 'expense').reduce((acc, t) => {
-            acc[t.category] = (acc[t.category] || 0) + t.amount; return acc;
-        }, {});
-
-        if(charts.pie) charts.pie.destroy();
-        charts.pie = new Chart(document.getElementById('chart-pie'), {
-            type: 'doughnut',
-            data: {
-                labels: Object.keys(catData),
-                datasets: [{ data: Object.values(catData), backgroundColor: ['#1774d1', '#16a34a', '#f59e0b', '#ef4444', '#0ea5e9', '#f97316'] }]
-            },
-            options: { plugins: { title: { display: true, text: '이번 달 지출 비중' } }, maintainAspectRatio: false }
-        });
-
-        // 6개월 추이
-        const labels = []; const incs = []; const exps = [];
-        for(let i=5; i>=0; i--) {
-            let d = new Date(); d.setMonth(d.getMonth() - i);
-            let s = getMonthKey(d);
-            labels.push(s);
-            let ti = 0, te = 0;
-            db.transactions.filter(t => t.date.startsWith(s)).forEach(t => {
-                if(t.type === 'income') ti += t.amount; else if(t.type === 'expense') te += t.amount;
-            });
-            incs.push(ti); exps.push(te);
-        }
-
-        if(charts.line) charts.line.destroy();
-        charts.line = new Chart(document.getElementById('chart-line'), {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    { label: '수입', data: incs, borderColor: '#10b981', fill: false },
-                    { label: '지출', data: exps, borderColor: '#ef4444', fill: false }
-                ]
-            },
-            options: { plugins: { title: { display: true, text: '최근 6개월 추이' } }, maintainAspectRatio: false }
-        });
-    }
-
-    function exportData() {
-        const blob = new Blob([JSON.stringify(db)], {type: 'application/json'});
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-        a.download = `architect_ledger_${new Date().toISOString().slice(0,10)}.json`; a.click();
-    }
-
-    function importData(input) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const loaded = JSON.parse(e.target.result);
-                db = { ...DEFAULT_DATA, ...loaded };
-                if (!Array.isArray(db.assets)) db.assets = [];
-                if (!Array.isArray(db.transactions)) db.transactions = [];
-                if (!Array.isArray(db.fixed)) db.fixed = [];
-                if (!Array.isArray(db.investments)) db.investments = [];
-                if (!Array.isArray(db.categoryItems)) db.categoryItems = [];
-                if (!db.budgets || typeof db.budgets !== "object") db.budgets = {};
-                save();
-                alert("복원 완료!");
-            } catch (err) {
-                console.error(err);
-                alert("복원 실패: 파일 형식 확인 필요");
-            }
-        };
-        reader.readAsText(input.files[0]);
-    }
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./app-config.js"></script>
+<script src="./app.js"></script>
 
 </body>
 </html>
-
