@@ -1139,3 +1139,34 @@
 ### Remaining Issues
 - Notion 부모 페이지 `32461b8ed53c8008bbfffe194db4bf5e`를 Integration `donggri`에 직접 연결해야 함
 - 연결 후 Step 1~5 하위페이지 자동 생성 재시도 필요
+
+## 2026-03-15 22:24 (Asia/Seoul)
+
+### User Requests
+- Notion 연결을 다시 했으니 Step 1~5 하위페이지를 자동으로 생성해달라고 재요청
+
+### Changes Applied
+- Notion API 접근 재확인
+  - 부모 페이지 `32461b8ed53c8008bbfffe194db4bf5e` 조회 성공 확인
+- Notion 하위페이지 자동 생성
+  - 부모 페이지 아래에 Step 1~5 페이지 생성
+  - 각 페이지에 `추천 제목`, `검색 유입 키워드`, `문제`, `왜 이렇게 구현했는가`, `구현 포인트`, `기능 확인`, `다음 단계` 구조의 본문 추가
+- 테스트용 임시 페이지 정리
+  - `API Test Child`
+  - `Step 1 Test`
+  - 두 페이지는 archive 처리
+
+### Results
+- 아래 5개 하위페이지 생성 완료
+  - `Step 1. 로컬 FastAPI + SQLite로 개인 가계부 MVP 만들기`
+  - `Step 2. 카드 결제예정, 고정지출, 투자까지 붙여 실사용 가계부로 넓히기`
+  - `Step 3. GitHub Pages 랜딩과 SEO 구조로 프로젝트 설명력을 높이기`
+  - `Step 4. Supabase + Vercel로 서비스형 구조로 전환하기`
+  - `Step 5. 아이디 인증, 보안질문 복구, 실시간 시세 안정화까지 마무리하기`
+
+### Git
+- Changed files:
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
