@@ -1200,6 +1200,28 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
 
+## 2026-03-15 22:58 (Asia/Seoul)
+
+### User Requests
+- `README.md`의 `Local Build` 설명이 너무 허술하니, 비개발자도 바로 따라 할 수 있게 더 자세히 보강
+
+### Changes Applied
+- `README.md`
+  - `Local Build` 섹션 전면 보강
+  - 준비물, 프로젝트 폴더 여는 법, `npm install`, Supabase 값 준비, PowerShell 환경변수 입력, 빌드 실행, `dist` 결과 확인, 로컬 미리보기, 자주 막히는 문제까지 단계형으로 재작성
+  - 단순 명령 나열 대신 “왜 이 단계를 하는지”와 “어디서 막히는지”를 함께 설명
+
+### Results
+- 비개발자 기준에서도 로컬 빌드 흐름을 따라가며 `dist/` 생성과 로컬 미리보기를 할 수 있는 README가 됨
+
+### Git
+- Changed files:
+  - `README.md`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
+
 ## 2026-03-15 22:51 (Asia/Seoul)
 
 ### User Requests

@@ -166,20 +166,60 @@
 
 ## Local Build
 
+프로그래머가 아니어도 따라 할 수 있게, 로컬에서 빌드해서 화면 확인하는 순서를 단계별로 적습니다.
+
+### 1. 준비물
+
+아래 3가지만 있으면 됩니다.
+
+- 이 GitHub 저장소를 내려받은 폴더
+- `Node.js` 설치
+  - `LTS` 버전 권장
+  - 설치 후 `npm` 명령을 사용할 수 있어야 함
+- `PowerShell` 또는 `명령 프롬프트`
+
+저장소를 받는 방법은 둘 중 하나면 됩니다.
+
+- GitHub에서 `Code > Download ZIP`으로 내려받기
+- 또는 `git clone`으로 복제하기
+
+### 2. 프로젝트 폴더 열기
+
+압축을 풀었거나 클론한 뒤, 프로젝트 폴더를 엽니다.
+
+예:
+
+```text
+d:\Donggri Github\donggri_gagyeobu
+```
+
+그 다음 가장 쉬운 방법은 아래 둘 중 하나입니다.
+
+1. 폴더 빈 곳에서 `Shift + 마우스 우클릭`
+2. `PowerShell 창 열기` 또는 `터미널 열기`
+
+또는 VS Code를 쓰면:
+
+1. 폴더를 VS Code로 열기
+2. 상단 메뉴 `터미널 > 새 터미널`
+
+### 3. 필요한 파일 설치
+
+처음 한 번만 아래 명령을 실행합니다.
+
 ```bash
 npm install
-npm run build
 ```
 
-추가 확인:
+이 명령은 빌드에 필요한 Node 패키지를 설치합니다.
 
-```bash
-node --check web/app.js
-```
+정상이라면 에러 없이 설치가 끝납니다.  
+만약 `npm`을 찾을 수 없다고 나오면, Node.js가 아직 설치되지 않았거나 설치 후 터미널을 다시 열지 않은 경우가 많습니다.
 
-## Environment Variables
+### 4. Supabase 값 준비
 
-Vercel에는 아래 값이 필요합니다.
+이 앱은 정적 웹앱이지만 실제 로그인과 데이터 저장은 Supabase를 사용합니다.  
+그래서 빌드 전에 최소한 아래 값 3개를 준비해야 합니다.
 
 ```text
 SUPABASE_URL
@@ -187,10 +227,130 @@ SUPABASE_ANON_KEY
 APP_NAME
 ```
 
-주의:
+값을 어디서 찾는지:
+
+- `SUPABASE_URL`
+  - Supabase 프로젝트의 URL
+- `SUPABASE_ANON_KEY`
+  - 브라우저에서 써도 되는 공개 키
+- `APP_NAME`
+  - 앱 이름
+  - 예: `Donggri Ledger`
+
+중요:
 
 - `SUPABASE_SERVICE_ROLE_KEY`는 브라우저 환경변수에 넣지 않습니다.
 - 회원가입 / 비밀번호 찾기용 Edge Function은 로그인 전 호출되므로 JWT 설정을 따로 확인해야 합니다.
+
+### 5. PowerShell에 환경변수 넣기
+
+Windows PowerShell 기준으로는 아래처럼 입력하면 됩니다.
+
+```powershell
+$env:SUPABASE_URL="https://your-project-ref.supabase.co"
+$env:SUPABASE_ANON_KEY="여기에_공개키"
+$env:APP_NAME="Donggri Ledger"
+```
+
+macOS / Linux 터미널이면 아래처럼 입력합니다.
+
+```bash
+export SUPABASE_URL="https://your-project-ref.supabase.co"
+export SUPABASE_ANON_KEY="여기에_공개키"
+export APP_NAME="Donggri Ledger"
+```
+
+### 6. 빌드 실행
+
+환경변수를 넣은 같은 터미널에서 아래 명령을 실행합니다.
+
+```bash
+npm run build
+```
+
+이 명령이 하는 일:
+
+- `web/index.html`과 `web/app.js`를 `dist/`로 복사
+- 환경변수 값을 바탕으로 `dist/app-config.js` 생성
+- 정적 배포용 폴더 `dist/` 완성
+
+### 7. 빌드 결과 확인
+
+빌드가 끝나면 프로젝트 폴더 안에 `dist` 폴더가 생깁니다.
+
+정상이라면 아래 파일들이 보여야 합니다.
+
+- `dist/index.html`
+- `dist/app.js`
+- `dist/app-config.js`
+
+특히 `dist/app-config.js`를 열어서 아래처럼 `YOUR_SUPABASE_URL` 같은 자리표시자가 남아 있지 않은지 확인하세요.
+
+```js
+window.APP_CONFIG = {
+  SUPABASE_URL: "실제 프로젝트 URL",
+  SUPABASE_ANON_KEY: "실제 공개 키",
+  APP_NAME: "Donggri Ledger"
+};
+```
+
+### 8. 문법 확인
+
+프론트 코드 문법만 빠르게 확인하고 싶으면 아래 명령도 같이 돌리면 좋습니다.
+
+```bash
+node --check web/app.js
+```
+
+에러가 없으면 조용히 끝납니다.
+
+### 9. 로컬에서 화면 미리보기
+
+`dist` 폴더는 정적 웹 파일이라, 브라우저에서 바로 열기보다 간단한 로컬 서버로 보는 것이 안전합니다.
+
+가장 쉬운 방법:
+
+```bash
+npx serve dist
+```
+
+처음 실행 시 설치 여부를 물으면 `y`를 입력하면 됩니다.
+
+그 다음 터미널에 표시되는 주소를 브라우저로 열면 됩니다.  
+보통 아래와 비슷하게 뜹니다.
+
+```text
+http://localhost:3000
+```
+
+### 10. 가장 자주 막히는 문제
+
+#### `npm` 명령이 안 되는 경우
+
+- Node.js가 설치되지 않았거나
+- 설치 후 터미널을 다시 열지 않은 경우가 많습니다.
+
+#### 빌드는 됐는데 로그인이나 데이터 연결이 안 되는 경우
+
+- `SUPABASE_URL`과 `SUPABASE_ANON_KEY`가 같은 프로젝트 값인지 확인하세요.
+- `dist/app-config.js` 안에 자리표시자 문자열이 남아 있지 않은지 확인하세요.
+
+#### 회원가입이나 비밀번호 찾기가 안 되는 경우
+
+- Supabase Edge Function의 JWT 설정
+- Supabase SQL 스키마 반영 상태
+- Vercel / Supabase 프로젝트 키 혼용 여부
+
+이 세 가지를 먼저 확인하는 것이 좋습니다.
+
+### 11. Vercel 배포용으로만 빌드할 때
+
+로컬에서 화면 확인은 하지 않고 배포용 파일만 만들고 싶다면 아래 두 줄만 기억하면 됩니다.
+
+```bash
+npm install
+npm run build
+```
 
 ## Notes
 
