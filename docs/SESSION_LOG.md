@@ -1813,3 +1813,38 @@
 ### Remaining Issues
 - 로컬 저장소 문서 변경분 커밋/푸시 필요
 - GitHub Pages에는 위키 링크는 이미 있지만 Step 6 빌드 스토리 자체를 별도 노출할지 추후 판단 가능
+
+## 2026-03-16 00:31 (Asia/Seoul)
+
+### User Requests
+- Codex 관련 대화 로그를 다시 불러올 수 있게 아카이브로 저장
+- `명세서.md`에 방금 반영한 멀티통화 투자 개편, Step 6 문서화, 위키/README 동기화 내용을 최신 상태로 업데이트
+
+### Changes Applied
+- Codex 후속 작업 전용 아카이브 문서 추가
+  - `docs/archive/동그리-가계부-codex-로그-2026-03-16.md`
+  - 멀티통화 투자 구조 개편, Step 6 문서화, GitHub Wiki/README 연동, 남은 검증 항목을 한 문서로 정리
+- 기존 회수용 아카이브에 Codex 후속 로그 링크 추가
+  - `docs/archive/동그리-가계부.md`
+- 명세서 최신화
+  - `명세서.md`
+  - 투자 관리에 `market`, `currency`, `fx_rate_krw`, 심볼 검색 기반 입력, 원통화/원화 환산 표시 반영
+  - 화면/문서 작업에 Notion Step 6, GitHub Wiki `Build Story` 반영 내역 추가
+  - 현재 문제점/보완점/추가기능에 검색 품질, 입력 가이드, 환율 기능 관련 항목 추가
+
+### Results
+- 최근 Codex 작업 흐름을 `docs/archive/` 아래 별도 파일로 보관해 다음 세션에서 빠르게 맥락 복구 가능
+- `명세서.md`가 현재 앱 구조와 문서 상태를 더 정확하게 설명하도록 업데이트됨
+- 기존 메인 아카이브와 세션 로그, 신규 Codex 아카이브가 서로 연결된 형태로 정리됨
+
+### Git
+- Commit:
+  - `868c5465856312425d1921e8854796df11d52025`
+  - `docs: archive codex logs and update specification`
+- Changed files:
+  - `명세서.md`
+  - `docs/archive/동그리-가계부.md`
+  - `docs/archive/동그리-가계부-codex-로그-2026-03-16.md`
+
+### Remaining Issues
+- `refresh-market-prices`, `search-market-symbols` 최신 코드 재배포와 실사용 검증은 별도로 남아 있음
