@@ -165,6 +165,7 @@ Deno.serve(async (request) => {
         }
 
         return jsonResponse({
+            ok: true,
             total: (investments || []).length,
             updated,
         });

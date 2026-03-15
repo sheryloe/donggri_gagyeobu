@@ -1200,6 +1200,38 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
 
+## 2026-03-15 23:45 (Asia/Seoul)
+
+### User Requests
+- 투자 탭에서 `실시간 가격 새로고침 요청 실패`가 뜨는 문제 해결
+
+### Changes Applied
+- `web/app.js`
+  - 공통 `invokeEdgeFunction()` 응답 처리 보강
+  - Edge Function 응답에 `ok` 필드가 없는 구버전 성공 payload도 정상 성공으로 처리하도록 변경
+  - `ok` 필드가 실제로 존재하면서 `false`일 때만 실패로 간주하도록 수정
+- `supabase/functions/refresh-market-prices/index.ts`
+  - 성공 응답 payload에 `ok: true` 추가
+  - 회원가입/복구 함수와 동일한 응답 형태로 맞춤
+
+### Verification
+- `node --check web/app.js`
+- `node scripts/build-web.mjs`
+
+### Results
+- `refresh-market-prices`가 성공 응답을 돌려도 프론트에서 실패로 오인하던 가능성을 제거
+- Edge Function 응답 규격이 다른 함수들과 일관되게 정리됨
+
+### Git
+- Changed files:
+  - `web/app.js`
+  - `supabase/functions/refresh-market-prices/index.ts`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- 실제 Supabase에 `refresh-market-prices` 함수 재배포가 필요할 수 있음
+- Vercel 최신 프론트 배포 후 실제 시세 새로고침 동작 재확인 필요
+
 ## 2026-03-15 23:37 (Asia/Seoul)
 
 ### User Requests

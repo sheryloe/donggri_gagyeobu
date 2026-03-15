@@ -685,7 +685,9 @@ async function invokeEdgeFunction(functionName, body) {
         }
         throw new Error(message);
     }
-    if (!data?.ok) {
+    // Older function responses may return payloads without an explicit { ok: true } marker.
+    // Only treat the response as an error when the ok field exists and is false.
+    if (data && typeof data === "object" && "ok" in data && !data.ok) {
         throw new Error(data?.error || "요청 처리 실패");
     }
     return data;
