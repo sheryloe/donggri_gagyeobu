@@ -1115,3 +1115,27 @@
 ### Remaining Issues
 - Notion 부모 페이지를 Integration `donggri`에 공유해야 Step 1~5 하위페이지 생성 가능
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
+
+## 2026-03-15 22:18 (Asia/Seoul)
+
+### User Requests
+- Notion 부모 페이지 공유를 다시 했으니 Step 1~5 하위페이지를 자동 생성해달라고 요청
+
+### Changes Applied
+- Notion API 접근 재확인
+  - 사용자 제공 토큰으로 `GET /v1/pages/32461b8ed53c8008bbfffe194db4bf5e` 재시도
+  - MCP `notion-fetch`도 별도로 시도했으나 세션 인증이 없어 사용 불가 확인
+
+### Results
+- Notion Public API가 여전히 아래 오류를 반환함
+  - `object_not_found`
+  - `Could not find page with ID ... Make sure the relevant pages and databases are shared with your integration "donggri".`
+- 즉 편집 권한을 사람/링크에 준 것과 별개로, 부모 페이지를 Integration `donggri`의 `Connections`에 직접 추가해야 자동 생성 가능
+
+### Git
+- Changed files:
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- Notion 부모 페이지 `32461b8ed53c8008bbfffe194db4bf5e`를 Integration `donggri`에 직접 연결해야 함
+- 연결 후 Step 1~5 하위페이지 자동 생성 재시도 필요
