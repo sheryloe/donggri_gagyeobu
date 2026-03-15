@@ -1232,6 +1232,44 @@
 - 실제 Supabase에 `refresh-market-prices` 함수 재배포가 필요할 수 있음
 - Vercel 최신 프론트 배포 후 실제 시세 새로고침 동작 재확인 필요
 
+## 2026-03-15 23:55 (Asia/Seoul)
+
+### User Requests
+- `BITO`가 `10원`처럼 보이고 수익률이 `-99.96%`로 깨지는 문제 원인 확인 및 수정
+
+### Changes Applied
+- 원인 분석
+  - 현재 투자 화면은 모든 가격을 `fmtCurrency()`로 `원` 기준 표시
+  - `BITO` 같은 미국 ETF는 Yahoo Finance에서 `USD` 시세를 받아오는데, 앱은 이를 원화처럼 취급하고 있었음
+  - 이 상태에서 사용자가 평균 매수가는 원화 기준으로 입력하면 현재가만 달러 숫자로 들어와 수익률이 비정상적으로 계산될 수 있음
+- `supabase/functions/refresh-market-prices/index.ts`
+  - Yahoo 응답에서 가격뿐 아니라 `currency` 메타도 함께 읽도록 변경
+  - `USD` 시세는 `USD/KRW` 환율을 추가 조회해 원화로 환산 후 `current_price` 저장
+  - `KRW=X` / `USDKRW=X` 둘 다 시도하고, 응답 형태에 따라 정/역방향 환율을 정규화하는 로직 추가
+- `web/app.js`
+  - 투자 입력 안내 문구를 “해외 종목은 원화 환산 가격으로 반영되므로 평균 매수가는 원화 기준으로 입력”하는 방향으로 수정
+- `web/index.html`
+  - 투자 입력 도움말 문구를 같은 기준으로 수정
+
+### Verification
+- `node --check web/app.js`
+- `node scripts/build-web.mjs`
+
+### Results
+- 미국 ETF / 해외 종목 / USD 기반 코인의 실시간 가격이 원화 기준으로 다시 반영될 수 있는 구조로 수정됨
+- `BITO`처럼 달러 자산이 `10원`처럼 보이던 문제를 원화 환산 기준으로 바로잡는 방향으로 정리됨
+
+### Git
+- Changed files:
+  - `supabase/functions/refresh-market-prices/index.ts`
+  - `web/app.js`
+  - `web/index.html`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- 실제 Supabase에 `refresh-market-prices` 함수 재배포 필요
+- 사용자 환경에서 한 번 더 `실시간 가격 새로고침`을 눌러 기존 USD 저장값을 KRW 환산값으로 덮어써야 함
+
 ## 2026-03-15 23:37 (Asia/Seoul)
 
 ### User Requests

@@ -43,6 +43,14 @@ function describeError(error: unknown) {
     return "Unexpected error";
 }
 
+function normalizeFxRate(value: number | null | undefined): number | null {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric) || numeric <= 0) return null;
+    if (numeric > 500 && numeric < 3000) return numeric;
+    if (numeric > 0 && numeric < 1) return 1 / numeric;
+    return null;
+}
+
 function normalizeSymbol(symbol: string, type: string) {
     const normalized = String(symbol || "").trim().toUpperCase();
     if (type === "crypto" && normalized && !normalized.includes("-")) {
@@ -58,21 +66,25 @@ function calculateRoi(quantity: number, averageBuyPrice: number, currentPrice: n
     return ((value - cost) / cost) * 100;
 }
 
-function extractMarketPrice(payload: any): number | null {
+function extractMarketQuote(payload: any): { price: number | null; currency: string } {
     const result = payload?.chart?.result?.[0];
-    if (!result) return null;
+    if (!result) return { price: null, currency: "" };
+
+    const currency = String(result?.meta?.currency || "").toUpperCase();
 
     const price = result?.meta?.regularMarketPrice;
-    if (price != null) return Number(price);
+    if (price != null) return { price: Number(price), currency };
 
     const closes = result?.indicators?.quote?.[0]?.close || [];
     for (let index = closes.length - 1; index >= 0; index -= 1) {
-        if (closes[index] != null) return Number(closes[index]);
+        if (closes[index] != null) {
+            return { price: Number(closes[index]), currency };
+        }
     }
-    return null;
+    return { price: null, currency };
 }
 
-async function fetchMarketPrice(symbol: string) {
+async function fetchMarketQuote(symbol: string) {
     const encoded = encodeURIComponent(symbol);
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encoded}?interval=1m&range=1d`;
     const response = await fetch(url, {
@@ -85,7 +97,22 @@ async function fetchMarketPrice(symbol: string) {
         throw new Error(`Yahoo Finance request failed: ${response.status}`);
     }
     const payload = await response.json();
-    return extractMarketPrice(payload);
+    return extractMarketQuote(payload);
+}
+
+async function fetchUsdKrwRate() {
+    for (const symbol of ["KRW=X", "USDKRW=X"]) {
+        try {
+            const quote = await fetchMarketQuote(symbol);
+            const rate = normalizeFxRate(quote.price);
+            if (rate != null) {
+                return rate;
+            }
+        } catch {
+            // Try the next fallback symbol when Yahoo Finance rejects one of them.
+        }
+    }
+    throw new Error("USD/KRW rate fetch failed");
 }
 
 Deno.serve(async (request) => {
@@ -135,22 +162,29 @@ Deno.serve(async (request) => {
         }
 
         let updated = 0;
+        let usdKrwRate: number | null = null;
         for (const investment of investments || []) {
             try {
                 const symbol = normalizeSymbol(investment.symbol, investment.type);
-                const price = await fetchMarketPrice(symbol);
-                if (price == null) continue;
+                const quote = await fetchMarketQuote(symbol);
+                if (quote.price == null) continue;
+
+                let marketPrice = Number(quote.price);
+                if (quote.currency === "USD") {
+                    usdKrwRate = usdKrwRate ?? await fetchUsdKrwRate();
+                    marketPrice *= usdKrwRate;
+                }
 
                 const roi = calculateRoi(
                     Number(investment.quantity || 0),
                     Number(investment.average_buy_price || 0),
-                    price
+                    marketPrice
                 );
 
                 const { error: updateError } = await supabase
                     .from("investments")
                     .update({
-                        current_price: price,
+                        current_price: marketPrice,
                         roi,
                         last_updated: new Date().toISOString(),
                     })

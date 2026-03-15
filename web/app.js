@@ -416,7 +416,7 @@ let editingTxId = null;
             help.innerText = "펀드는 현재가를 수동 입력해서 관리합니다.";
         } else {
             wrap.style.display = "none";
-            help.innerText = "주식/코인/ETF는 실시간 가격을 연동합니다. 펀드는 수동 업데이트 방식입니다.";
+            help.innerText = "주식/코인/ETF는 실시간 가격을 연동합니다. 해외 종목은 원화 환산 가격으로 반영되므로 평균 매수가는 원화 기준으로 입력해주세요.";
         }
     }
 
