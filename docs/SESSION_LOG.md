@@ -1171,6 +1171,35 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
 
+## 2026-03-15 22:54 (Asia/Seoul)
+
+### User Requests
+- `README.md`를 더 고도화하고 현재 실제 앱 주소도 함께 반영
+- `명세서.md`에 정리한 핵심 내용을 README에도 필요한 만큼 녹여 넣기
+
+### Changes Applied
+- `README.md` 전면 재작성
+  - 실제 서비스 주소(`https://donggri-gagyeobu.vercel.app/`) 추가
+  - GitHub Pages / Repository 링크를 상단 Quick Links로 재정리
+  - 현재 운영 구조, 핵심 기능, 주요 화면, 아키텍처, 현재 상태, 문제점, 다음 작업, 저장소 구조를 제품 문서형으로 재구성
+  - Notion 중심의 운영용 링크는 제거하고 서비스/코드 중심 정보만 유지
+  - `명세서.md`에 적은 현재 문제점과 추천 기능 일부를 README에 맞게 요약 반영
+
+### Verification
+- `https://donggri-gagyeobu.vercel.app/` 응답 확인 (`200`)
+
+### Results
+- README가 단순 기능 목록이 아니라 실제 서비스 소개 문서 형태로 정리됨
+- 저장소 첫 화면에서 앱 주소, 현재 구조, 기능, 운영 상태를 바로 파악할 수 있게 됨
+
+### Git
+- Changed files:
+  - `README.md`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
+
 ## 2026-03-15 22:51 (Asia/Seoul)
 
 ### User Requests
