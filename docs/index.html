@@ -1,54 +1,27 @@
-<!doctype html>
-<html lang="ko">
-  <head>
+<!DOCTYPE html>
+<html lang="ko" data-theme="emerald">
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Donggri Ledger | 카드 결제예정과 투자 흐름을 함께 보는 개인 가계부 서비스</title>
-    <meta
-      name="description"
-      content="Donggri Ledger는 Supabase, Vercel, GitHub 기반으로 운영하는 개인 가계부 서비스입니다. 카드 결제예정, 고정지출, 예산, 투자 포트폴리오, 백업과 복원을 한 흐름으로 관리합니다."
-    >
-    <meta
-      name="keywords"
-      content="personal finance dashboard, budget tracker, supabase ledger, vercel finance app, 카드 결제예정 가계부, 투자 포트폴리오 가계부, 개인 재무 대시보드"
-    >
+    
+    <meta name="description" content="Donggri Ledger는 Supabase, Vercel, GitHub 기반으로 운영하는 개인 가계부 서비스입니다. 카드 결제예정, 고정지출, 예산, 투자 포트폴리오, 백업과 복원을 한 흐름으로 관리합니다.">
+    <meta name="keywords" content="personal finance dashboard, budget tracker, supabase ledger, vercel finance app, 카드 결제예정 가계부, 투자 포트폴리오 가계부, 개인 재무 대시보드">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="googlebot" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#03c75a">
     <meta property="og:type" content="website">
-    <meta property="og:locale" content="ko_KR">
     <meta property="og:site_name" content="Donggri Ledger">
     <meta property="og:title" content="Donggri Ledger | 카드 결제예정과 투자 흐름을 함께 보는 개인 가계부 서비스">
-    <meta
-      property="og:description"
-      content="회원가입, 카드 결제예정, 고정지출, 예산, 투자 포트폴리오, 백업과 복원을 지원하는 개인 가계부 서비스입니다."
-    >
-    <meta
-      property="og:image"
-      content="https://sheryloe.github.io/donggri_gagyeobu/assets/screenshots/donggri-ledger-dashboard.png"
-    >
-    <meta property="og:image:alt" content="Donggri Ledger 대시보드 전체 화면">
+    <meta property="og:description" content="회원가입, 카드 결제예정, 고정지출, 예산, 투자 포트폴리오, 백업과 복원을 지원하는 개인 가계부 서비스입니다.">
+    <meta property="og:image" content="https://sheryloe.github.io/donggri_gagyeobu/assets/screenshots/donggri-ledger-dashboard.png">
     <meta property="og:url" content="https://sheryloe.github.io/donggri_gagyeobu/">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Donggri Ledger">
-    <meta
-      name="twitter:description"
-      content="Supabase와 Vercel로 운영하는 개인 가계부 서비스. 카드 결제예정, 고정지출, 투자 포트폴리오를 한 흐름으로 관리합니다."
-    >
-    <meta
-      name="twitter:image"
-      content="https://sheryloe.github.io/donggri_gagyeobu/assets/screenshots/donggri-ledger-dashboard.png"
-    >
-    <link rel="canonical" href="https://sheryloe.github.io/donggri_gagyeobu/">
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Manrope:wght@600;700;800&display=swap"
-      rel="stylesheet"
-    >
-    <link rel="stylesheet" href="styles.css">
+    
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -59,328 +32,355 @@
             "alternateName": "donggri_gagyeobu",
             "applicationCategory": "FinanceApplication",
             "operatingSystem": "Web",
-            "browserRequirements": "Modern web browser",
-            "description": "Supabase, Vercel, GitHub 기반으로 운영하는 개인 가계부 서비스입니다. 카드 결제예정, 고정지출, 예산, 투자 포트폴리오, 백업과 복원을 한 흐름으로 관리합니다.",
+            "description": "Supabase, Vercel, GitHub 기반으로 운영하는 개인 가계부 서비스입니다.",
             "url": "https://sheryloe.github.io/donggri_gagyeobu/",
             "codeRepository": "https://github.com/sheryloe/donggri_gagyeobu",
-            "sameAs": [
-              "https://github.com/sheryloe/donggri_gagyeobu",
-              "https://github.com/sheryloe/donggri_gagyeobu/wiki",
-              "https://donggri-gagyeobu.vercel.app/"
-            ],
-            "screenshot": [
-              "https://sheryloe.github.io/donggri_gagyeobu/assets/screenshots/donggri-ledger-dashboard.png",
-              "https://sheryloe.github.io/donggri_gagyeobu/assets/screenshots/donggri-ledger-investments.png"
-            ],
-            "featureList": [
-              "아이디 로그인과 보안질문 기반 비밀번호 재설정",
-              "카드 결제예정과 결제통장 관리",
-              "고정지출과 예산 관리",
-              "실시간 가격 기반 투자 포트폴리오 추적",
-              "JSON 백업과 복원"
-            ],
-            "author": {
-              "@type": "Person",
-              "name": "sheryloe"
-            }
+            "author": { "@type": "Person", "name": "sheryloe" }
           }
         ]
       }
     </script>
-  </head>
-  <body>
-    <div class="portal-shell">
-      <header class="utility-bar">
-        <div class="utility-brand">
-          <span class="utility-dot"></span>
-          <span>Donggri Ledger</span>
-        </div>
-        <nav class="utility-links" aria-label="상단 링크">
-          <a href="https://github.com/sheryloe/donggri_gagyeobu">Repository</a>
-          <a href="https://github.com/sheryloe/donggri_gagyeobu/wiki">Wiki</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#faq">FAQ</a>
-        </nav>
-      </header>
 
-      <main id="top">
-        <section class="masthead" id="overview">
-          <div class="masthead-top">
-            <a class="brand-lockup" href="#top" aria-label="첫 화면으로 이동">
-              <span class="brand-mark">DG</span>
-              <span class="brand-copy">
-                <strong>Donggri Ledger</strong>
-                <span>Personal finance service</span>
-              </span>
+    <style>
+        body { font-family: "Pretendard", sans-serif; scroll-behavior: smooth; }
+        .hero-gradient { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+    </style>
+</head>
+<body class="bg-base-100 text-base-content">
+
+    <div class="sticky top-0 z-50 navbar bg-base-100/80 backdrop-blur border-b border-base-200 px-4 lg:px-12">
+        <div class="flex-1">
+            <a href="#top" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 bg-primary text-primary-content flex items-center justify-center rounded-xl font-black text-xl shadow-lg group-hover:scale-110 transition-transform">DG</div>
+                <div class="flex flex-col">
+                    <span class="text-lg font-bold leading-none">Donggri Ledger</span>
+                    <span class="text-[10px] uppercase tracking-widest opacity-60">Personal finance service</span>
+                </div>
             </a>
-            <div class="masthead-actions">
-              <a class="action-link primary" href="https://github.com/sheryloe/donggri_gagyeobu">GitHub</a>
-              <a class="action-link" href="https://github.com/sheryloe/donggri_gagyeobu/wiki">Wiki</a>
-              <a class="action-link" href="#screens">화면 보기</a>
-            </div>
-          </div>
-
-          <div class="search-band" aria-label="서비스 요약">
-            <span class="search-badge">DL</span>
-            <div class="search-copy">
-              <strong><span class="tone-accent">카드 결제예정</span>과 <span class="tone-accent">투자 흐름</span>을 함께 관리하는 개인 가계부 서비스</strong>
-              <span>Supabase, Vercel, GitHub 기반으로 운영되는 서비스형 구조</span>
-            </div>
-          </div>
-
-          <nav class="quick-links" aria-label="빠른 섹션 이동">
-            <a href="#feature-board">핵심 기능</a>
-            <a href="#screens">서비스 화면</a>
-            <a href="#architecture">서비스 구조</a>
-            <a href="#roadmap">다음 로드맵</a>
-          </nav>
-        </section>
-
-        <section class="home-grid">
-          <article class="lead-panel">
-            <div class="lead-copy">
-              <p class="eyebrow">Main overview</p>
-              <h1><span class="tone-dark">생활비 흐름</span>과 <span class="tone-accent">자산 상태</span>를 같이 보는 가계부</h1>
-              <p>
-                단순 입력 중심이 아니라, 카드 결제일과 실제 자산 흐름까지 같이 확인할 수 있게 설계했습니다.
-              </p>
-            </div>
-            <figure class="lead-shot">
-              <img
-                src="assets/screenshots/donggri-ledger-dashboard.png"
-                alt="Donggri Ledger 메인 대시보드 전체 화면"
-                loading="eager"
-              >
-            </figure>
-            <div class="lead-metrics">
-              <div class="metric-card highlight">
-                <span>회원가입 / 복구</span>
-                <strong>아이디 + 보안질문</strong>
-              </div>
-              <div class="metric-card highlight">
-                <span>카드 흐름</span>
-                <strong>결제예정 자동 계산</strong>
-              </div>
-              <div class="metric-card">
-                <span>투자</span>
-                <strong>실시간 가격 갱신</strong>
-              </div>
-            </div>
-          </article>
-
-          <aside class="side-board">
-            <article class="side-card emphasis">
-              <span class="card-label">Service stack</span>
-              <strong>브라우저 UI, 인증, 데이터, 함수 로직을 분리 운영</strong>
-              <p>Frontend는 Vercel, 인증과 데이터는 Supabase, 코드와 문서는 GitHub로 나눴습니다.</p>
-            </article>
-            <article class="side-card">
-              <span class="card-label">사용 흐름</span>
-              <ul>
-                <li>회원가입과 로그인</li>
-                <li>거래 입력과 자산 분리</li>
-                <li>카드 결제예정 확인</li>
-                <li>예산과 투자 추적</li>
-              </ul>
-            </article>
-            <article class="side-card">
-              <span class="card-label">운영 포인트</span>
-              <ul>
-                <li>50명 가입 제한</li>
-                <li>JSON 백업과 복원</li>
-                <li>RLS 기반 사용자 분리</li>
-                <li>Git 기반 변경 이력 관리</li>
-              </ul>
-            </article>
-          </aside>
-        </section>
-
-        <section class="section-block" id="feature-board">
-          <div class="section-head">
-            <p class="eyebrow">Feature board</p>
-            <h2>핵심 기능 보드</h2>
-          </div>
-          <div class="module-grid">
-            <article class="module-card featured">
-              <strong>계정 접근</strong>
-              <p>아이디 로그인, 보안질문 복구, 50명 제한.</p>
-            </article>
-            <article class="module-card featured">
-              <strong>거래 관리</strong>
-              <p>수입, 지출, 투자 거래를 월 흐름 중심으로 관리.</p>
-            </article>
-            <article class="module-card featured">
-              <strong>자산 분리</strong>
-              <p>은행, 현금, 카드, 투자계좌를 각각 분리.</p>
-            </article>
-            <article class="module-card">
-              <strong>카드 결제예정</strong>
-              <p>결제일과 결제통장을 연결해 자동 계산.</p>
-            </article>
-            <article class="module-card">
-              <strong>고정지출과 예산</strong>
-              <p>카테고리별 예산과 월 고정지출을 동시 관리.</p>
-            </article>
-            <article class="module-card">
-              <strong>투자 포트폴리오</strong>
-              <p>주식, 코인, ETF, 펀드의 평가금과 수익률 추적.</p>
-            </article>
-            <article class="module-card">
-              <strong>백업과 복원</strong>
-              <p>JSON 내보내기와 복원 지원.</p>
-            </article>
-            <article class="module-card">
-              <strong>운영 로그</strong>
-              <p>세션 로그와 Git 커밋 기준으로 작업 이력 관리.</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="section-block screen-block" id="screens">
-          <div class="section-head">
-            <p class="eyebrow">Screens</p>
-            <h2>실제 서비스 화면</h2>
-          </div>
-          <div class="screen-layout">
-            <figure class="screen-card main">
-              <img
-                src="assets/screenshots/donggri-ledger-dashboard.png"
-                alt="Donggri Ledger 대시보드 전체 화면"
-                loading="lazy"
-              >
-              <figcaption>
-                <strong>Dashboard</strong>
-                <span>자산, 카드 결제예정, 월별 요약, 거래 입력을 한 화면에서 확인.</span>
-              </figcaption>
-            </figure>
-            <figure class="screen-card side">
-              <img
-                src="assets/screenshots/donggri-ledger-investments.png"
-                alt="Donggri Ledger 투자 화면 전체 캡처"
-                loading="lazy"
-              >
-              <figcaption>
-                <strong>Investments</strong>
-                <span>종목 등록, 평가금, 수익률, 실시간 가격 갱신 흐름.</span>
-              </figcaption>
-            </figure>
-          </div>
-        </section>
-
-        <section class="section-block" id="architecture">
-          <div class="section-head">
-            <p class="eyebrow">Architecture</p>
-            <h2>서비스 구조와 저장소 구조</h2>
-          </div>
-          <div class="stack-board">
-            <article class="stack-panel">
-              <span class="card-label">Service</span>
-              <ul class="stack-list">
-                <li>
-                  <strong>Frontend</strong>
-                  <p>정적 웹 앱을 Vercel에 배포하고 브라우저에서 UI를 처리합니다.</p>
-                </li>
-                <li>
-                  <strong>Auth / Database</strong>
-                  <p>Supabase Auth, Postgres, RLS로 접근 제어와 사용자별 데이터 분리를 담당합니다.</p>
-                </li>
-                <li>
-                  <strong>Automation</strong>
-                  <p>Edge Functions가 회원가입, 비밀번호 재설정, 가격 갱신을 처리합니다.</p>
-                </li>
-              </ul>
-            </article>
-            <article class="stack-panel">
-              <span class="card-label">Repository</span>
-              <div class="repo-board">
-                <div class="repo-card">
-                  <strong>`web/`</strong>
-                  <p>UI와 브라우저 상호작용 로직.</p>
-                </div>
-                <div class="repo-card">
-                  <strong>`supabase/`</strong>
-                  <p>스키마, RLS, Edge Functions.</p>
-                </div>
-                <div class="repo-card">
-                  <strong>`docs/`</strong>
-                  <p>GitHub Pages 랜딩, SEO, 스크린샷, 세션 로그.</p>
-                </div>
-                <div class="repo-card">
-                  <strong>`wiki/`</strong>
-                  <p>제품 소개, 기능 안내, 구조 문서를 실제 GitHub Wiki와 함께 관리.</p>
-                </div>
-                <div class="repo-card">
-                  <strong>`scripts/`</strong>
-                  <p>정적 빌드와 배포 보조 스크립트.</p>
-                </div>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section class="section-block" id="roadmap">
-          <div class="section-head">
-            <p class="eyebrow">Roadmap</p>
-            <h2>다음으로 붙이면 좋은 기능</h2>
-          </div>
-          <div class="roadmap-grid">
-            <article class="roadmap-card">
-              <h3>Priority 1</h3>
-              <p>반복 수입, 반복 지출, 계좌 간 이체.</p>
-            </article>
-            <article class="roadmap-card">
-              <h3>Priority 2</h3>
-              <p>예산 초과, 카드 결제일, 고정지출 알림.</p>
-            </article>
-            <article class="roadmap-card">
-              <h3>Priority 3</h3>
-              <p>CSV / Excel 가져오기, PDF 리포트.</p>
-            </article>
-            <article class="roadmap-card">
-              <h3>Priority 4</h3>
-              <p>투자 수익률 차트와 가격 갱신 이력.</p>
-            </article>
-            <article class="roadmap-card">
-              <h3>Priority 5</h3>
-              <p>가입 현황과 함수 상태를 보는 운영 보드.</p>
-            </article>
-            <article class="roadmap-card">
-              <h3>Future option</h3>
-              <p>월마감 스냅샷, 목표 저축, 공유 계정.</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="section-block faq-block" id="faq">
-          <div class="section-head">
-            <p class="eyebrow">FAQ</p>
-            <h2>자주 묻는 질문</h2>
-          </div>
-          <div class="faq-list">
-            <details open>
-              <summary>Donggri Ledger는 어떤 구조로 운영되나요?</summary>
-              <p>프론트엔드는 Vercel, 인증과 데이터베이스는 Supabase, 코드와 문서는 GitHub 기반으로 운영합니다.</p>
-            </details>
-            <details>
-              <summary>현재 어떤 기능을 사용할 수 있나요?</summary>
-              <p>회원가입, 로그인, 카드 결제예정, 자산 관리, 고정지출, 예산, 투자 포트폴리오, 백업과 복원을 사용할 수 있습니다.</p>
-            </details>
-            <details>
-              <summary>왜 카드 결제예정 기능이 중요한가요?</summary>
-              <p>카드를 쓴 날과 실제 돈이 빠지는 날이 다르기 때문에 생활비 흐름을 맞추려면 결제예정 금액을 따로 관리해야 합니다.</p>
-            </details>
-          </div>
-        </section>
-      </main>
-
-      <footer class="page-footer">
-        <p>Donggri Ledger · Supabase + Vercel personal finance service</p>
-        <div>
-          <a href="https://github.com/sheryloe/donggri_gagyeobu">GitHub 저장소 바로가기</a>
-          <span> · </span>
-          <a href="https://github.com/sheryloe/donggri_gagyeobu/wiki">GitHub Wiki 바로가기</a>
         </div>
-      </footer>
+        <div class="flex-none hidden md:block">
+            <ul class="menu menu-horizontal px-1 font-medium">
+                <li><a href="#feature-board">핵심 기능</a></li>
+                <li><a href="#screens">화면 보기</a></li>
+                <li><a href="#architecture">서비스 구조</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </div>
+        <div class="flex-none gap-2">
+            <a href="https://github.com/sheryloe/donggri_gagyeobu" class="btn btn-primary btn-sm md:btn-md rounded-lg">
+                <i data-lucide="github" class="w-4 h-4"></i> Repository
+            </a>
+        </div>
     </div>
-  </body>
+
+    <main id="top">
+        <section class="hero min-h-[70vh] hero-gradient px-4" id="overview">
+            <div class="hero-content flex-col lg:flex-row-reverse gap-12 max-w-7xl">
+                <div class="relative">
+                    <img src="assets/screenshots/donggri-ledger-dashboard.png" class="max-w-full lg:max-w-2xl rounded-2xl shadow-2xl border-4 border-white transform lg:rotate-2 hover:rotate-0 transition-transform duration-500" alt="Dashboard" />
+                    <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl hidden lg:block">
+                        <div class="flex items-center gap-3">
+                            <div class="badge badge-success badge-md">Live</div>
+                            <span class="font-bold text-sm">카드 결제예정 자동 계산 중</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 bg-white px-3 py-1 rounded-full shadow-sm mb-6 border border-success/20">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+                        </span>
+                        <span class="text-xs font-bold text-success uppercase tracking-tighter">Powered by Supabase & Vercel</span>
+                    </div>
+                    <h1 class="text-4xl lg:text-6xl font-black leading-tight mb-6">
+                        <span class="text-primary text-shadow-sm">카드 결제예정</span>과<br/>
+                        <span class="text-slate-800">투자 흐름</span>을 동시에.
+                    </h1>
+                    <p class="text-lg opacity-80 mb-8 max-w-lg mx-auto lg:mx-0">
+                        단순 입력 중심이 아니라, 카드 결제일과 실제 자산 흐름까지 같이 확인할 수 있게 설계된 개인 맞춤형 대시보드입니다.
+                    </p>
+                    <div class="flex flex-wrap justify-center lg:justify-start gap-4">
+                        <div class="stats bg-white shadow-sm border border-base-200">
+                            <div class="stat p-4">
+                                <div class="stat-title text-xs">회원가입</div>
+                                <div class="stat-value text-base text-primary">아이디+보안질문</div>
+                            </div>
+                            <div class="stat p-4 border-l border-base-200">
+                                <div class="stat-title text-xs">운영 제한</div>
+                                <div class="stat-value text-base text-primary">최대 50명</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 px-4 max-w-7xl mx-auto" id="feature-board">
+            <div class="text-center mb-16">
+                <p class="text-primary font-bold tracking-widest uppercase text-sm mb-2">Feature board</p>
+                <h2 class="text-3xl lg:text-4xl font-black italic">핵심 기능 보드</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card bg-white border border-base-200 hover:shadow-xl transition-shadow group">
+                    <div class="card-body">
+                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                        <h3 class="card-title text-lg font-bold uppercase">계정 접근</h3>
+                        <p class="text-sm opacity-70">아이디 로그인, 보안질문 복구, 50명 가입 제한으로 보안과 리소스를 관리합니다.</p>
+                    </div>
+                </div>
+
+                <div class="card bg-white border border-base-200 hover:shadow-xl transition-shadow group">
+                    <div class="card-body">
+                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="receipt"></i>
+                        </div>
+                        <h3 class="card-title text-lg font-bold uppercase">거래 관리</h3>
+                        <p class="text-sm opacity-70">수입, 지출, 투자 거래를 월 흐름 중심으로 한눈에 파악합니다.</p>
+                    </div>
+                </div>
+
+                <div class="card bg-white border border-base-200 hover:shadow-xl transition-shadow group">
+                    <div class="card-body">
+                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="wallet"></i>
+                        </div>
+                        <h3 class="card-title text-lg font-bold uppercase">자산 분리</h3>
+                        <p class="text-sm opacity-70">은행, 현금, 카드, 투자계좌를 각각 분리하여 실질 자산을 측정합니다.</p>
+                    </div>
+                </div>
+
+                <div class="card bg-primary text-primary-content shadow-lg shadow-primary/20">
+                    <div class="card-body">
+                        <div class="w-12 h-12 bg-white/20 text-white rounded-lg flex items-center justify-center mb-4">
+                            <i data-lucide="credit-card"></i>
+                        </div>
+                        <h3 class="card-title text-lg font-bold uppercase">카드 결제예정</h3>
+                        <p class="text-sm opacity-90 font-medium">결제일과 결제통장을 연결해 자동 계산되는 혁신적인 구조.</p>
+                    </div>
+                </div>
+
+                <div class="card bg-white border border-base-200 hover:shadow-xl transition-shadow group lg:col-span-2">
+                    <div class="card-body flex-row gap-6 items-start">
+                        <div class="hidden sm:flex w-16 h-16 bg-success/10 text-success rounded-full items-center justify-center flex-shrink-0">
+                            <i data-lucide="pie-chart" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title text-lg font-bold uppercase">고정지출과 예산</h3>
+                            <p class="text-sm opacity-70">카테고리별 예산과 월 고정지출을 동시에 관리하여 과소비를 방지합니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-white border border-base-200 hover:shadow-xl transition-shadow group lg:col-span-2">
+                    <div class="card-body flex-row gap-6 items-start">
+                        <div class="hidden sm:flex w-16 h-16 bg-info/10 text-info rounded-full items-center justify-center flex-shrink-0">
+                            <i data-lucide="trending-up" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title text-lg font-bold uppercase">투자 포트폴리오</h3>
+                            <p class="text-sm opacity-70">주식, 코인, ETF, 펀드의 평가금과 수익률을 실시간 가격 기반으로 추적합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-slate-50 px-4" id="screens">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col lg:flex-row justify-between items-end mb-12 gap-4">
+                    <div class="text-left">
+                        <p class="text-primary font-bold tracking-widest uppercase text-sm mb-2">Screens</p>
+                        <h2 class="text-3xl lg:text-4xl font-black italic">실제 서비스 화면</h2>
+                    </div>
+                    <div class="tabs tabs-boxed bg-base-200">
+                        <a class="tab tab-active font-bold">전체 화면</a>
+                        <a class="tab" href="https://github.com/sheryloe/donggri_gagyeobu/wiki">상세 가이드</a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-8 group">
+                        <div class="overflow-hidden rounded-2xl shadow-xl border-4 border-white">
+                            <img src="assets/screenshots/donggri-ledger-dashboard.png" class="w-full hover:scale-105 transition-transform duration-700" alt="Dashboard" />
+                        </div>
+                        <div class="mt-4 p-4 bg-white rounded-xl shadow-sm border border-base-200">
+                            <h4 class="font-bold text-lg mb-1">Dashboard</h4>
+                            <p class="text-sm opacity-60 italic">자산, 카드 결제예정, 월별 요약, 거래 입력을 한 화면에서 확인.</p>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-4 group">
+                        <div class="overflow-hidden rounded-2xl shadow-xl border-4 border-white h-full">
+                            <img src="assets/screenshots/donggri-ledger-investments.png" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700" alt="Investments" />
+                        </div>
+                        <div class="mt-4 p-4 bg-white rounded-xl shadow-sm border border-base-200">
+                            <h4 class="font-bold text-lg mb-1">Investments</h4>
+                            <p class="text-sm opacity-60 italic">종목 등록, 평가금, 수익률, 실시간 가격 갱신.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 px-4 max-w-7xl mx-auto" id="architecture">
+            <div class="text-center mb-16">
+                <p class="text-primary font-bold tracking-widest uppercase text-sm mb-2">Architecture</p>
+                <h2 class="text-3xl lg:text-4xl font-black italic">서비스 구조와 저장소</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold flex items-center gap-2 border-l-4 border-primary pl-4">
+                        <i data-lucide="layers" class="text-primary"></i> Service Stack
+                    </h3>
+                    <div class="collapse collapse-arrow bg-white border border-base-200 shadow-sm">
+                        <input type="radio" name="arch-accordion" checked="checked" /> 
+                        <div class="collapse-title font-bold text-primary">Frontend (Vercel)</div>
+                        <div class="collapse-content text-sm opacity-80">
+                            <p>정적 웹 앱을 Vercel에 배포하고 브라우저에서 모든 UI와 인터랙션을 처리합니다.</p>
+                        </div>
+                    </div>
+                    <div class="collapse collapse-arrow bg-white border border-base-200 shadow-sm">
+                        <input type="radio" name="arch-accordion" /> 
+                        <div class="collapse-title font-bold text-primary">Auth / Database (Supabase)</div>
+                        <div class="collapse-content text-sm opacity-80">
+                            <p>Supabase Auth, Postgres, RLS로 접근 제어와 사용자별 데이터 분리를 안전하게 담당합니다.</p>
+                        </div>
+                    </div>
+                    <div class="collapse collapse-arrow bg-white border border-base-200 shadow-sm">
+                        <input type="radio" name="arch-accordion" /> 
+                        <div class="collapse-title font-bold text-primary">Automation (Edge Functions)</div>
+                        <div class="collapse-content text-sm opacity-80">
+                            <p>Edge Functions가 회원가입, 비밀번호 재설정, 투자 자산의 가격 실시간 갱신을 처리합니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 rounded-2xl p-8 text-slate-300 relative overflow-hidden">
+                    <h3 class="text-xl font-bold text-white mb-8 flex items-center gap-2">
+                        <i data-lucide="folder-tree"></i> Project Directory
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
+                        <div class="p-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                            <strong class="text-primary block mb-1">web/</strong>
+                            <span class="text-xs">UI와 브라우저 상호작용 로직</span>
+                        </div>
+                        <div class="p-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                            <strong class="text-primary block mb-1">supabase/</strong>
+                            <span class="text-xs">스키마, RLS, Edge Functions</span>
+                        </div>
+                        <div class="p-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                            <strong class="text-primary block mb-1">docs/</strong>
+                            <span class="text-xs">GitHub Pages 랜딩, SEO, 로그</span>
+                        </div>
+                        <div class="p-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                            <strong class="text-primary block mb-1">wiki/</strong>
+                            <span class="text-xs">제품 가이드 및 구조 문서</span>
+                        </div>
+                        <div class="p-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                            <strong class="text-primary block mb-1">scripts/</strong>
+                            <span class="text-xs">정적 빌드 및 배포 보조</span>
+                        </div>
+                    </div>
+                    <i data-lucide="code" class="absolute bottom-[-20px] right-[-20px] w-48 h-48 opacity-5 text-white"></i>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-slate-50 px-4" id="roadmap">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <p class="text-primary font-bold tracking-widest uppercase text-sm mb-2">Roadmap</p>
+                    <h2 class="text-3xl lg:text-4xl font-black italic">다음으로 붙이면 좋은 기능</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="alert bg-white border border-base-200 shadow-sm flex-col items-start gap-1 p-6">
+                        <div class="badge badge-primary badge-sm mb-2">Priority 1</div>
+                        <h4 class="font-bold">반복 수입/지출</h4>
+                        <p class="text-sm opacity-60 italic">반복 지출과 계좌 간 이체 기능 자동화.</p>
+                    </div>
+                    <div class="alert bg-white border border-base-200 shadow-sm flex-col items-start gap-1 p-6">
+                        <div class="badge badge-outline badge-sm mb-2">Priority 2</div>
+                        <h4 class="font-bold">스마트 알림</h4>
+                        <p class="text-sm opacity-60 italic">예산 초과, 카드 결제일, 고정지출 알림.</p>
+                    </div>
+                    <div class="alert bg-white border border-base-200 shadow-sm flex-col items-start gap-1 p-6">
+                        <div class="badge badge-outline badge-sm mb-2">Priority 3</div>
+                        <h4 class="font-bold">데이터 분석</h4>
+                        <p class="text-sm opacity-60 italic">Excel 가져오기 및 PDF 월간 리포트 기능.</p>
+                    </div>
+                    <div class="alert bg-white border border-base-200 shadow-sm flex-col items-start gap-1 p-6">
+                        <div class="badge badge-outline badge-sm mb-2">Priority 4</div>
+                        <h4 class="font-bold">투자 심화</h4>
+                        <p class="text-sm opacity-60 italic">투자 수익률 차트와 가격 갱신 이력 관리.</p>
+                    </div>
+                    <div class="alert bg-white border border-base-200 shadow-sm flex-col items-start gap-1 p-6">
+                        <div class="badge badge-outline badge-sm mb-2">Priority 5</div>
+                        <h4 class="font-bold">운영 보드</h4>
+                        <p class="text-sm opacity-60 italic">가입 현황과 함수 상태 모니터링 보드.</p>
+                    </div>
+                    <div class="alert bg-primary/10 border border-primary/20 shadow-sm flex-col items-start gap-1 p-6">
+                        <div class="badge badge-primary badge-sm mb-2 text-white">Future</div>
+                        <h4 class="font-bold text-primary">월마감 스냅샷</h4>
+                        <p class="text-sm text-primary/70 italic italic">목표 저축 및 공유 계정 지원.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 px-4 max-w-3xl mx-auto" id="faq">
+            <div class="text-center mb-12">
+                <p class="text-primary font-bold tracking-widest uppercase text-sm mb-2">FAQ</p>
+                <h2 class="text-3xl font-black italic italic">자주 묻는 질문</h2>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="collapse collapse-plus bg-white border border-base-200 shadow-sm">
+                    <input type="checkbox" /> 
+                    <div class="collapse-title text-lg font-bold">Donggri Ledger는 어떤 구조로 운영되나요?</div>
+                    <div class="collapse-content"> 
+                        <p class="text-sm opacity-80 leading-relaxed">프론트엔드는 Vercel, 인증과 데이터베이스는 Supabase, 코드와 문서는 GitHub 기반으로 운영하며 서버리스 구조를 최대한 활용합니다.</p>
+                    </div>
+                </div>
+                <div class="collapse collapse-plus bg-white border border-base-200 shadow-sm">
+                    <input type="checkbox" /> 
+                    <div class="collapse-title text-lg font-bold">현재 어떤 기능을 사용할 수 있나요?</div>
+                    <div class="collapse-content"> 
+                        <p class="text-sm opacity-80 leading-relaxed">회원가입, 로그인, 카드 결제예정 관리, 자산 관리, 고정지출, 예산 세팅, 실시간 가격 기반 투자 포트폴리오, JSON 데이터 백업과 복원을 지원합니다.</p>
+                    </div>
+                </div>
+                <div class="collapse collapse-plus bg-white border border-base-200 shadow-sm">
+                    <input type="checkbox" /> 
+                    <div class="collapse-title text-lg font-bold">왜 카드 결제예정 기능이 중요한가요?</div>
+                    <div class="collapse-content"> 
+                        <p class="text-sm opacity-80 leading-relaxed text-error font-semibold italic">"카드를 쓴 날과 실제 돈이 빠지는 날이 다르기 때문입니다."</p>
+                        <p class="text-sm opacity-80 leading-relaxed mt-2">생활비 흐름을 정확히 맞추려면 결제예정 금액을 별도로 추적하고 결제 통장의 잔액과 매칭하는 과정이 반드시 필요합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer footer-center p-10 bg-slate-900 text-slate-400 border-t border-slate-800">
+        <aside>
+            <div class="w-12 h-12 bg-primary text-white flex items-center justify-center rounded-xl font-black text-2xl mb-4 shadow-lg">DG</div>
+            <p class="font-bold text-white text-lg">Donggri Ledger</p> 
+            <p>Supabase + Vercel personal finance service</p>
+            <p class="text-xs opacity-50">Copyright © 2026 - All right reserved by sheryloe</p>
+        </aside> 
+        <nav class="grid grid-flow-col gap-4">
+            <a href="https://github.com/sheryloe/donggri_gagyeobu" class="link link-hover">GitHub 저장소</a> 
+            <a href="https://github.com/sheryloe/donggri_gagyeobu/wiki" class="link link-hover">GitHub Wiki</a>
+        </nav>
+    </footer>
+
+    <script>
+        // 아이콘 초기화
+        lucide.createIcons();
+    </script>
+</body>
 </html>
