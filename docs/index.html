@@ -23,8 +23,6 @@
     <style>
         body { font-family: "Pretendard", sans-serif; scroll-behavior: smooth; }
         .hero-gradient { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
-        /* 로딩 중 애니메이션 */
-        #member-count.loading { opacity: 0.5; font-size: 0.8rem; }
     </style>
 </head>
 <body class="bg-base-100 text-base-content">
@@ -33,7 +31,7 @@
         <div class="flex-1">
             <a href="#top" class="flex items-center gap-2 group">
                 <div class="w-10 h-10 bg-primary text-primary-content flex items-center justify-center rounded-xl font-black text-xl shadow-lg group-hover:scale-110 transition-transform">DG</div>
-                <div class="flex flex-col">
+                <div class="flex flex-col text-left">
                     <span class="text-lg font-bold leading-none">Donggri Ledger</span>
                     <span class="text-[10px] uppercase tracking-widest opacity-60">Personal finance service</span>
                 </div>
@@ -42,42 +40,36 @@
         <div class="flex-none hidden md:block mr-4">
             <div class="badge badge-outline border-base-300 gap-2 p-4">
                 <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-                <span id="nav-member-count" class="text-xs font-bold">인원 확인 중...</span>
+                <span id="nav-member-count" class="text-xs font-bold italic">Checking...</span>
             </div>
         </div>
         <div class="flex-none gap-2">
-            <a href="https://github.com/sheryloe/donggri_gagyeobu" class="btn btn-primary btn-sm rounded-lg">
-                <i data-lucide="github" class="w-4 h-4"></i> Repo
-            </a>
+            <a href="https://github.com/sheryloe/donggri_gagyeobu" class="btn btn-primary btn-sm rounded-lg">Repo</a>
         </div>
     </div>
 
     <main id="top">
-        <section class="hero min-h-[60vh] hero-gradient px-4 py-12" id="overview">
+        <section class="hero min-h-[50vh] hero-gradient px-4 py-16" id="overview">
             <div class="hero-content flex-col lg:flex-row-reverse gap-12 max-w-7xl">
                 <div class="relative">
-                    <img src="assets/screenshots/donggri-ledger-dashboard.png" class="max-w-full lg:max-w-2xl rounded-2xl shadow-2xl border-4 border-white transform lg:rotate-2 hover:rotate-0 transition-transform duration-500" alt="Dashboard" />
+                    <img src="assets/screenshots/donggri-ledger-dashboard.png" class="max-w-full lg:max-w-2xl rounded-2xl shadow-2xl border-4 border-white transform lg:rotate-2" alt="Dashboard" />
                 </div>
                 <div class="text-center lg:text-left">
-                    <div class="inline-flex items-center gap-2 bg-white px-3 py-1 rounded-full shadow-sm mb-6 border border-success/20">
-                        <span class="text-xs font-bold text-success uppercase tracking-tighter">Current Status</span>
-                    </div>
-                    <h1 class="text-4xl lg:text-5xl font-black leading-tight mb-6 text-slate-800">
-                        카드 결제예정과<br/>
-                        투자 흐름을 동시에.
+                    <h1 class="text-4xl lg:text-5xl font-black leading-tight mb-6 text-slate-800 italic">
+                        <span class="text-primary">카드 결제예정</span>과<br/>투자 흐름을 동시에.
                     </h1>
                     
                     <div class="stats bg-white shadow-xl mb-8 border border-primary/10">
-                        <div class="stat px-8 py-4 text-center lg:text-left">
+                        <div class="stat px-8 py-4">
                             <div class="stat-title text-sm font-medium">현재 가입 현황</div>
                             <div class="stat-value text-primary text-3xl mb-1" id="member-count">-- / 50</div>
-                            <div class="stat-desc font-bold text-success" id="member-status">가입 가능한 자리가 있습니다</div>
+                            <div class="stat-desc font-bold text-success italic" id="member-status">가입 가능한 자리가 있습니다</div>
                         </div>
                     </div>
 
-                    <div class="flex flex-wrap justify-center lg:justify-start gap-4">
-                        <a href="#screens" class="btn btn-ghost">화면 보기</a>
-                        <a href="https://github.com/sheryloe/donggri_gagyeobu/wiki" class="btn btn-outline border-base-300">사용 가이드</a>
+                    <div class="flex flex-wrap justify-center lg:justify-start gap-3">
+                        <a href="#feature-board" class="btn btn-primary shadow-lg shadow-primary/20">핵심 기능</a>
+                        <a href="#roadmap" class="btn btn-outline">다음 로드맵</a>
                     </div>
                 </div>
             </div>
@@ -85,82 +77,131 @@
 
         <section class="py-20 px-4 max-w-7xl mx-auto" id="feature-board">
             <div class="text-center mb-16">
-                <p class="text-primary font-bold tracking-widest uppercase text-sm mb-2">Feature board</p>
-                <h2 class="text-3xl lg:text-4xl font-black">핵심 기능 보드</h2>
+                <p class="text-primary font-bold tracking-widest uppercase text-xs mb-2">Capabilities</p>
+                <h2 class="text-3xl lg:text-4xl font-black italic underline decoration-primary/30 decoration-8 underline-offset-4">핵심 기능 보드</h2>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="card bg-white border border-base-200 hover:shadow-xl transition-shadow group">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+                <div class="card bg-white border border-base-200 hover:-translate-y-2 transition-all">
                     <div class="card-body">
-                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i data-lucide="shield-check"></i>
-                        </div>
-                        <h3 class="card-title text-lg font-bold uppercase">계정 접근</h3>
-                        <p class="text-sm opacity-70">아이디 로그인, 보안질문 복구, 50명 제한 운영.</p>
+                        <i data-lucide="shield-check" class="text-primary mb-2"></i>
+                        <h3 class="card-title text-base font-bold">계정 접근</h3>
+                        <p class="text-sm opacity-60">아이디 로그인, 보안질문 복구, 50명 제한 운영.</p>
                     </div>
                 </div>
-                <div class="card bg-white border border-base-200 hover:shadow-xl transition-shadow group">
-                    <div class="card-body">
-                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i data-lucide="receipt"></i>
-                        </div>
-                        <h3 class="card-title text-lg font-bold uppercase">거래 관리</h3>
-                        <p class="text-sm opacity-70">수입, 지출, 투자 거래를 월 흐름 중심으로 관리.</p>
+                <div class="card bg-white border border-base-200 hover:-translate-y-2 transition-all text-left">
+                    <div class="card-body text-left">
+                        <i data-lucide="receipt" class="text-primary mb-2"></i>
+                        <h3 class="card-title text-base font-bold text-left">거래 관리</h3>
+                        <p class="text-sm opacity-60 text-left">수입, 지출, 투자 거래를 월 흐름 중심으로 관리.</p>
                     </div>
                 </div>
-                <div class="card bg-primary text-primary-content shadow-lg shadow-primary/20">
+                <div class="card bg-primary text-primary-content shadow-lg shadow-primary/20 hover:-translate-y-2 transition-all">
                     <div class="card-body">
-                        <div class="w-12 h-12 bg-white/20 text-white rounded-lg flex items-center justify-center mb-4">
-                            <i data-lucide="credit-card"></i>
-                        </div>
-                        <h3 class="card-title text-lg font-bold uppercase text-white">카드 결제예정</h3>
-                        <p class="text-sm opacity-90 font-medium">결제일과 결제통장을 연결해 자동 계산되는 시스템.</p>
+                        <i data-lucide="credit-card" class="text-white mb-2"></i>
+                        <h3 class="card-title text-base font-bold text-white uppercase">카드 결제예정</h3>
+                        <p class="text-sm opacity-90">결제일과 결제통장을 연결해 자동 계산.</p>
                     </div>
                 </div>
-                <div class="card bg-white border border-base-200 hover:shadow-xl transition-shadow group">
+                <div class="card bg-white border border-base-200 hover:-translate-y-2 transition-all">
                     <div class="card-body">
-                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i data-lucide="trending-up"></i>
-                        </div>
-                        <h3 class="card-title text-lg font-bold uppercase">투자 추적</h3>
-                        <p class="text-sm opacity-70">주식, 코인, ETF 실시간 가격 기반 수익률 확인.</p>
+                        <i data-lucide="trending-up" class="text-primary mb-2"></i>
+                        <h3 class="card-title text-base font-bold text-left">투자 포트폴리오</h3>
+                        <p class="text-sm opacity-60 text-left">실시간 가격 기반 평가금과 수익률 추적.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <section class="py-20 bg-slate-50 px-4" id="screens">
-            <div class="max-w-7xl mx-auto text-center mb-12">
-                <h2 class="text-3xl font-black mb-4 italic">서비스 미리보기</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <figure class="bg-white p-4 rounded-2xl shadow-md">
-                        <img src="assets/screenshots/donggri-ledger-dashboard.png" class="rounded-lg border border-base-100 mb-4" alt="Dash">
-                        <figcaption class="font-bold">메인 대시보드</figcaption>
-                    </figure>
-                    <figure class="bg-white p-4 rounded-2xl shadow-md">
-                        <img src="assets/screenshots/donggri-ledger-investments.png" class="rounded-lg border border-base-100 mb-4" alt="Invest">
-                        <figcaption class="font-bold">투자 포트폴리오</figcaption>
-                    </figure>
+            <div class="max-w-7xl mx-auto text-center">
+                <h2 class="text-3xl font-black mb-12 italic">실제 서비스 화면</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <img src="assets/screenshots/donggri-ledger-dashboard.png" class="rounded-xl shadow-lg border border-base-200" alt="Dash">
+                        <p class="font-bold opacity-70">메인 대시보드</p>
+                    </div>
+                    <div class="space-y-4 text-center">
+                        <img src="assets/screenshots/donggri-ledger-investments.png" class="rounded-xl shadow-lg border border-base-200" alt="Invest">
+                        <p class="font-bold opacity-70 text-center">투자 포트폴리오</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="py-20 px-4 max-w-3xl mx-auto" id="faq">
-            <h2 class="text-center text-3xl font-black mb-12 italic">자주 묻는 질문</h2>
-            <div class="space-y-4">
-                <div class="collapse collapse-plus bg-white border border-base-200 shadow-sm">
-                    <input type="checkbox" /> 
-                    <div class="collapse-title text-lg font-bold">Donggri Ledger는 어떤 서비스인가요?</div>
-                    <div class="collapse-content"> 
-                        <p class="text-sm opacity-80">Supabase와 Vercel 기반으로 운영되는 개인용 정밀 가계부 서비스입니다.</p>
+        <section class="py-20 px-4 max-w-7xl mx-auto" id="architecture">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-black italic">서비스 구조</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 bg-white border-l-4 border-primary shadow-sm rounded-r-xl">
+                    <h4 class="font-bold mb-2">Frontend</h4>
+                    <p class="text-sm opacity-60">정적 웹 앱을 Vercel에 배포하여 빠른 응답 속도 보장.</p>
+                </div>
+                <div class="p-6 bg-white border-l-4 border-primary shadow-sm rounded-r-xl">
+                    <h4 class="font-bold mb-2">Database</h4>
+                    <p class="text-sm opacity-60">Supabase Postgres & RLS를 통한 안전한 데이터 분리.</p>
+                </div>
+                <div class="p-6 bg-white border-l-4 border-primary shadow-sm rounded-r-xl">
+                    <h4 class="font-bold mb-2">Automation</h4>
+                    <p class="text-sm opacity-60">Edge Functions를 이용한 실시간 시세 갱신 시스템.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-slate-900 text-white px-4" id="roadmap">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <p class="text-primary font-bold tracking-widest uppercase text-xs mb-2 italic">Future plans</p>
+                    <h2 class="text-3xl lg:text-4xl font-black italic">다음으로 붙이면 좋은 기능</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 transition-colors">
+                        <div class="badge badge-primary mb-4">Priority 1</div>
+                        <h4 class="text-lg font-bold mb-2 text-white text-left">반복 수입/지출</h4>
+                        <p class="text-sm text-slate-400">반복되는 고정 수입, 지출 및 계좌 간 이체 자동화.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 transition-colors">
+                        <div class="badge badge-outline text-slate-400 mb-4">Priority 2</div>
+                        <h4 class="text-lg font-bold mb-2 text-white">스마트 알림</h4>
+                        <p class="text-sm text-slate-400 text-left">예산 초과, 카드 결제일, 고정지출 임박 알림.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 transition-colors">
+                        <div class="badge badge-outline text-slate-400 mb-4">Priority 3</div>
+                        <h4 class="text-lg font-bold mb-2 text-white">리포트 내보내기</h4>
+                        <p class="text-sm text-slate-400 text-left">CSV/Excel 가져오기 및 PDF 월간 리포트 생성.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 transition-colors">
+                        <div class="badge badge-outline text-slate-400 mb-4 text-left">Priority 4</div>
+                        <h4 class="text-lg font-bold mb-2 text-white text-left text-left">투자 심화 분석</h4>
+                        <p class="text-sm text-slate-400 text-left text-left">투자 수익률 차트와 가격 갱신 이력 관리.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 transition-colors">
+                        <div class="badge badge-outline text-slate-400 mb-4 text-left">Priority 5</div>
+                        <h4 class="text-lg font-bold mb-2 text-white text-left">운영 대시보드</h4>
+                        <p class="text-sm text-slate-400 text-left">가입 현황과 함수 상태를 모니터링하는 운영 보드.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-primary/20 border border-primary/30">
+                        <div class="badge badge-primary mb-4">Future Option</div>
+                        <h4 class="text-lg font-bold mb-2 text-primary">월마감 스냅샷</h4>
+                        <p class="text-sm text-slate-300 text-left">목표 저축 관리 및 가족 간 공유 계정 지원.</p>
                     </div>
                 </div>
-                <div class="collapse collapse-plus bg-white border border-base-200 shadow-sm">
+            </div>
+        </section>
+
+        <section class="py-20 px-4 max-w-3xl mx-auto text-left text-left" id="faq">
+            <h2 class="text-center text-3xl font-black mb-12 italic">자주 묻는 질문</h2>
+            <div class="space-y-3">
+                <div class="collapse collapse-plus bg-white border border-base-200">
                     <input type="checkbox" /> 
-                    <div class="collapse-title text-lg font-bold">현재 가입 인원 제한이 있나요?</div>
-                    <div class="collapse-content"> 
-                        <p class="text-sm opacity-80">안정적인 무료 서버 운영을 위해 현재 <span class="font-bold text-primary">최대 50명</span>까지 선착순 가입을 받고 있습니다.</p>
-                    </div>
+                    <div class="collapse-title font-bold">운영 구조가 어떻게 되나요?</div>
+                    <div class="collapse-content text-sm opacity-60">프론트엔드는 Vercel, DB는 Supabase, 코드는 GitHub 기반입니다.</div>
+                </div>
+                <div class="collapse collapse-plus bg-white border border-base-200 text-left">
+                    <input type="checkbox" /> 
+                    <div class="collapse-title font-bold text-left">카드 결제예정 기능이 왜 필요한가요?</div>
+                    <div class="collapse-content text-sm opacity-60 text-left">카드를 쓴 날과 실제 돈이 빠지는 날의 시차를 관리해야 자산 흐름이 정확해지기 때문입니다.</div>
                 </div>
             </div>
         </section>
@@ -168,21 +209,17 @@
 
     <footer class="footer footer-center p-10 bg-slate-900 text-slate-400">
         <aside>
-            <div class="w-12 h-12 bg-primary text-white flex items-center justify-center rounded-xl font-black text-2xl mb-4">DG</div>
-            <p class="font-bold text-white">Donggri Ledger</p> 
-            <p>Copyright © 2026 - sheryloe</p>
+            <p class="font-bold text-white text-lg italic italic">Donggri Ledger</p> 
+            <p>Supabase + Vercel personal finance service</p>
+            <p class="text-xs opacity-40">Copyright © 2026 - sheryloe</p>
         </aside> 
     </footer>
 
     <script>
-        // 1. 아이콘 초기화
         lucide.createIcons();
 
-        // 2. Supabase 설정 (사용자님 설정값)
         const SUPABASE_URL = 'https://ggrvrdwkhnvgtlakzbzf.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdncnZyZHdraG52Z3RsYWt6YnpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NDY3MTUsImV4cCI6MjA4OTEyMjcxNX0.4-TlLsgGcv_04DhRedDBjnbxxAtyOxxkMNKPwD1NGbg';
-        
-        // Supabase 인스턴스 생성 (충돌 방지를 위해 _supabase로 명명)
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     
         async function updateMemberCount() {
@@ -191,35 +228,20 @@
             const statusId = document.getElementById('member-status');
 
             try {
-                // profiles 테이블의 카운트 조회
-                const { count, error } = await _supabase
-                    .from('profiles')
-                    .select('*', { count: 'exact', head: true });
-        
+                const { count, error } = await _supabase.from('profiles').select('*', { count: 'exact', head: true });
                 if (error) throw error;
-        
                 const currentCount = count || 0;
-                
-                // 메인 카운트 표시
                 if (countId) countId.innerText = `${currentCount} / 50`;
-                // 네비게이션 바 표시
                 if (navCountId) navCountId.innerText = `${currentCount}/50 가입 중`;
-
-                // 상태 메시지 및 디자인 변경
-                if (currentCount >= 50) {
-                    if (countId) countId.classList.add('text-error');
-                    if (statusId) {
-                        statusId.innerText = "현재 가입이 마감되었습니다";
-                        statusId.classList.replace('text-success', 'text-error');
-                    }
+                if (currentCount >= 50 && statusId) {
+                    statusId.innerText = "현재 가입이 마감되었습니다";
+                    statusId.classList.replace('text-success', 'text-error');
                 }
             } catch (err) {
-                console.error('인원 조회 실패:', err);
+                console.error(err);
                 if (countId) countId.innerText = "Error";
             }
         }
-    
-        // 페이지 로드 시 실행
         updateMemberCount();
     </script>
 </body>
