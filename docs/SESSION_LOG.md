@@ -1999,3 +1999,30 @@
   - `dist/`
   - `docs/SESSION_LOG.md`
 - Commit: 없음
+
+## 2026-03-21 00:20 (Asia/Seoul)
+
+### User Requests
+- Vercel 배포 반영
+- README 및 GitHub Pages 업데이트
+
+### Changes Applied
+- 기본 favicon 추가 및 반영
+  - `web/favicon.ico`
+- GitHub Pages 히어로 섹션에 최근 업데이트 문구 추가
+  - `docs/index.html`
+- README 최신 변경 내역 반영
+  - `README.md`
+- 원격 push로 배포 트리거
+
+### Results
+- `origin/master` push 완료
+- Vercel/GitHub Pages 자동 배포 트리거됨
+
+### Git
+- Commit: `8d2fd6b` (fix(web): add default favicon)
+- Changed files:
+  - `web/favicon.ico`
+  - `docs/index.html`
+  - `README.md`
+  - `docs/SESSION_LOG.md`
